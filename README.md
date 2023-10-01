@@ -37,7 +37,7 @@ Development Plan: Narges
 
 Documentation Link: Lucy
 
-Screenshot: JJ
+Screenshot & Running: JJ
 
 Repository Management: Joonsung
 
