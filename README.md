@@ -31,7 +31,7 @@ https://developers.google.com/calendar/api/guides/overview
 ### Example output:
 
 ### Contributors (Please see Shared Google Doc for Details):
-Problem Domain: 
+Problem Domain: Jenny
 ""
 Development Plan: Narges
 ""
