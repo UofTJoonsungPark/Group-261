@@ -25,7 +25,7 @@ https://developers.google.com/calendar/api/guides/overview
 
 
 ### Screenshot of using tool:
-
+![screenshot1]
 
 
 ### Example output:
@@ -35,10 +35,10 @@ Problem Domain: Jenny
 ""
 Development Plan: Narges
 ""
-Documentation Link:
+Documentation Link: 
 ""
-Screenshot:
+Screenshot: JJ
 ""
-Output:
+Repository Management: Joonsung
 ""
 Editors: All
