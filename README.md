@@ -25,10 +25,92 @@ https://developers.google.com/calendar/api/guides/overview
 
 
 ### Screenshot of using tool:
-![screenshot1](https://github.com/UofTJoonsungPark/Group-261/blob/9a3873c3dc11bb6458e3f8c598af81ff04fb1772/images/calendar_get.jpg)
+CalendarList: list
+Reference: https://developers.google.com/calendar/api/v3/reference/calendarList/list
+(/CalendarList_list.jpg?raw=true "CalendarList: list")
 
+Result:
+```json
+{
+    "kind": "calendar#calendarList",
+    "etag": "\"p33sbd37hrrao20o\"",
+    "nextSyncToken": "CPi2jPHe1YEDEhhqYWVqb29uLmpqLmhhbkBnbWFpbC5jb20=",
+    "items": [
+        ...   
+        {
+            "kind": "calendar#calendarListEntry",
+            "etag": "\"1696193929569000\"",
+            "id": "d823735b3ebceb4f532f389774e3a3052897c18e45eec4c78762bee63f68f601@group.calendar.google.com",
+            "summary": "Test Calendar",
+            "description": "testing",
+            "timeZone": "America/Toronto",
+            "colorId": "12",
+            "backgroundColor": "#fad165",
+            "foregroundColor": "#000000",
+            "selected": true,
+            "accessRole": "owner",
+            "defaultReminders": [],
+            "conferenceProperties": {
+                "allowedConferenceSolutionTypes": [
+                    "hangoutsMeet"
+                ]
+            }
+        }
+    ]
+}
+```
+Events: list
+Reference: https://developers.google.com/calendar/api/v3/reference/events/list
+(/Events_list.jpg?raw=true "Events: list")
 
-### Example output:
+Result:
+```json
+{
+    "kind": "calendar#events",
+    "etag": "\"p33sdv5nnrrao20o\"",
+    "summary": "Test Calendar",
+    "description": "testing",
+    "updated": "2023-10-01T20:59:27.403Z",
+    "timeZone": "America/Toronto",
+    "accessRole": "owner",
+    "defaultReminders": [],
+    "nextSyncToken": "CPjflvfe1YEDEPjflvfe1YEDGAUg0_uyjwI=",
+    "items": [
+        {
+            "kind": "calendar#event",
+            "etag": "\"3392387934806000\"",
+            "id": "6egnphrsf9aqj588m7t6bpd3ol",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=NmVnbnBocnNmOWFxajU4OG03dDZicGQzb2wgZDgyMzczNWIzZWJjZWI0ZjUzMmYzODk3NzRlM2EzMDUyODk3YzE4ZTQ1ZWVjNGM3ODc2MmJlZTYzZjY4ZjYwMUBn",
+            "created": "2023-10-01T20:59:27.000Z",
+            "updated": "2023-10-01T20:59:27.403Z",
+            "summary": "test event",
+            "creator": {
+                "email": "jaejoon.jj.han@gmail.com"
+            },
+            "organizer": {
+                "email": "d823735b3ebceb4f532f389774e3a3052897c18e45eec4c78762bee63f68f601@group.calendar.google.com",
+                "displayName": "Test Calendar",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2023-10-01T20:00:00-04:00",
+                "timeZone": "America/Toronto"
+            },
+            "end": {
+                "dateTime": "2023-10-01T21:00:00-04:00",
+                "timeZone": "America/Toronto"
+            },
+            "iCalUID": "6egnphrsf9aqj588m7t6bpd3ol@google.com",
+            "sequence": 0,
+            "reminders": {
+                "useDefault": true
+            },
+            "eventType": "default"
+        }
+    ]
+}
+```
 
 ### Contributors (Please see Shared Google Doc for Details):
 Problem Domain: Jenny
