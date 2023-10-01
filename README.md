@@ -32,13 +32,13 @@ https://developers.google.com/calendar/api/guides/overview
 
 ### Contributors (Please see Shared Google Doc for Details):
 Problem Domain: Jenny
-""
+
 Development Plan: Narges
-""
-Documentation Link: 
-""
+
+Documentation Link: Lucy
+
 Screenshot: JJ
-""
+
 Repository Management: Joonsung
-""
+
 Editors: All
