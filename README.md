@@ -1,14 +1,14 @@
 # Group-261
 repository of UofT CSC207 Group 261
 
-Problem domain:
+## Problem domain:
 Our group wants to focus on time management as our problem domain. Specifically, creating an application that will help motivate people to stay organized and complete their tasks, as well as efficiently make plans with other people. We are thinking about implementing a calendar system with a reward system when tasks are completed, as well as having features such as giving the weather report and showing what times users are collectively available at.
 
 An API that we could use to help us implement our design is the Google Task API (ttps://developers.google.com/tasks/reference/rest/) to help users implement tasks and events efficiently. Below 
 
 
-What we want to develop:
-	Our team is currently in the conceptual stage of developing a versatile productivity application with a focus on personal task management and collaborative planning. The primary functionality of this application will be a personal to-do list and calendar that will enable users to schedule tasks, events, and make plans with other users, with a reward system where users are applauded for tasks they complete. This will either be in the form of a prize users can unlock or a printed message such as “Well done!”. 
+## What we want to develop:
+Our team is currently in the conceptual stage of developing a versatile productivity application with a focus on personal task management and collaborative planning. The primary functionality of this application will be a personal to-do list and calendar that will enable users to schedule tasks, events, and make plans with other users, with a reward system where users are applauded for tasks they complete. This will either be in the form of a prize users can unlock or a printed message such as “Well done!”. 
 
 This application aims to streamline and enhance users' daily routines by providing a seamless way to organize tasks, set deadlines, and efficiently allocate time for their personal and professional responsibilities. The calendar feature will facilitate coordination among users, allowing them to collaborate on shared plans and events, and the reward system (through prizes or messages) will motivate productivity.
 
@@ -20,12 +20,12 @@ We welcome any feedback or suggestions that may help refine our project directio
 
 We think that the Google Calendar API will help us implement our idea, and we included a screenshot below of experimenting with this API.
 
-Link to documentations:
+### Link to documentations:
 https://developers.google.com/calendar/api/guides/overview
 
 
-Screenshot of using tool:
+### Screenshot of using tool:
 
 
 
-Example output:
+### Example output:
