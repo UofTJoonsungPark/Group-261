@@ -233,7 +233,7 @@ Result:
 Upcoming events
 test event (2023-10-01T20:00:00.000-04:00)
 ```
-### Contributors (Please see Shared Google Doc for Details):
+### Contributors (Please Access Shared Google Doc for Details):
 Problem Domain: Jenny
 
 Development Plan: Narges
