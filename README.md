@@ -31,9 +31,14 @@ https://developers.google.com/calendar/api/guides/overview
 ### Example output:
 
 ### Contributors (Please see Shared Google Doc for Details):
-Problem Domain:
+Problem Domain: 
+""
 Development Plan: Narges
+""
 Documentation Link:
+""
 Screenshot:
+""
 Output:
+""
 Editors: All
