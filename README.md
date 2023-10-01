@@ -25,9 +25,9 @@ https://developers.google.com/calendar/api/guides/overview
 
 
 ### Screenshot of using tool:
-CalendarList: list
+CalendarList: list  
 Reference: https://developers.google.com/calendar/api/v3/reference/calendarList/list
-(/CalendarList_list.jpg?raw=true "CalendarList: list")
+![](/images/CalendarList_list.jpg?raw=true "CalendarList: list")
 
 Result:
 ```json
@@ -59,9 +59,9 @@ Result:
     ]
 }
 ```
-Events: list
+Events: list  
 Reference: https://developers.google.com/calendar/api/v3/reference/events/list
-(/Events_list.jpg?raw=true "Events: list")
+![](/images/Events_list.jpg?raw=true "Events: list")
 
 Result:
 ```json
