@@ -25,7 +25,7 @@ https://developers.google.com/calendar/api/guides/overview
 
 
 ### Screenshot of using tool:
-![screenshot1]
+![screenshot1](https://github.com/UofTJoonsungPark/Group-261/blob/9a3873c3dc11bb6458e3f8c598af81ff04fb1772/images/calendar_get.jpg)
 
 
 ### Example output:
