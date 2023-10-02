@@ -24,7 +24,7 @@ We think that the Google Calendar API will help us implement our idea, and we in
 https://developers.google.com/calendar/api/guides/overview
 
 
-### Screenshot of using tool:
+### Screenshot of using tool & example output:
 CalendarList: list  
 Reference: https://developers.google.com/calendar/api/v3/reference/calendarList/list
 ![](/images/CalendarList_list.jpg?raw=true "CalendarList: list")
