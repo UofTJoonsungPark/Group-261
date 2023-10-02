@@ -223,6 +223,23 @@ Birthdays: addressbook#contacts@group.v.calendar.google.com
 Holidays in Canada: en.canadian#holiday@group.v.calendar.google.com
 Test Calendar: d823735b3ebceb4f532f389774e3a3052897c18e45eec4c78762bee63f68f601@group.calendar.google.com
 ```
+
+### Potential future problems and solutions:
+Please note that we have no current problems blocking our progress. Thinking ahead, however, we can pinpoint a few areas that might present themselves as challenges. 
+
+1. Integration with Google APIs:
+Problem: Integrating with Google Calendar and Google Task APIs can be complex, requiring authentication, handling access tokens, and dealing with potential API changes.
+Solution: Make sure to follow the official documentation provided by Google for these APIs. Keep our API credentials and tokens secure. Regularly update our code to accommodate changes in the APIs by keeping an eye out for updates.
+
+2. User Engagement and Gamification:
+Problem: Implementing gamification features can be challenging and might not appeal to all users.
+Solution: Conduct proper user research to understand what gamification elements resonate with our target audience. Allow users to opt-in or customize the level of gamification they want to experience. Regularly update and refine gamification features based on user feedback.
+
+3.Data Security and Privacy:
+Problem: Handling our uses'r data such as tasks, events, and personal information requires a robust approach to data security and privacy.
+Solution: Implement strong data encryption for sensitive information. Comply with data protection regulations at all times. Conduct regular security audits and penetration testing.
+
+
 ### Contributors (Please Access Shared Google Doc for Details):
 Problem Domain: Jenny
 
@@ -233,5 +250,7 @@ Documentation Link: Lucy
 Screenshot & Running: JJ
 
 Repository Management: Joonsung
+
+Future Problems: Narges
 
 Editors: All
