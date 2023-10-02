@@ -113,7 +113,8 @@ Result:
 ```
 
 Java code requesting event list  
-Reference: https://developers.google.com/calendar/api/quickstart/java  
+Reference1: https://developers.google.com/calendar/api/quickstart/java  
+Reference2: https://developers.google.com/calendar/api/v3/reference/calendarList/list  
 ```java
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -124,12 +125,11 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.DateTime;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -140,11 +140,11 @@ import java.util.Collections;
 import java.util.List;
 
 /* class to demonstrate use of Calendar events list API */
-public class CalendarQuickstart {
+public class GetCalendarList {
     /**
      * Application name.
      */
-    private static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
+    private static final String APPLICATION_NAME = "Test: GetCalendarList";
     /**
      * Global instance of the JSON factory.
      */
@@ -199,39 +199,29 @@ public class CalendarQuickstart {
                         .setApplicationName(APPLICATION_NAME)
                         .build();
 
-        // List the next 10 events from the <calenarId>.
-        DateTime now = new DateTime(System.currentTimeMillis());
-        Events events = service.events().list("d823735b3ebceb4f532f389774e3a3052897c18e45eec4c78762bee63f68f601@group.calendar.google.com")
-                .setMaxResults(10)
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true)
-                .execute();
-        List<Event> items = events.getItems();
-        if (items.isEmpty()) {
-            System.out.println("No upcoming events found.");
-        } else {
-            System.out.println("Upcoming events");
-            for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    start = event.getStart().getDate();
-                }
-                System.out.printf("%s (%s)\n", event.getSummary(), start);
+        String pageToken = null;
+        do {
+            CalendarList calendarList = service.calendarList().list().setPageToken(pageToken).execute();
+            List<CalendarListEntry> items = calendarList.getItems();
+            for (CalendarListEntry calendarListEntry : items) {
+                System.out.println(calendarListEntry.getSummary() + ": " + calendarListEntry.getId());
             }
-        }
+            pageToken = calendarList.getNextPageToken();
+        } while (pageToken != null);
     }
 }
 ```
 Result:  
 ```
-> Task :compileJava UP-TO-DATE
+> Task :compileJava
 > Task :processResources UP-TO-DATE
-> Task :classes UP-TO-DATE
+> Task :classes
 
-> Task :CalendarQuickstart.main()
-Upcoming events
-test event (2023-10-01T20:00:00.000-04:00)
+> Task :GetCalendarList.main()
+jaejoon.jj.han@gmail.com: jaejoon.jj.han@gmail.com
+Birthdays: addressbook#contacts@group.v.calendar.google.com
+Holidays in Canada: en.canadian#holiday@group.v.calendar.google.com
+Test Calendar: d823735b3ebceb4f532f389774e3a3052897c18e45eec4c78762bee63f68f601@group.calendar.google.com
 ```
 ### Contributors (Please Access Shared Google Doc for Details):
 Problem Domain: Jenny
