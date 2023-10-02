@@ -235,7 +235,7 @@ Solution: Make sure to follow the official documentation provided by Google for 
 Problem: Implementing gamification features can be challenging and might not appeal to all users.
 Solution: Conduct proper user research to understand what gamification elements resonate with our target audience. Allow users to opt-in or customize the level of gamification they want to experience. Regularly update and refine gamification features based on user feedback.
 
-3.Data Security and Privacy:
+3. Data Security and Privacy:
 Problem: Handling our uses'r data such as tasks, events, and personal information requires a robust approach to data security and privacy.
 Solution: Implement strong data encryption for sensitive information. Comply with data protection regulations at all times. Conduct regular security audits and penetration testing.
 
