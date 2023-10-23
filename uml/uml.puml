@@ -1,0 +1,32 @@
+@startuml
+
+class Task {
+    -title: String
+    -notes: String
+    -completed: boolean
+    -dueDate: LocalDateTime
+}
+
+class Event {
+    -startTime: LocalDateTime
+    -endTime: LocalDateTime
+    -title: String
+    -description: String
+    -location: String
+}
+
+class RewardSystem {
+    -totalPoint: int
+    -badges: List<Badge>
+    -earned: List<Badge>
+}
+
+class Badge {
+    -name: String
+    -point: int
+    -image: String
+}
+
+RewardSystem o-- Badge
+
+@enduml
