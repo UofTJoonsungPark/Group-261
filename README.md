@@ -245,8 +245,6 @@ Problem Domain: Jenny
 
 Development Plan: Narges
 
-Documentation Link: Lucy
-
 Screenshot & Running: JJ
 
 Repository Management: Joonsung
