@@ -7,6 +7,8 @@ import java.beans.PropertyChangeSupport;
 
 public class LoggedInViewModel extends ViewModel {
     public final String TITLE_LABEL = "Logged In View";
+    public final String TASK_BUTTON_LABEL = "TASK";
+    public final String EVENT_BUTTON_LABEL = "EVENT";
 
     private LoggedInState state = new LoggedInState();
 
