@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 
@@ -14,6 +15,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
     public final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
+    private final LoggedInController loggedInController;
 
     JLabel username;
 
@@ -24,7 +26,8 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     /**
      * A window with a title and a JButton.
      */
-    public LoggedInView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInView(LoggedInViewModel loggedInViewModel, LoggedInController loggedInController) {
+        this.loggedInController = loggedInController;
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
@@ -36,14 +39,14 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         JPanel buttons = new JPanel();
         logOut = new JButton(loggedInViewModel.LOGOUT_BUTTON_LABEL);
-        buttons.add(logOut);
 
 
         task = new JButton(loggedInViewModel.TASK_BUTTON_LABEL);
         event = new JButton(loggedInViewModel.EVENT_BUTTON_LABEL);
 
-        buttons.add(task);
         buttons.add(event);
+        buttons.add(task);
+        buttons.add(logOut);
 
         logOut.addActionListener(this);
 
@@ -53,6 +56,28 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         this.add(usernameInfo);
         this.add(username);
         this.add(buttons);
+
+        event.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(event)) {
+                            loggedInController.execute(true, false, false);
+                        }
+                    }
+                }
+        );
+
+        logOut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(logOut)) {
+                            loggedInController.execute(false, false, true);
+                        }
+                    }
+                }
+        );
     }
 
     /**
