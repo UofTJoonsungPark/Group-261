@@ -29,6 +29,7 @@ Features
 
 
 Google Task API Integration
+
 To efficiently implement task and event management, TimeForge integrates with the Google Task API. This integration 
 enhances the application's functionality and provides users with a seamless experience.
 
