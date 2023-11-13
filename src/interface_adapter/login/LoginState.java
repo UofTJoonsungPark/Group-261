@@ -48,4 +48,9 @@ public class LoginState {
         this.passwordError = passwordError;
     }
 
+    public String toString() {
+        return "LoginState{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'';
+    }
 }
