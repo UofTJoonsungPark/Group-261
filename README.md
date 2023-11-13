@@ -35,3 +35,16 @@ enhances the application's functionality and provides users with a seamless expe
 
 
 
+Feedback
+
+We welcome any feedback or suggestions that can help refine and improve TimeForge. Feel free to contact any of our team 
+members or open an issue.
+
+
+
+Contributors
+
+Narges Movahedian Nezhad - GitHub Profile
+Jae Joon Han - GitHub Profile
+JoonsungPark - GitHub Profile
+Jenny Nguyen - GitHub Profile
