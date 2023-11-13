@@ -25,6 +25,7 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface, 
         this.userFactory = userFactory;
 
         csvFile = new File(csvPath);
+        csvFile.getParentFile().mkdirs();
         headers.put("username", 0);
         headers.put("password", 1);
         headers.put("creation_time", 2);

@@ -7,13 +7,11 @@ import java.io.IOException;
 import data_access.FileUserDataAccessObject;
 import entity.CommonUserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.event.EventViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupViewModel;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 
 
 public class Main {
@@ -33,10 +31,11 @@ public class Main {
         SignupViewModel signupViewModel = new SignupViewModel();
         LoginViewModel loginViewModel = new LoginViewModel();
         LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
+        EventViewModel eventViewModel = new EventViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
         try {
-            userDataAccessObject = new FileUserDataAccessObject("./users.csv", new CommonUserFactory());
+            userDataAccessObject = new FileUserDataAccessObject("./DATA/users.csv", new CommonUserFactory());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,8 +48,12 @@ public class Main {
 
         views.add(signupView, signupView.viewName);
 
-        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
+        LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel,
+                loginViewModel, eventViewModel);
         views.add(loggedInView, loggedInView.viewName);
+
+        EventView eventView = EventUseCaseFactory.create(viewManagerModel, eventViewModel, loggedInViewModel);
+        views.add(eventView, eventView.viewName);
 
         application.pack();
         application.setVisible(true);

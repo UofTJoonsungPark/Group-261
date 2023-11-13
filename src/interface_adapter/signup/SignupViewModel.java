@@ -34,10 +34,14 @@ public class SignupViewModel extends ViewModel {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-
+        support.addPropertyChangeListener(listener);
     }
 
     public SignupState getState() {
         return state;
+    }
+
+    public void resetState() {
+        state = new SignupState();
     }
 }
