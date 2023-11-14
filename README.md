@@ -19,12 +19,16 @@ element to boost motivation and engagement.
 
 
 
-Features
+Features (add detail)
 
 - Task Management: Create and manage personal to-do lists with deadlines.
 - Calendar: Schedule tasks, events, and collaborative plans efficiently.
 - Reward System: Motivate users through prizes or encouraging messages.
 - Game (Future Plan): Customize characters, embark on unique adventures, and achieve milestones through task completion.
+
+
+
+Instructions for add how to use program
 
 
 
@@ -39,6 +43,8 @@ Feedback
 
 We welcome any feedback or suggestions that can help refine and improve TimeForge. Feel free to contact any of our team 
 members or open an issue.
+
+
 
 
 
