@@ -40,4 +40,8 @@ public class LoginViewModel extends ViewModel {
     public LoginState getState() {
         return state;
     }
+
+    public void resetState() {
+        state = new LoginState();
+    }
 }

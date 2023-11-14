@@ -1,9 +1,10 @@
-package entity;
+package use_case.event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Event {
+public class EventInputData {
+    private boolean isBack;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -13,16 +14,39 @@ public class Event {
     private String title;
     private String description;
     private String location;
+    public EventInputData(boolean isBack) {
+        this.isBack = isBack;
 
-    public Event(LocalDate startDate, LocalDate endDate,
-                 LocalTime startTime, LocalTime endTime,
-                 String title, String description, String location) {
+    }
+
+    public boolean isBack() {
+        return isBack;
+    }
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -52,33 +76,5 @@ public class Event {
 
     public String getLocation() {
         return location;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 }
