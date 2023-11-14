@@ -15,14 +15,14 @@ public class EventController {
 
     public void execute(boolean back) {
         if (back) {
-            eventUseCaseInteractor.execute(new EventInputData(true));
+            eventUseCaseInteractor.execute(new EventInputData("isBack"));
         }
     }
 
     public void createEvent(String title, String location, String description,
                             LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime) {
-        EventInputData eventInputData = new EventInputData(false);
+        EventInputData eventInputData = new EventInputData("createEvent");
 
         eventInputData.setTitle(title);
         eventInputData.setLocation(location);
