@@ -46,11 +46,11 @@ members or open an issue.
 
 
 
-
-
 Contributors
 
 Narges Movahedian Nezhad - GitHub Profile
 Jae Joon Han - GitHub Profile
 JoonsungPark - GitHub Profile
 Jenny Nguyen - GitHub Profile
+
+# TODO: Add detail for features, add instructions for how to use the program
