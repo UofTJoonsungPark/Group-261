@@ -2,6 +2,7 @@ package entity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Event {
     private LocalDate startDate;
@@ -80,5 +81,19 @@ public class Event {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * This method prints out the Event by giving its time, title, and location.
+     * @return A string of the Event information.
+     */
+    public String toString() {
+        // Create a formatter for the start/end time of the event
+        DateTimeFormatter hourMinute = DateTimeFormatter.ofPattern("HH:mm");
+
+        String formattedStartTime = this.startTime.format(hourMinute);
+        String formattedEndTime = this.endTime.format(hourMinute);
+
+        return this.title + System.lineSeparator() + this.location + System.lineSeparator() + formattedStartTime + "-" + formattedEndTime;
     }
 }
