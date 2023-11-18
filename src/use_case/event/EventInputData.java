@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class EventInputData {
-    private boolean isBack;
+    private String useCase;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -14,13 +14,13 @@ public class EventInputData {
     private String title;
     private String description;
     private String location;
-    public EventInputData(boolean isBack) {
-        this.isBack = isBack;
+    public EventInputData(String useCase) {
+        this.useCase = useCase;
 
     }
 
-    public boolean isBack() {
-        return isBack;
+    public String getUseCase() {
+        return useCase;
     }
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
