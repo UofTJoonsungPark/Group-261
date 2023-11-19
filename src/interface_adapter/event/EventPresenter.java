@@ -5,26 +5,50 @@ import interface_adapter.logged_in.LoggedInViewModel;
 import use_case.event.EventOutputBoundary;
 import use_case.event.EventOutputData;
 
+/**
+ * The EventPresenter class is responsible for displaying the output data of the interactor on the View.
+ */
 public class EventPresenter implements EventOutputBoundary {
     private final EventViewModel eventViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
 
+    /**
+     * Constructor to initialize a EventPresenter instance
+     *
+     * @param eventViewModel    Event ViewModel
+     * @param loggedInViewModel LoggedIn ViewModel
+     * @param viewManagerModel  ViewManager Model
+     */
     public EventPresenter(EventViewModel eventViewModel, LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel) {
         this.eventViewModel = eventViewModel;
         this.loggedInViewModel = loggedInViewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
+    /**
+     * Request to present success view
+     */
     @Override
     public void prepareSuccessView(EventOutputData response) {
-        if (response.isBack()) {
+    }
+
+    /**
+     * Request to change the view
+     */
+    public void changeView() {
+        EventState eventState = eventViewModel.getState();
+        if (eventState.getUseCase().equals("back")) {
+            this.eventViewModel.firePropertyChanged();
             this.viewManagerModel.setActiveView(loggedInViewModel.getViewName());
             this.viewManagerModel.firePropertyChanged();
             return;
         }
     }
 
+    /**
+     * Request to present fail view
+     */
     @Override
     public void prepareFailView(String error) {
 

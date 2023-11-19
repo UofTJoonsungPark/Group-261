@@ -30,21 +30,12 @@ public class EventInteractor implements EventInputBoundary {
      */
     @Override
     public void execute(EventInputData eventInputdata) {
-        // Checking to see if the user clicked the back button.
-        if (eventInputdata.getUseCase().equals("isBack")) {
-            eventPresenter.prepareSuccessView(new EventOutputData(true));
-            return;
-        }
-
-        // Checking to see if the user wants to create a new event.
-        else if (eventInputdata.getUseCase().equals("createEvent")) {
+        if (eventInputdata.getUseCase().equals("createEvent")) {
             Event event = eventFactory.create(eventInputdata.getStartDate(), eventInputdata.getEndDate(),
                     eventInputdata.getStartTime(), eventInputdata.getEndTime(), eventInputdata.getTitle(),
                     eventInputdata.getDescription(), eventInputdata.getLocation());
 
             eventDataAccessObject.saveEvent(event);
         }
-
-        }
-
     }
+}
