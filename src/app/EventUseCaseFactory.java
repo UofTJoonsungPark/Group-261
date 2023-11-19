@@ -35,7 +35,7 @@ public class EventUseCaseFactory {
         EventOutputBoundary eventOutputBoundary = new EventPresenter(
                 eventViewModel, loggedInViewModel, viewManagerModel);
         EventFactory eventFactory = new EventFactory();
-        EventDataAccessInterface eventDataAccessObject = new FileEventUserDataAccessObject(new ArrayList<>());
+        EventDataAccessInterface eventDataAccessObject = new FileEventUserDataAccessObject();
 
         EventInputBoundary eventInteracotr = new EventInteractor(eventOutputBoundary, eventFactory, eventDataAccessObject);
         return new EventController(eventInteracotr, (EventPresenter) eventOutputBoundary);
