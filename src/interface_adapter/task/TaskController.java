@@ -6,7 +6,7 @@ import use_case.task.TaskInputData;
 import java.time.LocalDateTime;
 
 /**
- * The TaskController class handles user interface interactions related to tasks.
+ * This class handles user interface interactions related to tasks.
  */
 public class TaskController {
     private final TaskInputBoundary taskUseCaseInteractor;
