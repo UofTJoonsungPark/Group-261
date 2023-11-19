@@ -38,6 +38,6 @@ public class EventUseCaseFactory {
         EventDataAccessInterface eventDataAccessObject = new FileEventUserDataAccessObject(new ArrayList<>());
 
         EventInputBoundary eventInteracotr = new EventInteractor(eventOutputBoundary, eventFactory, eventDataAccessObject);
-        return new EventController(eventInteracotr);
+        return new EventController(eventInteracotr, (EventPresenter) eventOutputBoundary);
     }
 }
