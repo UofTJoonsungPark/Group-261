@@ -26,7 +26,6 @@ public class EventInputData {
      */
     public EventInputData(String useCase) {
         this.useCase = useCase;
-
     }
 
     /**
