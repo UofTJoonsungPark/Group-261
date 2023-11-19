@@ -23,6 +23,9 @@ import interface_adapter.event.EventState;
 import interface_adapter.event.EventViewModel;
 import interface_adapter.signup.SignupViewModel;
 
+/**
+ * The EventView class is responsible for the UI of the event page.
+ */
 public class EventView extends JPanel implements ActionListener, PropertyChangeListener {
     private final static int WIDTH = 30;
     public final String viewName = "event";
@@ -40,6 +43,12 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JTextField location = new JTextField(WIDTH);
     private final JTextArea description = new JTextArea(3, WIDTH);
 
+    /**
+     * Constructor to initialize EventView instance
+     *
+     * @param eventViewModel    EventViewModel class
+     * @param eventController   EventController class
+     */
     public EventView(EventViewModel eventViewModel, EventController eventController) {
         this.eventViewModel = eventViewModel;
         this.eventController = eventController;
@@ -138,6 +147,12 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         }
     }
 
+    /**
+     * The method buildCreateDialog is executed in the constructor of the EventView class
+     * This method is used to create an instance of JDialog, which serves as a pop-up window for creating an Event.
+     *
+     * @return an instance of JDialog (pop-up window)
+     */
     private JDialog buildCreateDialog()  {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         JDialog createDialog = new JDialog(topFrame, "Create a event");
@@ -195,6 +210,12 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         return createDialog;
     }
 
+    /**
+     * Change the size of the Calendar.
+     *
+     * @param setting   The setting that should be changed
+     * @param ratio     The ratio of the original size to the new size
+     */
     private void changeSizeCalendar(DatePickerSettings setting, double ratio) {
         int newHeight = (int) (setting.getSizeDatePanelMinimumHeight() * ratio);
         int newWidth = (int) (setting.getSizeDatePanelMinimumWidth() * ratio);

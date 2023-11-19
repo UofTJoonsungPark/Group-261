@@ -16,17 +16,12 @@ public class EventInteractor implements EventInputBoundary {
 
     @Override
     public void execute(EventInputData eventInputdata) {
-        if (eventInputdata.getUseCase().equals("isBack")) {
-            eventPresenter.prepareSuccessView(new EventOutputData(true));
-            return;
-        } else if (eventInputdata.getUseCase().equals("createEvent")) {
+        if (eventInputdata.getUseCase().equals("createEvent")) {
             Event event = eventFactory.create(eventInputdata.getStartDate(), eventInputdata.getEndDate(),
                     eventInputdata.getStartTime(), eventInputdata.getEndTime(), eventInputdata.getTitle(),
                     eventInputdata.getDescription(), eventInputdata.getLocation());
 
             eventDataAccessObject.saveEvent(event);
         }
-
-        }
-
     }
+}
