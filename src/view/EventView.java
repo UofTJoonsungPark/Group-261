@@ -19,6 +19,7 @@ import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 import interface_adapter.event.EventController;
+import interface_adapter.event.EventState;
 import interface_adapter.event.EventViewModel;
 import interface_adapter.signup.SignupViewModel;
 
@@ -29,6 +30,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final EventController eventController;
     final JButton create;
     final JButton back;
+    final JButton delete;
     private final JButton save;
     final JPanel gridPanel;
     final JPanel left;
@@ -41,6 +43,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     public EventView(EventViewModel eventViewModel, EventController eventController) {
         this.eventViewModel = eventViewModel;
         this.eventController = eventController;
+        this.eventViewModel.addPropertyChangeListener(this);
 
         left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
@@ -55,8 +58,10 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
 
         JPanel buttons = new JPanel();
         create = new JButton(EventViewModel.CREATE_BUTTON_LABEL);
+        delete = new JButton(EventViewModel.DELETE_BUTTON_LABEL);
         back = new JButton(EventViewModel.BACK_BUTTON_LABEL);
         buttons.add(create);
+        buttons.add(delete);
         buttons.add(back);
 
         left.add(calendarPanel);
@@ -82,13 +87,25 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
+        delete.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(delete)) {
+                            // todo: implement delete usecase
+                        }
+                    }
+                }
+        );
         back.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(back)) {
                             createDialog.setVisible(false);
-                            eventController.execute(true);
+                            EventState eventState = eventViewModel.getState();
+                            eventState.setUseCase("back");
+                            eventController.execute("back");
                         }
                     }
                 }
@@ -101,7 +118,11 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        EventState state = (EventState) evt.getNewValue();
+        String useCase = state.getUseCase();
+        if (useCase != null) {
+            eventViewModel.resetState();
+        }
     }
 
     private class SimpleCalendarListener implements CalendarListener {
