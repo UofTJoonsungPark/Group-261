@@ -14,12 +14,12 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * Saves a new event to the user's txt file.
      *
      * @param event the event to be saved.
-     * @param user  the user that created the event.
+     * @param user  the username of the user that created the event.
      */
     @Override
-    public void saveEvent(Event event, User user) {
+    public void saveEvent(Event event, String user) {
         String printedDate = event.getStartDateAsString();
-        String filePath = "EventDirectory" + File.separator + user.getName();
+        String filePath = "EventDirectory" + File.separator + user;
 
         if (doesDateExist(printedDate, filePath)) {
             // There's already an array list associated with this date.
@@ -114,7 +114,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (EventListInfo eventListInfo : events) {
                 // Write the event's date followed by a comma and the events in the array list
-                writer.write(eventListInfo.getPrintedDate() + "," + eventListInfo.getEventsAsString());
+//                writer.write(eventListInfo.getPrintedDate() + "," + eventListInfo.getEventsAsString());
                 // Move to the next line
                 writer.newLine();
             }
@@ -150,7 +150,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     }
 
     private ArrayList<String> parseEvents(String eventsAsString) {
-        ArrayList<Event> events = new ArrayList<>();
+        ArrayList<String> events = new ArrayList<>();
         // Implement the logic to parse events from the string and add them to the list
         return events;
     }
@@ -193,16 +193,16 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
          *
          * @return
          */
-        public String getEventsAsString() {
-            StringBuilder result = new StringBuilder("[");
-            for (Event event : events) {
-                result.append(event.toString()).append(",");
-            }
-            if (result.length() > 1) {
-                result.deleteCharAt(result.length() - 1); // Remove the trailing comma
-            }
-            result.append("]");
-            return result.toString();
-        }
+//        public String getEventsAsString() {
+//            StringBuilder result = new StringBuilder("[");
+//            for (Event event : events) {
+//                result.append(event.toString()).append(",");
+//            }
+//            if (result.length() > 1) {
+//                result.deleteCharAt(result.length() - 1); // Remove the trailing comma
+//            }
+//            result.append("]");
+//            return result.toString();
+//        }
     }
 }

@@ -1,7 +1,9 @@
 package use_case.event;
 
+import entity.CommonUser;
 import entity.Event;
 import entity.EventFactory;
+import entity.User;
 
 /**
  * This class represents the interactor for events.
@@ -35,7 +37,7 @@ public class EventInteractor implements EventInputBoundary {
                     eventInputdata.getStartTime(), eventInputdata.getEndTime(), eventInputdata.getTitle(),
                     eventInputdata.getDescription(), eventInputdata.getLocation());
 
-            eventDataAccessObject.saveEvent(event);
+            eventDataAccessObject.saveEvent(event, "username");
         }
     }
 }
