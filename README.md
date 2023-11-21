@@ -19,7 +19,7 @@ element to boost motivation and engagement.
 
 
 
-Features (add detail)
+Features 
 
 - Task Management: Our application provides a robust task management system, allowing users to create and manage 
 personal to-do lists with ease. Users can set deadlines, track progress, and efficiently organize their tasks for 
@@ -66,4 +66,4 @@ Jae Joon Han - GitHub Profile
 JoonsungPark - GitHub Profile
 Jenny Nguyen - GitHub Profile
 
-# TODO: Add detail for features, add instructions for how to use the program, link everyone's github to the file 
+# TODO: add instructions for how to use the program, link everyone's github to the file 
