@@ -21,7 +21,9 @@ element to boost motivation and engagement.
 
 Features (add detail)
 
-- Task Management: Create and manage personal to-do lists with deadlines.
+- Task Management: Our application provides a robust task management system, allowing users to create and manage 
+personal to-do lists with ease. Users can set deadlines, track progress, and efficiently organize their tasks for 
+improved productivity.
 - Calendar: Schedule tasks, events, and collaborative plans efficiently.
 - Reward System: Motivate users through prizes or encouraging messages.
 - Game (Future Plan): Customize characters, embark on unique adventures, and achieve milestones through task completion.
