@@ -61,9 +61,9 @@ members or open an issue.
 
 Contributors
 
-Narges Movahedian Nezhad - GitHub Profile
-Jae Joon Han - GitHub Profile
-JoonsungPark - GitHub Profile
-Jenny Nguyen - GitHub Profile
+Narges Movahedian Nezhad - [GitHub Profile](https://github.com/nargesmn100)
+Jae Joon Han - [GitHub Profile](https://github.com/JJ-Han)
+JoonsungPark - [GitHub Profile](https://github.com/UofTJoonsungPark)
+Jenny Nguyen - [GitHub Profile](https://github.com/jolateral)
 
 # TODO: add instructions for how to use the program, link everyone's github to the file 
