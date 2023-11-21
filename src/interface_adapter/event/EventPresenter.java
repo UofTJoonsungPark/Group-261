@@ -42,7 +42,6 @@ public class EventPresenter implements EventOutputBoundary {
             this.eventViewModel.firePropertyChanged();
             this.viewManagerModel.setActiveView(loggedInViewModel.getViewName());
             this.viewManagerModel.firePropertyChanged();
-            return;
         }
     }
 

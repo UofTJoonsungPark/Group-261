@@ -60,6 +60,25 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface, 
         this.save();
     }
 
+    /**
+     * Creates an empty txt file and puts it in the EventDirectory package to save this
+     * user's events.
+     * @param user  The user to create a file for.
+     */
+    @Override
+    public void createEventFile(User user) {
+        // Create the file path
+        String filePath = "EventDirectory" + File.separator + user.getName();
+
+        // Create an empty file and put it in the directory
+        try {
+            File file = new File(filePath);
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public User get(String username) {
         return accounts.get(username);

@@ -154,4 +154,25 @@ public class Event {
 
         return this.title + System.lineSeparator() + this.location + System.lineSeparator() + formattedStartTime + "-" + formattedEndTime;
     }
+
+    /**
+     * Prints the date of the event in "yyyy-MM-dd" format.
+     *
+     * @return a string of the event's start date.
+     */
+    public String getStartDateAsString() {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return formatDate(this.startDate, dateFormat);
+    }
+
+    /**
+     * A helper method for getStartDateAsString to format LocalDate into a string with the wanted format.
+     *
+     * @param date      The date of the event
+     * @param formatter The wanted format for the date
+     * @return a string of the formatted date.
+     */
+    private static String formatDate(LocalDate date, DateTimeFormatter formatter) {
+        return date.format(formatter);
+    }
 }

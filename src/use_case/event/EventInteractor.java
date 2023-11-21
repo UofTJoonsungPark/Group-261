@@ -1,7 +1,9 @@
 package use_case.event;
 
+import entity.CommonUser;
 import entity.Event;
 import entity.EventFactory;
+import entity.User;
 
 /**
  * This class represents the interactor for events.
@@ -25,17 +27,17 @@ public class EventInteractor implements EventInputBoundary {
 
     /**
      * Executes use cases with the event input data depending on what the eventInputData is (more on this
-     * is in the eventinputdata class).
-     * @param eventInputdata    The data given to the interactor.
+     * is in the eventInputData class).
+     * @param eventInputData    The data given to the interactor.
      */
     @Override
-    public void execute(EventInputData eventInputdata) {
-        if (eventInputdata.getUseCase().equals("createEvent")) {
-            Event event = eventFactory.create(eventInputdata.getStartDate(), eventInputdata.getEndDate(),
-                    eventInputdata.getStartTime(), eventInputdata.getEndTime(), eventInputdata.getTitle(),
-                    eventInputdata.getDescription(), eventInputdata.getLocation());
+    public void execute(EventInputData eventInputData) {
+        if (eventInputData.getUseCase().equals("createEvent")) {
+            Event event = eventFactory.create(eventInputData.getStartDate(), eventInputData.getEndDate(),
+                    eventInputData.getStartTime(), eventInputData.getEndTime(), eventInputData.getTitle(),
+                    eventInputData.getDescription(), eventInputData.getLocation());
 
-            eventDataAccessObject.saveEvent(event);
+            eventDataAccessObject.saveEvent(event, "username");
         }
     }
 }
