@@ -10,11 +10,23 @@ public class EventController {
     final EventInputBoundary eventUseCaseInteractor;
     final EventPresenter eventPresenter;
 
+    /**
+     * Initialize a new EventController.
+     * @param eventUseCaseInteractor The interactor for use cases.
+     * @param eventPresenter         The presenter for the interactor.
+     */
     public EventController(EventInputBoundary eventUseCaseInteractor, EventPresenter eventPresenter) {
         this.eventUseCaseInteractor = eventUseCaseInteractor;
         this.eventPresenter = eventPresenter;
     }
 
+    /**
+     * Execute the given use case.
+     *
+     * @param useCase use case which does not interact with entities.
+     * Other parameters are for createEventInputData.
+     * Check the createEventInputData javadoc for detailed descriptions.
+     */
     public void execute(String useCase, String title, String location, String description,
                         LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime) {
@@ -34,6 +46,18 @@ public class EventController {
         }
     }
 
+    /**
+     * Creates an eventInputData from the parameters
+     * @param useCase      use case which does not interact with entities.
+     * @param title        the title(name) of the event
+     * @param location     the location of where the event is held
+     * @param description  the detailed description for the event
+     * @param startDate    when the event starts
+     * @param startTime    "
+     * @param endDate      "
+     * @param endTime      "
+     * @return a new eventInputData
+     */
     public EventInputData createEventInputData(String useCase, String title, String location, String description,
                             LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime) {

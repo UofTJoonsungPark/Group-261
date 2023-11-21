@@ -61,8 +61,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * Checks to see if the event date is already listed in the user's txt file.
      * @param dateToSearch  The date to find in the file
      * @param filePath      The user's txt file
-     * @return a boolean that is true if dateToSearch is already a key in filePath. Otherwise
-     * return false.
+     * @return A boolean that is true if dateToSearch is already a key in filePath.
+     *         Otherwise return false.
      */
     public static boolean doesDateExist(String dateToSearch, String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
