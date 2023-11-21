@@ -27,7 +27,9 @@ improved productivity.
 - Calendar: Stay organized by utilizing our integrated calendar system. Schedule tasks, events, and collaborative plans 
 effortlessly. The calendar feature facilitates coordination among users, making it simple to plan and manage various 
 activities.
-- Reward System: Motivate users through prizes or encouraging messages.
+- Reward System: Boost your motivation and celebrate achievements with our built-in reward system! Users are applauded 
+for completing tasks, and rewards can take the form of unlockable prizes or uplifting messages. The reward system adds a 
+positive reinforcement element to task management.
 - Game (Future Plan): Customize characters, embark on unique adventures, and achieve milestones through task completion.
 
 
