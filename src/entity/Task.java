@@ -112,4 +112,26 @@ public class Task {
                 ", dueDate=" + dueDate +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        int result = title.hashCode();
+        result = result * 31 + notes.hashCode();
+        result = result * 31 + Boolean.hashCode(completed);
+        result = result * 31 + dueDate.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Task)) {
+            return false;
+        }
+        Task task = (Task) obj;
+        return title.equals(task.title) && notes.equals(task.notes) &&
+                completed == task.completed && dueDate.equals(task.dueDate);
+    }
 }

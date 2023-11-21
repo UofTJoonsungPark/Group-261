@@ -175,4 +175,31 @@ public class Event {
     private static String formatDate(LocalDate date, DateTimeFormatter formatter) {
         return date.format(formatter);
     }
+
+    @Override
+    public int hashCode() {
+        int result = startDate.hashCode();
+        result = result * 31 + startTime.hashCode();
+        result = result * 31 + endDate.hashCode();
+        result = result * 31 + endTime.hashCode();
+        result = result * 31 + title.hashCode();
+        result = result * 31 + description.hashCode();
+        result = result * 31 + location.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Event)) {
+            return false;
+        }
+        Event event = (Event) obj;
+        return startDate.equals(event.startDate) && startTime.equals(endTime) &&
+                startTime.equals(event.startTime) && endTime.equals(event.endTime) &&
+                title.equals(event.title) && description.equals(event.description) &&
+                location.equals(event.location);
+    }
 }
