@@ -30,7 +30,14 @@ activities.
 - Reward System: Boost your motivation and celebrate achievements with our built-in reward system! Users are applauded 
 for completing tasks, and rewards can take the form of unlockable prizes or uplifting messages. The reward system adds a 
 positive reinforcement element to task management.
-- Game (Future Plan): Customize characters, embark on unique adventures, and achieve milestones through task completion.
+- Game (Future Plan): In the future, we have exciting plans to introduce gamification to the application. Users will be 
+able to personalize characters that embark on unique adventures. As users complete tasks and achieve milestones, their 
+in-app characters will progress, adding a fun and engaging element to the productivity journey. Whether it's for work, 
+study, or leisure, the gamification feature aims to make task completion a rewarding and enjoyable experience.
+
+We are committed to continuously enhancing our application, and the gamification feature is one of the exciting 
+developments on our roadmap. Stay tuned for future updates that will bring even more interactive and enjoyable elements 
+to your productivity experience.
 
 
 
