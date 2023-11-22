@@ -19,9 +19,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
     /**
      * Initialize a new FileEventUserDataAccessObject
-     * @param events            The user's events
-     * @param eventReference    A reference to find the user's events
-     * @param eventFactory      A class used to create an event
+     *
+     * @param events         The user's events
+     * @param eventReference A reference to find the user's events
+     * @param eventFactory   A class used to create an event
      */
     public FileEventUserDataAccessObject(Map<LocalDate, ArrayList<Event>> events,
                                          Map<Event, Integer> eventReference,
@@ -34,7 +35,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
     /**
      * This function makes an empty CSV file for a user in case they don't have one.
-     * @param username  The username of the user.
+     * @param username The username of the user.
      */
     private void makeCsvFile(String username) {
         String folderName = filePath;
@@ -58,52 +59,62 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     /**
      * This function finds the file for the given username in the EventDirectory and then
      * updates the hash maps to reflect the information.
-     * @param username  The username of the user.
+     *
+     * @param username The username of the user.
      */
     public void writeMaps(String username) {
         String csvFilePath = filePath + username + ".csv";
 
         int lineNumber = 1;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
-            String header = reader.readLine();
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        try {
+            File file = new File(csvFilePath);
 
-            assert header.equals("startDate, startTime, endDate, endTime, title, location, description");
+            if (!file.exists()) {
+                makeCsvFile(username);
+                return;
+            }
 
-            String row;
-            while ((row = reader.readLine()) != null) {
-                String[] col = row.split(",");
-                LocalDate startDate = LocalDate.parse(col[0], dateFormatter);
-                LocalDate endDate = LocalDate.parse(col[2], dateFormatter);
-                LocalTime startTime = LocalTime.parse(col[1], timeFormatter);
-                LocalTime endTime = LocalTime.parse(col[3], timeFormatter);
-                String title = col[4];
-                String location = col[5];
-                String description = col[6];
+            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
+                String header = reader.readLine();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-                Event event = eventFactory.create(startDate, endDate, startTime, endTime,
-                        title, description, location);
+                assert header.equals("startDate, startTime, endDate, endTime, title, location, description");
 
-                // UPDATE EVENTS
-                // Check if the key (startDate) exists
-                if (events.containsKey(startDate)) {
-                    // Get the ArrayList of events and add event to it
-                    ArrayList<Event> existingList = events.get(startDate);
-                    existingList.add(event);
-                } else {
-                    // If the key doesn't exist, create a new ArrayList<Event>
-                    ArrayList<Event> newList = new ArrayList<>();
-                    newList.add(event);
-                    events.put(startDate, newList);
+                String row;
+                while ((row = reader.readLine()) != null) {
+                    String[] col = row.split(",");
+                    LocalDate startDate = LocalDate.parse(col[0], dateFormatter);
+                    LocalDate endDate = LocalDate.parse(col[2], dateFormatter);
+                    LocalTime startTime = LocalTime.parse(col[1], timeFormatter);
+                    LocalTime endTime = LocalTime.parse(col[3], timeFormatter);
+                    String title = col[4];
+                    String location = col[5];
+                    String description = col[6];
+
+                    Event event = eventFactory.create(startDate, endDate, startTime, endTime,
+                            title, description, location);
+
+                    // UPDATE EVENTS
+                    // Check if the key (startDate) exists
+                    if (events.containsKey(startDate)) {
+                        // Get the ArrayList of events and add event to it
+                        ArrayList<Event> existingList = events.get(startDate);
+                        existingList.add(event);
+                    } else {
+                        // If the key doesn't exist, create a new ArrayList<Event>
+                        ArrayList<Event> newList = new ArrayList<>();
+                        newList.add(event);
+                        events.put(startDate, newList);
+                    }
+
+                    //UPDATE EVENT REFERENCE
+                    eventReference.put(event, lineNumber);
+
+                    lineNumber++;
+
                 }
-
-                //UPDATE EVENT REFERENCE
-                eventReference.put(event, lineNumber);
-
-                lineNumber ++;
-
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
