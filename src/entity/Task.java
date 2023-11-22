@@ -113,6 +113,10 @@ public class Task {
                 '}';
     }
 
+    /**
+     * Overrides the hashCode method
+     * @return the hash value of the Task
+     */
     @Override
     public int hashCode() {
         int result = title.hashCode();
@@ -122,6 +126,11 @@ public class Task {
         return result;
     }
 
+    /**
+     * Overrides the equals method
+     * @param obj   any object to be compared
+     * @return      True iff all the attributes are identical
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

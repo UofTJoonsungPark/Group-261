@@ -176,6 +176,10 @@ public class Event {
         return date.format(formatter);
     }
 
+    /**
+     * Overrides the hashCode method
+     * @return the hash value of the Event
+     */
     @Override
     public int hashCode() {
         int result = startDate.hashCode();
@@ -188,6 +192,11 @@ public class Event {
         return result;
     }
 
+    /**
+     * Overrides the equals method
+     * @param obj   any object to be compared
+     * @return      True iff all the attributes are identical
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
