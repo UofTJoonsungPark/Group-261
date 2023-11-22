@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class FileEventUserDataAccessObject implements EventDataAccessInterface {
-    private String filePath;
-    private Map<LocalDate, ArrayList<Event>> events;
-    private Map<Event, Integer> eventReference;
-    private EventFactory eventFactory;
+    private final String filePath;
+    private final Map<LocalDate, ArrayList<Event>> events;
+    private final Map<Event, Integer> eventReference;
+    private final EventFactory eventFactory;
 
     /**
      * Initialize a new FileEventUserDataAccessObject
@@ -38,11 +38,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param username The username of the user.
      */
     private void makeCsvFile(String username) {
-        String folderName = filePath;
         String fileName = username + ".csv";
 
         // Create a File object for the folder
-        File folder = new File(folderName);
+        File folder = new File(filePath);
 
         // Create a File object for the CSV file within the folder
         File csvFile = new File(folder, fileName);
