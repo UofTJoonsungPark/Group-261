@@ -24,7 +24,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param eventFactory      A class used to create an event
      */
     public FileEventUserDataAccessObject(Map<LocalDate, ArrayList<Event>> events,
-                                         Map<Event, String> eventReference,
+                                         Map<Event, Integer> eventReference,
                                          EventFactory eventFactory) {
         this.filePath = "EventDirectory";
         this.events = events;
