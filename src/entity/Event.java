@@ -197,8 +197,8 @@ public class Event {
             return false;
         }
         Event event = (Event) obj;
-        return startDate.equals(event.startDate) && startTime.equals(endTime) &&
-                startTime.equals(event.startTime) && endTime.equals(event.endTime) &&
+        return startDate.equals(event.startDate) && startTime.equals(startTime) &&
+                endDate.equals(event.endDate) && endTime.equals(event.endTime) &&
                 title.equals(event.title) && description.equals(event.description) &&
                 location.equals(event.location);
     }
