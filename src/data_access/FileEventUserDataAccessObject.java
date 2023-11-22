@@ -1,208 +1,138 @@
 package data_access;
 
 import entity.Event;
-import entity.User;
+import entity.EventFactory;
 import use_case.event.EventDataAccessInterface;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FileEventUserDataAccessObject implements EventDataAccessInterface {
+    private final String filePath;
+    private final Map<LocalDate, ArrayList<Event>> events;
+    private final Map<Event, Integer> eventReference;
+    private final EventFactory eventFactory;
+
+    /**
+     * Initialize a new FileEventUserDataAccessObject
+     *
+     * @param events         The user's events
+     * @param eventReference A reference to find the user's events
+     * @param eventFactory   A class used to create an event
+     */
+    public FileEventUserDataAccessObject(Map<LocalDate, ArrayList<Event>> events,
+                                         Map<Event, Integer> eventReference,
+                                         EventFactory eventFactory) {
+        this.filePath = "EventDirectory";
+        this.events = events;
+        this.eventReference = eventReference;
+        this.eventFactory = eventFactory;
+    }
+
+    /**
+     * This function makes an empty CSV file for a user in case they don't have one.
+     * @param username The username of the user.
+     */
+    private void makeCsvFile(String username) {
+        String fileName = username + ".csv";
+
+        // Create a File object for the folder
+        File folder = new File(filePath);
+
+        // Create a File object for the CSV file within the folder
+        File csvFile = new File(folder, fileName);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFile))) {
+            // Write the header to the file
+            writer.write("startDate, startTime, endDate, endTime, title, location, description");
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("An error occurred when making the file.");
+        }
+    }
+
+    /**
+     * This function finds the file for the given username in the EventDirectory and then
+     * updates the hash maps to reflect the information.
+     *
+     * @param username The username of the user.
+     */
+    public void writeMaps(String username) {
+        String csvFilePath = filePath + username + ".csv";
+
+        int lineNumber = 1;
+
+        try {
+            File file = new File(csvFilePath);
+
+            if (!file.exists()) {
+                makeCsvFile(username);
+                return;
+            }
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
+                String header = reader.readLine();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+                assert header.equals("startDate, startTime, endDate, endTime, title, location, description");
+
+                String row;
+                while ((row = reader.readLine()) != null) {
+                    String[] col = row.split(",");
+                    LocalDate startDate = LocalDate.parse(col[0], dateFormatter);
+                    LocalDate endDate = LocalDate.parse(col[2], dateFormatter);
+                    LocalTime startTime = LocalTime.parse(col[1], timeFormatter);
+                    LocalTime endTime = LocalTime.parse(col[3], timeFormatter);
+                    String title = col[4];
+                    String location = col[5];
+                    String description = col[6];
+
+                    Event event = eventFactory.create(startDate, endDate, startTime, endTime,
+                            title, description, location);
+
+                    // UPDATE EVENTS
+                    // Check if the key (startDate) exists
+                    if (events.containsKey(startDate)) {
+                        // Get the ArrayList of events and add event to it
+                        ArrayList<Event> existingList = events.get(startDate);
+                        existingList.add(event);
+                    } else {
+                        // If the key doesn't exist, create a new ArrayList<Event>
+                        ArrayList<Event> newList = new ArrayList<>();
+                        newList.add(event);
+                        events.put(startDate, newList);
+                    }
+
+                    //UPDATE EVENT REFERENCE
+                    eventReference.put(event, lineNumber);
+
+                    lineNumber++;
+
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     /**
-     * Saves a new event to the user's txt file.
-     *
-     * @param event the event to be saved.
-     * @param user  the username of the user that created the event.
+     * This function is used when a user logs out. This clears the current hash maps so it
+     * won't contain the information of that user's events anymore.
      */
+    public void clearMaps() {
+        events.clear();
+        eventReference.clear();
+    }
+
+
     @Override
     public void saveEvent(Event event, String user) {
-        String printedDate = event.getStartDateAsString();
-        String filePath = "EventDirectory" + File.separator + user;
 
-        if (doesDateExist(printedDate, filePath)) {
-            // There's already an array list associated with this date.
-            // Append the event to the existing list.
-
-            // Read existing events from the file
-            ArrayList<EventListInfo> existingEvents = readEventsFromFile(filePath);
-
-            // Find the event list associated with the printed date
-            EventListInfo existingEventListInfo = findEventListInfo(existingEvents, printedDate);
-
-            if (existingEventListInfo != null) {
-                // Append the event to the existing list
-                existingEventListInfo.getEvents().add(event.toString());
-            } else {
-                // This should not happen if the file is formatted correctly
-                System.out.println("Error: Could not find the event list for date " + printedDate);
-            }
-
-            // Save the updated list back to the file
-            saveEventsToFile(existingEvents, filePath);
-
-        } else {
-            // There is no line that refers to the date, so we make a new line with the
-            // date and then create a new array list for it with the event inside it.
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-                // Write the event's date followed by a comma and the event in a new array list
-                writer.write(printedDate + ",[" + event.toString() + "]");
-                writer.newLine();
-
-            } catch (IOException e) {
-                e.printStackTrace(); // Handle the exception according to your needs
-            }
-        }
-    }
-
-    /**
-     * Checks to see if the event date is already listed in the user's txt file.
-     * @param dateToSearch  The date to find in the file
-     * @param filePath      The user's txt file
-     * @return A boolean that is true if dateToSearch is already a key in filePath.
-     *         Otherwise return false.
-     */
-    public static boolean doesDateExist(String dateToSearch, String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // for each line in the file, split it into two parts: one for the event day, and the other for the list
-                // of events for that specific date.
-                String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    String eventDate = parts[0].trim();
-
-                    if (eventDate.equals(dateToSearch)) {
-                        return true;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    /**
-     * Stores all the events in the user's file.
-     * @param filePath  the user's txt file.
-     * @return an arraylist that contains all the event data.
-     */
-    private ArrayList<EventListInfo> readEventsFromFile(String filePath) {
-        ArrayList<EventListInfo> events = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Parse the line to create EventListInfo objects
-                EventListInfo eventListInfo = parseLine(line);
-                if (eventListInfo != null) {
-                    events.add(eventListInfo);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception according to your needs
-        }
-
-        return events;
-    }
-
-    private void saveEventsToFile(ArrayList<EventListInfo> events, String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (EventListInfo eventListInfo : events) {
-                // Write the event's date followed by a comma and the events in the array list
-//                writer.write(eventListInfo.getPrintedDate() + "," + eventListInfo.getEventsAsString());
-                // Move to the next line
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception according to your needs
-        }
-    }
-
-    /**
-     * This function finds the event in events that is associated with printedDate.
-     * @param events        The events.
-     * @param printedDate   The date we want to find the eventinfo for.
-     * @return EventListInfo that contains the same date as printedDate.
-     */
-    private EventListInfo findEventListInfo(ArrayList<EventListInfo> events, String printedDate) {
-        for (EventListInfo eventListInfo : events) {
-            if (eventListInfo.getPrintedDate().equals(printedDate)) {
-                return eventListInfo;
-            }
-        }
-        return null;
-    }
-
-    private EventListInfo parseLine(String line) {
-        String[] parts = line.split(",");
-        if (parts.length == 2) {
-            String printedDate = parts[0].trim();
-            String eventsAsString = parts[1].trim();
-            ArrayList<String> events = parseEvents(eventsAsString);
-            return new EventListInfo(printedDate, events);
-        }
-        return null;
-    }
-
-    private ArrayList<String> parseEvents(String eventsAsString) {
-        ArrayList<String> events = new ArrayList<>();
-        // Implement the logic to parse events from the string and add them to the list
-        return events;
-    }
-
-    /**
-     * A private class that represents one line of the txt file (i.e., a date and its associated events).
-     */
-    private static class EventListInfo {
-        private final String printedDate;
-        private final ArrayList<String> events;
-
-        /**
-         * Initialize a new EventListInfo.
-         * @param printedDate   The day of this event info.
-         * @param events        The events happening on this day.
-         */
-        public EventListInfo(String printedDate, ArrayList<String> events) {
-            this.printedDate = printedDate;
-            this.events = events;
-        }
-
-        /**
-         * Gets the date.
-         * @return the printedDate attribute.
-         */
-        public String getPrintedDate() {
-            return printedDate;
-        }
-
-        /**
-         * Gets the events.
-         *
-         * @return the events attribute.
-         */
-        public ArrayList<String> getEvents() {
-            return events;
-        }
-
-        /**
-         *
-         * @return
-         */
-//        public String getEventsAsString() {
-//            StringBuilder result = new StringBuilder("[");
-//            for (Event event : events) {
-//                result.append(event.toString()).append(",");
-//            }
-//            if (result.length() > 1) {
-//                result.deleteCharAt(result.length() - 1); // Remove the trailing comma
-//            }
-//            result.append("]");
-//            return result.toString();
-//        }
     }
 }
