@@ -9,11 +9,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     private final String filePath;
-    private final Map<LocalDate, ArrayList<Event>> events;
+    private final Map<LocalDate, List<Event>> events;
     private final Map<Event, Integer> eventReference;
     private final EventFactory eventFactory;
 
@@ -24,7 +25,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param eventReference A reference to find the user's events
      * @param eventFactory   A class used to create an event
      */
-    public FileEventUserDataAccessObject(Map<LocalDate, ArrayList<Event>> events,
+    public FileEventUserDataAccessObject(Map<LocalDate, List<Event>> events,
                                          Map<Event, Integer> eventReference,
                                          EventFactory eventFactory) {
         this.filePath = "EventDirectory";
@@ -100,11 +101,11 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
                     // Check if the key (startDate) exists
                     if (events.containsKey(startDate)) {
                         // Get the ArrayList of events and add event to it
-                        ArrayList<Event> existingList = events.get(startDate);
+                        List<Event> existingList = events.get(startDate);
                         existingList.add(event);
                     } else {
                         // If the key doesn't exist, create a new ArrayList<Event>
-                        ArrayList<Event> newList = new ArrayList<>();
+                        List<Event> newList = new ArrayList<>();
                         newList.add(event);
                         events.put(startDate, newList);
                     }
