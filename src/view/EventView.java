@@ -133,7 +133,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         EventState state = (EventState) evt.getNewValue();
         String useCase = state.getUseCase();
         if (useCase != null) {
-            eventViewModel.resetState();
+            eventController.execute(useCase);
         }
     }
 

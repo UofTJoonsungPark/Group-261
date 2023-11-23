@@ -5,4 +5,6 @@ import entity.User;
 
 public interface EventDataAccessInterface {
     void saveEvent(Event event, String user);
+
+    void writeMaps(String username);
 }
