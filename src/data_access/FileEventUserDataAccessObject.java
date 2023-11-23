@@ -61,6 +61,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      *
      * @param username The username of the user.
      */
+    @Override
     public void writeMaps(String username) {
         String csvFilePath = filePath + username + ".csv";
 
