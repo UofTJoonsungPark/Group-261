@@ -9,11 +9,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     private final String filePath;
-    private final Map<LocalDate, ArrayList<Event>> events;
+    private final Map<LocalDate, List<Event>> events;
     private final Map<Event, Integer> eventReference;
     private final EventFactory eventFactory;
 
@@ -24,7 +25,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param eventReference A reference to find the user's events
      * @param eventFactory   A class used to create an event
      */
-    public FileEventUserDataAccessObject(Map<LocalDate, ArrayList<Event>> events,
+    public FileEventUserDataAccessObject(Map<LocalDate, List<Event>> events,
                                          Map<Event, Integer> eventReference,
                                          EventFactory eventFactory) {
         this.filePath = "EventDirectory";
@@ -102,7 +103,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
                     // UPDATE EVENTS
                     // find the days that the event happens on
-                    ArrayList<LocalDate> eventDays = getDatesBetween(event.getStartDate(), event.getEndDate());
+                    List<LocalDate> eventDays = getDatesBetween(event.getStartDate(), event.getEndDate());
 
                     // iterate through the days and put them in the corresponding arraylists in events
                     for (LocalDate date : eventDays) {
@@ -110,12 +111,12 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
                         // check if the key (date) is in events already
                         if (events.containsKey(date)) {
                             // Get the ArrayList of events and add event to it
-                            ArrayList<Event> existingList = events.get(date);
+                            List<Event> existingList = events.get(date);
                             existingList.add(event);
 
                         } else {
                             // If the key doesn't exist, create a new ArrayList<Event>
-                            ArrayList<Event> newList = new ArrayList<>();
+                            List<Event> newList = new ArrayList<>();
                             newList.add(event);
                             events.put(date, newList);
                         }
@@ -141,8 +142,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param endDate   The ending date
      * @return An array list of the date(s) between startDate and endDate.
      */
-    private ArrayList<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
-        ArrayList<LocalDate> datesInRange = new ArrayList<>();
+    private List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
+        List<LocalDate> datesInRange = new ArrayList<>();
 
         // find how many days are in between startDate and endDate
         long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
