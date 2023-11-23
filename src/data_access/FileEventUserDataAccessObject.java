@@ -57,8 +57,12 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     }
 
     /**
-     * This function finds the file for the given username in the EventDirectory and then
-     * updates the hash maps to reflect the information.
+     * This method takes the given username and finds the CSV file associated with the username
+     * (or calls makeCSVFile if the file does not exist). Then, it reads through the file and
+     * updates the two hash maps accordingly (i.e., having "events" have its keys be the startDate
+     * of the event, and the values being an ArrayList of Events that have that startDate. And having
+     * "eventReference" have its keys be the events with the corresponding values being the line
+     * that they can be found on in the CSV file).
      *
      * @param username The username of the user.
      */
@@ -129,6 +133,14 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         }
     }
 
+    /**
+     * This method takes a startDate and an endDate and finds the dates from the startDate
+     * to the endDate, inclusive.
+     *
+     * @param startDate The starting date
+     * @param endDate   The ending date
+     * @return An array list of the date(s) between startDate and endDate.
+     */
     private ArrayList<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
         ArrayList<LocalDate> datesInRange = new ArrayList<>();
 
