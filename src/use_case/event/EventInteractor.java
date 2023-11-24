@@ -37,7 +37,15 @@ public class EventInteractor implements EventInputBoundary {
                     eventInputData.getStartTime(), eventInputData.getEndTime(), eventInputData.getTitle(),
                     eventInputData.getDescription(), eventInputData.getLocation());
 
-            eventDataAccessObject.saveEvent(event, "username");
+            eventDataAccessObject.saveEvent(event);
         }
+    }
+
+    /**
+     * Send a request to DAO to initialize the data structure for Event
+     * @param username  the logged-in username
+     */
+    public void initialize(String username) {
+        eventDataAccessObject.writeMaps(username);
     }
 }

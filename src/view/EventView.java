@@ -43,6 +43,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JTextField location = new JTextField(WIDTH);
     private final JTextArea description = new JTextArea(3, WIDTH);
 
+    private final DateTimePicker startDateTimePicker = new DateTimePicker();
+    private final DateTimePicker endDateTimePicker = new DateTimePicker();
+
     /**
      * Constructor to initialize EventView instance
      *
@@ -129,11 +132,19 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         EventState state = (EventState) evt.getNewValue();
         String useCase = state.getUseCase();
-        if (useCase != null) {
-            eventViewModel.resetState();
+        if ("initializeMap".equals(useCase)) {
+            String username = eventViewModel.getState().getUsername();
+            eventController.initialize(username);
         }
+        else if ("back".equals(useCase)) {
+            eventController.execute(useCase);
+        }
+        state.setUseCase(null);
     }
 
+    /**
+     * This class is responsible for observing the DatePicker instance
+     */
     private class SimpleCalendarListener implements CalendarListener {
         private SimpleCalendarListener() {
         }
@@ -162,22 +173,12 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         createDialog.add(mainPanel);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
+        initializeDatePicker();
+
         JPanel startPicker = new JPanel();
-        startPicker.add(new JLabel("START"));
-        DatePickerSettings startDateSettings = new DatePickerSettings();
-        changeSizeCalendar(startDateSettings, 1.3);
-
-        TimePickerSettings startTimeSettings = new TimePickerSettings();
-        startTimeSettings.setAllowEmptyTimes(false);
-        DateTimePicker startDateTimePicker = new DateTimePicker(startDateSettings, startTimeSettings);
-        startDateTimePicker.getDatePicker().setDateToToday();
-        startPicker.add(startDateTimePicker);
-
         JPanel endPicker = new JPanel();
-        DatePickerSettings endDateSEttings = startDateSettings.copySettings();
-        TimePickerSettings endTimeSettings = new TimePickerSettings();
-        DateTimePicker endDateTimePicker = new DateTimePicker(endDateSEttings, endTimeSettings);
-        endDateTimePicker.getDatePicker().setDateToToday();
+        startPicker.add(new JLabel("START"));
+        startPicker.add(startDateTimePicker);
         endPicker.add(new JLabel("END"));
         endPicker.add(endDateTimePicker);
 
@@ -221,5 +222,19 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         int newWidth = (int) (setting.getSizeDatePanelMinimumWidth() * ratio);
         setting.setSizeDatePanelMinimumHeight(newHeight);
         setting.setSizeDatePanelMinimumWidth(newWidth);
+    }
+
+    /**
+     * The method is used to initialize both the start and end DatePicker for creating an Event.
+     */
+    private void initializeDatePicker() {
+        DatePickerSettings startDateSettings = new DatePickerSettings();
+        changeSizeCalendar(startDateSettings, 1.4);
+        startDateSettings.setAllowEmptyDates(false);
+        startDateTimePicker.getDatePicker().setSettings(startDateSettings);
+        startDateTimePicker.getDatePicker().setDateToToday();
+
+        DatePickerSettings endDateSettings = startDateSettings.copySettings();
+        endDateTimePicker.getDatePicker().setSettings(endDateSettings);
     }
 }
