@@ -17,6 +17,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     private final Map<LocalDate, List<Event>> events;
     private final Map<Event, Integer> eventReference;
     private final EventFactory eventFactory;
+    private String username = null;
 
     /**
      * Initialize a new FileEventUserDataAccessObject
@@ -36,10 +37,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
     /**
      * This function makes an empty CSV file for a user in case they don't have one.
-     *
-     * @param username The username of the user.
      */
-    private void makeCsvFile(String username) {
+    private void makeCsvFile() {
         String fileName = username + ".csv";
 
         // Create a File object for the folder
@@ -68,6 +67,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param username The username of the user.
      */
     public void writeMaps(String username) {
+        this.username = username;
         String csvFilePath = filePath + File.separator + username + ".csv";
 
         int lineNumber = 1;
@@ -76,7 +76,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
             File file = new File(csvFilePath);
 
             if (!file.exists()) {
-                makeCsvFile(username);
+                makeCsvFile();
                 return;
             }
 
