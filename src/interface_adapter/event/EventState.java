@@ -4,8 +4,10 @@ package interface_adapter.event;
  * The EventState class is observed in EventViewModel class
  */
 public class EventState {
-    private String username = null;
-    private String useCase = null;
+    private String username = "";
+    private String useCase = "";
+    private String[] events;
+    private String error = null;
 
     /**
      * Getter method for username
@@ -40,5 +42,21 @@ public class EventState {
 
     public void setUseCase(String useCase) {
         this.useCase = useCase;
+    }
+
+    /**
+     * This method is responsible to get an error message.
+     * @return error message
+     */
+    public String getError() {
+        return error;
+    }
+
+    /**
+     * Set an error message from the interactor.
+     * @param error error message
+     */
+    public void setError(String error) {
+        this.error = error;
     }
 }

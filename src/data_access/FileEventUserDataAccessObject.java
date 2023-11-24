@@ -68,7 +68,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      *
      * @param username The username of the user.
      */
-    public void writeMaps(String username) {
+    public void writeMaps(String username) throws RuntimeException {
         this.username = username;
         String csvFilePath = filePath + File.separator + username + ".csv";
 
@@ -178,7 +178,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param event The event to be saved.
      */
     @Override
-    public void saveEvent(Event event) {
+    public void saveEvent(Event event) throws RuntimeException {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
