@@ -234,7 +234,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      */
     private long csvAppender(String startDate, String endDate, String startTime, String endTime,
                              String title, String location, String description) {
-        String directoryPath = this.filePath + File.separator + this.username;
+        String directoryPath = this.filePath + File.separator + this.username + ".csv";
 
         String newLine = String.join(", ", startDate, startTime, endDate, endTime,
                 title, location, description);
