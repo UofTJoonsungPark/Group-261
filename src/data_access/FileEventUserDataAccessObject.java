@@ -31,7 +31,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     public FileEventUserDataAccessObject(Map<LocalDate, List<Event>> events,
                                          Map<Event, Long> eventReference,
                                          EventFactory eventFactory) {
-        this.filePath = "DATA/EventDirectory";
+        this.filePath = "DATA" + File.separator + "EventDirectory";
         this.events = events;
         this.eventReference = eventReference;
         this.eventFactory = eventFactory;
