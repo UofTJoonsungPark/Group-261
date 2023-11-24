@@ -44,10 +44,10 @@ public class EventController {
         if ("back".equals(useCase)) {
             eventPresenter.changeView();
         }
-        else if ("initializeMap".equals(useCase)) {
-            EventInputData eventInputData = new EventInputData("initializeMap");
-            eventUseCaseInteractor.execute(eventInputData);
-        }
+    }
+
+    public void initialize(String username) {
+        eventUseCaseInteractor.initialize(username);
     }
 
     /**

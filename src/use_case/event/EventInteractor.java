@@ -39,8 +39,9 @@ public class EventInteractor implements EventInputBoundary {
 
             eventDataAccessObject.saveEvent(event, "username");
         }
-        else if (eventInputData.getUseCase().equals("initializeMap")) {
-            eventDataAccessObject.writeMaps("USERNAME");
-        }
+    }
+
+    public void initialize(String username) {
+        eventDataAccessObject.writeMaps(username);
     }
 }

@@ -22,7 +22,14 @@ public class LoggedInPresenter {
         if (isEvent) {
             // send a request to initialize data structure for Event
             eventViewModel.getState().setUseCase("initializeMap");
-            eventViewModel.getState().setUsername(loggedInViewModel.getState().getUsername());
+
+            // get username from the state
+            String username = loggedInViewModel.getState().getUsername();
+
+            // set username
+            eventViewModel.getState().setUsername(username);
+
+            // request
             eventViewModel.firePropertyChanged();
 
             // change the view accordingly
