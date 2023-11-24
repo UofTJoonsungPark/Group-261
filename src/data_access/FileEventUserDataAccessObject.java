@@ -170,7 +170,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
 
     @Override
-    public void saveEvent(Event event, String user) {
+    public void saveEvent(Event event) {
 
     }
 }
