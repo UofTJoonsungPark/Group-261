@@ -41,6 +41,10 @@ public class EventInteractor implements EventInputBoundary {
         }
     }
 
+    /**
+     * Send a request to DAO to initialize the data structure for Event
+     * @param username  the logged-in username
+     */
     public void initialize(String username) {
         eventDataAccessObject.writeMaps(username);
     }
