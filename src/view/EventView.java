@@ -122,6 +122,22 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                     }
                 }
         );
+
+        save.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(save)) {
+                            eventController.execute("createEvent", title.getText(),
+                                    location.getText(), description.getText(),
+                                    startDateTimePicker.getDatePicker().getDate(),
+                                    startDateTimePicker.getTimePicker().getTime(),
+                                    endDateTimePicker.getDatePicker().getDate(),
+                                    endDateTimePicker.getTimePicker().getTime());
+                        }
+                    }
+                }
+        );
     }
     @Override
     public void actionPerformed(ActionEvent e) {
