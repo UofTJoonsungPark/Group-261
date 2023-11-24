@@ -161,11 +161,14 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
     /**
      * This function is used when a user logs out. This clears the current hash maps so it
-     * won't contain the information of that user's events anymore.
+     * won't contain the information of that user's events anymore. It also clears the
+     * username attribute.
      */
     public void clearMaps() {
         events.clear();
         eventReference.clear();
+
+        this.username = null;
     }
 
 
