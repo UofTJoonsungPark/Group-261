@@ -38,7 +38,7 @@ public class LoggedInPresenter {
         } else if (isTask) {
 
         } else if (isLogout) {
-            // to ensure that all the information is clear after logout
+            // clear  all the information after logout
             eventViewModel.getState().setUseCase(EventViewModel.CLEAR_USE_CASE);
             eventViewModel.firePropertyChanged();
             loginViewModel.resetState();
