@@ -4,7 +4,7 @@ package interface_adapter.event;
  * The EventState class is observed in EventViewModel class
  */
 public class EventState {
-    private String username = "";
+    private String username = null;
     private String useCase = null;
 
     /**
