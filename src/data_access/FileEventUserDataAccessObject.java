@@ -17,7 +17,6 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     private final Map<LocalDate, List<Event>> events;
     private final Map<Event, Integer> eventReference;
     private final EventFactory eventFactory;
-    private String username = null;
 
     /**
      * Initialize a new FileEventUserDataAccessObject
@@ -37,8 +36,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
     /**
      * This function makes an empty CSV file for a user in case they don't have one.
+     *
+     * @param username The username of the user.
      */
-    private void makeCsvFile() {
+    private void makeCsvFile(String username) {
         String fileName = username + ".csv";
 
         // Create a File object for the folder
@@ -57,15 +58,17 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     }
 
     /**
-     * This function finds the file for the given username in the EventDirectory and then
-     * updates the hash maps to reflect the information.
+     * This method takes the given username and finds the CSV file associated with the username
+     * (or calls makeCSVFile if the file does not exist). Then, it reads through the file and
+     * updates the two hash maps accordingly (i.e., having "events" have its keys be the startDate
+     * of the event, and the values being an ArrayList of Events that have that startDate. And having
+     * "eventReference" have its keys be the events with the corresponding values being the line
+     * that they can be found on in the CSV file).
      *
      * @param username The username of the user.
      */
-    @Override
     public void writeMaps(String username) {
-        this.username = username;
-        String csvFilePath = filePath + username + ".csv";
+        String csvFilePath = filePath + File.separator + username + ".csv";
 
         int lineNumber = 1;
 
@@ -73,7 +76,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
             File file = new File(csvFilePath);
 
             if (!file.exists()) {
-                makeCsvFile();
+                makeCsvFile(username);
                 return;
             }
 
@@ -99,16 +102,24 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
                             title, description, location);
 
                     // UPDATE EVENTS
-                    // Check if the key (startDate) exists
-                    if (events.containsKey(startDate)) {
-                        // Get the ArrayList of events and add event to it
-                        List<Event> existingList = events.get(startDate);
-                        existingList.add(event);
-                    } else {
-                        // If the key doesn't exist, create a new ArrayList<Event>
-                        List<Event> newList = new ArrayList<>();
-                        newList.add(event);
-                        events.put(startDate, newList);
+                    // find the days that the event happens on
+                    List<LocalDate> eventDays = getDatesBetween(event.getStartDate(), event.getEndDate());
+
+                    // iterate through the days and put them in the corresponding arraylists in events
+                    for (LocalDate date : eventDays) {
+
+                        // check if the key (date) is in events already
+                        if (events.containsKey(date)) {
+                            // Get the ArrayList of events and add event to it
+                            List<Event> existingList = events.get(date);
+                            existingList.add(event);
+
+                        } else {
+                            // If the key doesn't exist, create a new ArrayList<Event>
+                            List<Event> newList = new ArrayList<>();
+                            newList.add(event);
+                            events.put(date, newList);
+                        }
                     }
 
                     //UPDATE EVENT REFERENCE
@@ -121,6 +132,30 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * This method takes a startDate and an endDate and finds the dates from the startDate
+     * to the endDate, inclusive.
+     *
+     * @param startDate The starting date
+     * @param endDate   The ending date
+     * @return An array list of the date(s) between startDate and endDate.
+     */
+    private List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
+        List<LocalDate> datesInRange = new ArrayList<>();
+
+        // find how many days are in between startDate and endDate
+        long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+
+        for (int i = 0; i <= daysBetween; i++) {
+            // add "i" days to the start day until i equals the number of days in between
+            // startDate and endDate (which would make startDate.plusDays(i) = endDate
+            LocalDate date = startDate.plusDays(i);
+            datesInRange.add(date);
+        }
+
+        return datesInRange;
     }
 
 
