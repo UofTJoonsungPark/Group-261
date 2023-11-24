@@ -19,12 +19,25 @@ element to boost motivation and engagement.
 
 
 
-Features (add detail)
+Features 
 
-- Task Management: Create and manage personal to-do lists with deadlines.
-- Calendar: Schedule tasks, events, and collaborative plans efficiently.
-- Reward System: Motivate users through prizes or encouraging messages.
-- Game (Future Plan): Customize characters, embark on unique adventures, and achieve milestones through task completion.
+- Task Management: Our application provides a robust task management system, allowing users to create and manage 
+personal to-do lists with ease. Users can set deadlines, track progress, and efficiently organize their tasks for 
+improved productivity.
+- Calendar: Stay organized by utilizing our integrated calendar system. Schedule tasks, events, and collaborative plans 
+effortlessly. The calendar feature facilitates coordination among users, making it simple to plan and manage various 
+activities.
+- Reward System: Boost your motivation and celebrate achievements with our built-in reward system! Users are applauded 
+for completing tasks, and rewards can take the form of unlockable prizes or uplifting messages. The reward system adds a 
+positive reinforcement element to task management.
+- Game (Future Plan): In the future, we have exciting plans to introduce gamification to the application. Users will be 
+able to personalize characters that embark on unique adventures. As users complete tasks and achieve milestones, their 
+in-app characters will progress, adding a fun and engaging element to the productivity journey. Whether it's for work, 
+study, or leisure, the gamification feature aims to make task completion a rewarding and enjoyable experience.
+
+We are committed to continuously enhancing our application, and the gamification feature is one of the exciting 
+developments on our roadmap. Stay tuned for future updates that will bring even more interactive and enjoyable elements 
+to your productivity experience.
 
 
 
@@ -48,9 +61,9 @@ members or open an issue.
 
 Contributors
 
-Narges Movahedian Nezhad - GitHub Profile
-Jae Joon Han - GitHub Profile
-JoonsungPark - GitHub Profile
-Jenny Nguyen - GitHub Profile
+Narges Movahedian Nezhad - [GitHub Profile](https://github.com/nargesmn100)
+Jae Joon Han - [GitHub Profile](https://github.com/JJ-Han)
+JoonsungPark - [GitHub Profile](https://github.com/UofTJoonsungPark)
+Jenny Nguyen - [GitHub Profile](https://github.com/jolateral)
 
-# TODO: Add detail for features, add instructions for how to use the program, link everyone's github to the file 
+# TODO: add instructions for how to use the program, link everyone's github to the file 
