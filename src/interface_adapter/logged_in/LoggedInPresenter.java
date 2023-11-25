@@ -21,7 +21,7 @@ public class LoggedInPresenter {
     public void prepareSuccessView(boolean isEvent, boolean isTask, boolean isLogout) {
         if (isEvent) {
             // send a request to initialize data structure for Event
-            eventViewModel.getState().setUseCase("initializeMap");
+            eventViewModel.getState().setUseCase(EventViewModel.INITIALIZE_USE_CASE);
 
             // get username from the state
             String username = loggedInViewModel.getState().getUsername();
@@ -38,7 +38,13 @@ public class LoggedInPresenter {
         } else if (isTask) {
 
         } else if (isLogout) {
+            // clear  all the information after logout
+            eventViewModel.getState().setUseCase(EventViewModel.CLEAR_USE_CASE);
+            eventViewModel.firePropertyChanged();
+            loginViewModel.resetState();
             loginViewModel.firePropertyChanged();
+
+            // change the view accordingly
             this.viewManagerModel.setActiveView(loginViewModel.getViewName());
             this.viewManagerModel.firePropertyChanged();
         }

@@ -33,11 +33,25 @@ public class EventInteractor implements EventInputBoundary {
     @Override
     public void execute(EventInputData eventInputData) {
         if (eventInputData.getUseCase().equals("createEvent")) {
+            /* TODO: required to check all argument is valid
+            start date and time should be earlier than end date and time
+            decision should be made on which text field can be empty like below:
+                title should not be a empty string
+                description or location can be optional
+
+            if the given input is invalid,
+                eventPresenter.prepareFailView()
+            else
+                eventPresenter.prepareSuccessView() (after saving the event)
+             */
             Event event = eventFactory.create(eventInputData.getStartDate(), eventInputData.getEndDate(),
                     eventInputData.getStartTime(), eventInputData.getEndTime(), eventInputData.getTitle(),
                     eventInputData.getDescription(), eventInputData.getLocation());
-
-            eventDataAccessObject.saveEvent(event);
+            try {
+                eventDataAccessObject.saveEvent(event);
+            } catch (RuntimeException e){
+                eventPresenter.prepareFailView("Failed to save data");
+            }
         }
     }
 
@@ -46,6 +60,10 @@ public class EventInteractor implements EventInputBoundary {
      * @param username  the logged-in username
      */
     public void initialize(String username) {
-        eventDataAccessObject.writeMaps(username);
+        try{
+            eventDataAccessObject.writeMaps(username);
+        } catch (RuntimeException e) {
+            eventPresenter.prepareFailView("Failed to load data");
+        }
     }
 }

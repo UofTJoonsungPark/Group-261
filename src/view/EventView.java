@@ -115,9 +115,24 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(back)) {
                             createDialog.setVisible(false);
-                            EventState eventState = eventViewModel.getState();
-                            eventState.setUseCase("back");
-                            eventController.execute("back");
+                            eventViewModel.getState().setUseCase(EventViewModel.BACK_USE_CASE);
+                            eventController.execute(EventViewModel.BACK_USE_CASE);
+                        }
+                    }
+                }
+        );
+
+        save.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(save)) {
+                            eventController.execute(EventViewModel.SAVE_USE_CASE, title.getText(),
+                                    location.getText(), description.getText(),
+                                    startDateTimePicker.getDatePicker().getDate(),
+                                    startDateTimePicker.getTimePicker().getTime(),
+                                    endDateTimePicker.getDatePicker().getDate(),
+                                    endDateTimePicker.getTimePicker().getTime());
                         }
                     }
                 }
@@ -132,14 +147,19 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         EventState state = (EventState) evt.getNewValue();
         String useCase = state.getUseCase();
-        if ("initializeMap".equals(useCase)) {
+        if (state.getError() != null) {
+            showErrorMessage(state.getError());
+            state.setError(null);
+            return;
+        }
+
+        if (useCase.equals(EventViewModel.INITIALIZE_USE_CASE)) {
             String username = eventViewModel.getState().getUsername();
             eventController.initialize(username);
+        } else if (useCase.equals(EventViewModel.CLEAR_USE_CASE)) {
+            state.setUsername("");
         }
-        else if ("back".equals(useCase)) {
-            eventController.execute(useCase);
-        }
-        state.setUseCase(null);
+        state.setUseCase("");
     }
 
     /**
@@ -236,5 +256,13 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
 
         DatePickerSettings endDateSettings = startDateSettings.copySettings();
         endDateTimePicker.getDatePicker().setSettings(endDateSettings);
+    }
+
+    /**
+     * This method is responsible to show error message.
+     * @param message error message
+     */
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 }
