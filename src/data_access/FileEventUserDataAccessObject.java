@@ -58,6 +58,14 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         }
     }
 
+    public Map<LocalDate, List<Event>> getEvents(){
+        return events;
+    }
+
+    public Map<Event, Long> getEventReference() {
+        return eventReference;
+    }
+
     /**
      * This method takes the given username and finds the CSV file associated with the username
      * (or calls makeCSVFile if the file does not exist). Then, it reads through the file and
@@ -236,7 +244,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
                              String title, String location, String description) {
         String directoryPath = this.filePath + File.separator + this.username + ".csv";
 
-        String newLine = String.join(", ", startDate, startTime, endDate, endTime,
+        String newLine = String.join(",", startDate, startTime, endDate, endTime,
                 title, location, description);
 
         long lineCount;
