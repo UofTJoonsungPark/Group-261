@@ -58,10 +58,18 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         }
     }
 
+    /**
+     * Gets the events
+     * @return  the events attribute.
+     */
     public Map<LocalDate, List<Event>> getEvents(){
         return events;
     }
 
+    /**
+     * Gets the eventReference
+     * @return  the eventsReference attribute.
+     */
     public Map<Event, Long> getEventReference() {
         return eventReference;
     }
