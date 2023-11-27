@@ -163,7 +163,7 @@ public class Event {
         } else {
             sb.append("~").append(formattedEndDate);
         }
-        sb.append("-").append(title).append("-").append(location).append("-").append(description);
+        sb.append(",").append(title).append(",").append(location).append(",").append(description);
 
         return sb.toString();
     }
