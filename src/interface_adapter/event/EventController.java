@@ -53,6 +53,10 @@ public class EventController {
         eventUseCaseInteractor.initialize(username);
     }
 
+    public void query(LocalDate date) {
+        eventUseCaseInteractor.query(date);
+    }
+
     /**
      * Creates an eventInputData from the parameters
      * @param useCase      use case which does not interact with entities.

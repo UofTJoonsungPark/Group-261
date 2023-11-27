@@ -1,7 +1,19 @@
 package use_case.event;
 
-public class EventOutputData {
+import java.util.List;
 
-    public EventOutputData() {
+public class EventOutputData {
+    private final List<String> events;
+
+    public EventOutputData(List<String> events) {
+        this.events = events;
+    }
+
+    /**
+     * This method is to get a list of Events
+     * @return a list of events
+     */
+    public List<String> getEvents() {
+        return events;
     }
 }

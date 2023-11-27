@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -39,7 +40,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton save;
     final JPanel gridPanel;
     final JPanel left;
-    final JList<String> right;
+    private JList<String> right;
     final JDialog createDialog;
     private final JTextField title = new JTextField(WIDTH);
     private final JTextField location = new JTextField(WIDTH);
@@ -172,7 +173,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         }
 
         public void selectedDateChanged(CalendarSelectionEvent event) {
-
+            eventController.query(event.getNewDate());
+            java.util.List<String> result = eventViewModel.getState().getEvents();
+            right.setListData(result.toArray(new String[0]));
         }
 
         public void yearMonthChanged(YearMonthChangeEvent event) {

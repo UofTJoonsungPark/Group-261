@@ -62,12 +62,20 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         }
     }
 
+
     /**
-     * Gets the events
-     * @return  the events attribute.
+     * Get the list of Event on the date
+     * @param date the given date
+     * @return a list of Event
      */
-    public Map<LocalDate, List<Event>> getEvents(){
-        return events;
+    public List<String> getEvents(LocalDate date){
+        List<String> result = new ArrayList<>();
+        if (events.get(date) != null) {
+            for (Event e : events.get(date)) {
+                result.add(e.toString());
+            }
+        }
+        return result;
     }
 
     /**
