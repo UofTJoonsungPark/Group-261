@@ -46,6 +46,9 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
         // Create a File object for the folder
         File folder = new File(filePath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
 
         // Create a File object for the CSV file within the folder
         File csvFile = new File(folder, fileName);
