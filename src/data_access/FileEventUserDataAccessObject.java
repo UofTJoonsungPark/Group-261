@@ -114,8 +114,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
                     String[] col = row.split(",");
                     LocalDate startDate = LocalDate.parse(col[0], dateFormatter);
                     LocalDate endDate = LocalDate.parse(col[2], dateFormatter);
-                    LocalTime startTime = LocalTime.parse(col[1], timeFormatter);
-                    LocalTime endTime = LocalTime.parse(col[3], timeFormatter);
+                    LocalTime startTime = col[1].isEmpty() ? null : LocalTime.parse(col[1], timeFormatter);
+                    LocalTime endTime = col[3].isEmpty() ? null : LocalTime.parse(col[3], timeFormatter);
                     String title = col[4];
                     String location = col[5];
                     String description = col[6];
