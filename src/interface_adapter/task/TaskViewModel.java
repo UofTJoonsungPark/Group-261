@@ -41,5 +41,9 @@ public class TaskViewModel {
         propertyChangeSupport.firePropertyChange("viewModelUpdate", null, this);
     }
 
+    public TaskState getState() {
+        return getState();
+    }
+
     // Add any additional methods or properties as needed for the TaskViewModel
 }
