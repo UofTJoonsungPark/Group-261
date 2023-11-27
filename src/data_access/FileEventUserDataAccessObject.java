@@ -318,8 +318,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         long lineCount;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath, true))) {
             // append the event to the end of this file
-            writer.newLine();
             writer.write(newLine);
+            writer.newLine();
 
             // get the number of the line that the new line is printed on
             lineCount = Files.lines(Paths.get(directoryPath)).count();
@@ -328,4 +328,4 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         }
         return lineCount;
     }
-    }
+}
