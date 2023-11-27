@@ -6,6 +6,7 @@ import use_case.event.EventDataAccessInterface;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -196,7 +197,51 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      */
     @Override
     public void deleteEvent(Event event) {
+        // delete the event from events
+        List<LocalDate> eventDays = getDatesBetween(event.getStartDate(), event.getEndDate());
+        for (LocalDate date : eventDays) {
+            if (events.containsKey(date)) {
+                List<Event> eventList = events.get(date);
+                eventList.removeIf(eventOnDay -> eventOnDay.equals(event));
 
+                if (eventList.isEmpty()) {
+                    events.remove(date);
+                }
+            }
+        }
+
+        // delete the event from eventReference
+        long referenceLine = eventReference.get(event);
+        eventReference.remove(event);
+
+        // delete the event from the CSVFile
+        CSVRemover(referenceLine);
+
+    }
+
+    /**
+     * This method updates the CSV file by deleting the given event from it.
+     * @param referenceLine The line in the CSV file that is to be turned blank.
+     */
+    private void CSVRemover(long referenceLine) {
+        String fileDirectory = filePath + File.separator + username + ".csv";
+        List<String> lines;
+
+        try {
+            Path path = Paths.get(fileDirectory);
+            lines = Files.readAllLines(path);
+            if (referenceLine > 0 && referenceLine <= lines.size()) {
+                // make the specified line blank
+                lines.set((int) (referenceLine - 1), "");
+            } else {
+                throw new RuntimeException("Invalid reference line");
+            }
+
+            // Write the updates lines back to the CSV file
+            Files.write(path, lines);
+        } catch (IOException e) {
+            throw new RuntimeException("Error updating CSV file.");
+        }
     }
 
     /**
