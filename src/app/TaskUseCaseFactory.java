@@ -19,6 +19,7 @@ public class TaskUseCaseFactory {
             ViewManagerModel viewManagerModel
     ) {
         TaskController taskController = createTaskUseCase(viewManagerModel);
+        TaskViewModel taskViewModel = new TaskViewModel();
         return new TaskViewModel();
     }
 
