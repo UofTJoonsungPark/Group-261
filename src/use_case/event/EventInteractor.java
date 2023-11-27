@@ -42,6 +42,17 @@ public class EventInteractor implements EventInputBoundary {
             } catch (RuntimeException e){
                 eventPresenter.prepareFailView("Failed to save data");
             }
+        } else if (eventInputData.getUseCase().equals("deleteEvent")) {
+
+            // create an event object so we can find the equivalent event in the system to delete
+            Event event = eventFactory.create(eventInputData.getStartDate(), eventInputData.getEndDate(),
+                    eventInputData.getStartTime(), eventInputData.getEndTime(), eventInputData.getTitle(),
+                    eventInputData.getDescription(), eventInputData.getLocation());
+            try {
+                eventDataAccessObject.deleteEvent(event);
+            } catch (RuntimeException e) {
+                // TODO: Implement the fail view if the event cannot be deleted.
+            }
         }
     }
 
