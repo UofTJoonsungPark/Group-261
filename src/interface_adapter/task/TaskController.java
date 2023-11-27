@@ -10,14 +10,16 @@ import java.time.LocalDateTime;
  */
 public class TaskController {
     private final TaskInputBoundary taskUseCaseInteractor;
+    private final TaskPresenter taskPresenter;
 
     /**
      * Constructor to initialize TaskController with a TaskInputBoundary.
      *
      * @param taskUseCaseInteractor The task use case interactor to handle task-related actions.
      */
-    public TaskController(TaskInputBoundary taskUseCaseInteractor) {
+    public TaskController(TaskInputBoundary taskUseCaseInteractor, TaskPresenter taskPresenter) {
         this.taskUseCaseInteractor = taskUseCaseInteractor;
+        this.taskPresenter = taskPresenter;
     }
 
     /**

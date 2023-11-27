@@ -9,9 +9,9 @@ import entity.User;
  * This class represents the interactor for events.
  */
 public class EventInteractor implements EventInputBoundary {
-    final EventOutputBoundary eventPresenter;
-    final EventFactory eventFactory;
-    final EventDataAccessInterface eventDataAccessObject;
+    private final EventOutputBoundary eventPresenter;
+    private final EventFactory eventFactory;
+    private final EventDataAccessInterface eventDataAccessObject;
 
     /**
      * Initialize a new EventInteractor.

@@ -1,15 +1,29 @@
 package view;
 
-        import entity.Task;
+import entity.Task;
+import interface_adapter.task.TaskController;
+import interface_adapter.task.TaskViewModel;
 
-        import java.time.LocalDateTime;
-        import java.time.format.DateTimeFormatter;
-        import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 /**
  * The TaskView class is responsible for displaying and interacting with tasks.
  */
-public class TaskView {
+public class TaskView extends JPanel implements ActionListener, PropertyChangeListener  {
+    private final TaskViewModel taskViewModel;
+    private final TaskController taskController;
+
+    public TaskView(TaskViewModel taskViewModel, TaskController taskController) {
+        this.taskViewModel = taskViewModel;
+        this.taskController = taskController;
+    }
 
     /**
      * Displays details of a task.
@@ -55,14 +69,24 @@ public class TaskView {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        TaskView taskView = new TaskView();
+//        TaskView taskView = new TaskView();
+//
+//        // Testing displayTaskDetails method
+//        Task sampleTask = new Task("Sample Task", "This is a sample task", false, LocalDateTime.now().plusDays(2));
+//        taskView.displayTaskDetails(sampleTask);
+//
+//        // Testing promptForTaskInput method
+//        Task userInputTask = taskView.promptForTaskInput();
+//        System.out.println("User Input Task: " + userInputTask);
+    }
 
-        // Testing displayTaskDetails method
-        Task sampleTask = new Task("Sample Task", "This is a sample task", false, LocalDateTime.now().plusDays(2));
-        taskView.displayTaskDetails(sampleTask);
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-        // Testing promptForTaskInput method
-        Task userInputTask = taskView.promptForTaskInput();
-        System.out.println("User Input Task: " + userInputTask);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 }
