@@ -190,6 +190,16 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     }
 
     /**
+     * This method deletes the specific event from the hash maps(i.e., events and eventReference)
+     * and the CSV file.
+     * @param event The event to be deleted.
+     */
+    @Override
+    public void deleteEvent(Event event) {
+
+    }
+
+    /**
      * This method saves an event into the database.
      * @param event The event to be saved.
      */
