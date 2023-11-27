@@ -38,12 +38,19 @@ public class EventController {
     /**
      *  Execute the given use case.
      *
-     * @param useCase use case which does not interact with entities.
+     * @param useCase use case
     */
     public void execute(String useCase) {
         if ("back".equals(useCase)) {
             eventPresenter.changeView();
+        } else if (useCase.equals("clear")) {
+            EventInputData eventInputData = new EventInputData(useCase);
+            eventUseCaseInteractor.execute(eventInputData);
         }
+    }
+
+    public void initialize(String username) {
+        eventUseCaseInteractor.initialize(username);
     }
 
     /**

@@ -13,7 +13,7 @@ import use_case.event.EventInteractor;
 import use_case.event.EventOutputBoundary;
 import view.EventView;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EventUseCaseFactory {
     private EventUseCaseFactory() {}
@@ -35,7 +35,8 @@ public class EventUseCaseFactory {
         EventOutputBoundary eventOutputBoundary = new EventPresenter(
                 eventViewModel, loggedInViewModel, viewManagerModel);
         EventFactory eventFactory = new EventFactory();
-        EventDataAccessInterface eventDataAccessObject = new FileEventUserDataAccessObject();
+        EventDataAccessInterface eventDataAccessObject = new FileEventUserDataAccessObject(new HashMap<>(),
+                new HashMap<>(), eventFactory);
 
         EventInputBoundary eventInteracotr = new EventInteractor(eventOutputBoundary, eventFactory, eventDataAccessObject);
         return new EventController(eventInteracotr, (EventPresenter) eventOutputBoundary);
