@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -42,6 +44,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JTextField title = new JTextField(WIDTH);
     private final JTextField location = new JTextField(WIDTH);
     private final JTextArea description = new JTextArea(3, WIDTH);
+
+    private final DateTimePicker startDateTimePicker = new DateTimePicker();
+    private final DateTimePicker endDateTimePicker = new DateTimePicker();
 
     /**
      * Constructor to initialize EventView instance
@@ -112,9 +117,24 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(back)) {
                             createDialog.setVisible(false);
-                            EventState eventState = eventViewModel.getState();
-                            eventState.setUseCase("back");
-                            eventController.execute("back");
+                            eventViewModel.getState().setUseCase(EventViewModel.BACK_USE_CASE);
+                            eventController.execute(EventViewModel.BACK_USE_CASE);
+                        }
+                    }
+                }
+        );
+
+        save.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(save) && isInputValid()) {
+                            eventController.execute(EventViewModel.SAVE_USE_CASE, title.getText(),
+                                    location.getText(), description.getText(),
+                                    startDateTimePicker.getDatePicker().getDate(),
+                                    startDateTimePicker.getTimePicker().getTime(),
+                                    endDateTimePicker.getDatePicker().getDate(),
+                                    endDateTimePicker.getTimePicker().getTime());
                         }
                     }
                 }
@@ -129,11 +149,24 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         EventState state = (EventState) evt.getNewValue();
         String useCase = state.getUseCase();
-        if (useCase != null) {
-            eventViewModel.resetState();
+        if (state.getError() != null) {
+            showErrorMessage(state.getError());
+            state.setError(null);
+            return;
         }
+
+        if (useCase.equals(EventViewModel.INITIALIZE_USE_CASE)) {
+            String username = eventViewModel.getState().getUsername();
+            eventController.initialize(username);
+        } else if (useCase.equals(EventViewModel.CLEAR_USE_CASE)) {
+            state.setUsername("");
+        }
+        state.setUseCase("");
     }
 
+    /**
+     * This class is responsible for observing the DatePicker instance
+     */
     private class SimpleCalendarListener implements CalendarListener {
         private SimpleCalendarListener() {
         }
@@ -162,22 +195,12 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         createDialog.add(mainPanel);
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
+        initializeDatePicker();
+
         JPanel startPicker = new JPanel();
-        startPicker.add(new JLabel("START"));
-        DatePickerSettings startDateSettings = new DatePickerSettings();
-        changeSizeCalendar(startDateSettings, 1.3);
-
-        TimePickerSettings startTimeSettings = new TimePickerSettings();
-        startTimeSettings.setAllowEmptyTimes(false);
-        DateTimePicker startDateTimePicker = new DateTimePicker(startDateSettings, startTimeSettings);
-        startDateTimePicker.getDatePicker().setDateToToday();
-        startPicker.add(startDateTimePicker);
-
         JPanel endPicker = new JPanel();
-        DatePickerSettings endDateSEttings = startDateSettings.copySettings();
-        TimePickerSettings endTimeSettings = new TimePickerSettings();
-        DateTimePicker endDateTimePicker = new DateTimePicker(endDateSEttings, endTimeSettings);
-        endDateTimePicker.getDatePicker().setDateToToday();
+        startPicker.add(new JLabel("START"));
+        startPicker.add(startDateTimePicker);
         endPicker.add(new JLabel("END"));
         endPicker.add(endDateTimePicker);
 
@@ -221,5 +244,62 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         int newWidth = (int) (setting.getSizeDatePanelMinimumWidth() * ratio);
         setting.setSizeDatePanelMinimumHeight(newHeight);
         setting.setSizeDatePanelMinimumWidth(newWidth);
+    }
+
+    /**
+     * The method is used to initialize both the start and end DatePicker for creating an Event.
+     */
+    private void initializeDatePicker() {
+        DatePickerSettings startDateSettings = new DatePickerSettings();
+        changeSizeCalendar(startDateSettings, 1.4);
+        startDateSettings.setAllowEmptyDates(false);
+        startDateTimePicker.getDatePicker().setSettings(startDateSettings);
+        startDateTimePicker.getDatePicker().setDateToToday();
+
+        DatePickerSettings endDateSettings = startDateSettings.copySettings();
+        endDateTimePicker.getDatePicker().setSettings(endDateSettings);
+    }
+
+    /**
+     * This method is responsible to show error message.
+     * @param message error message
+     */
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    /**
+     * This method is to check if the given input is valid.
+     * @return true iff all the input is valid
+     */
+
+    private boolean isInputValid() {
+        // date and time check
+        LocalDate startDate = startDateTimePicker.getDatePicker().getDate();
+        LocalTime startTime = startDateTimePicker.getTimePicker().getTime();
+        LocalDate endDate = endDateTimePicker.getDatePicker().getDate();
+        LocalTime endTime = endDateTimePicker.getTimePicker().getTime();
+        if (startTime == null && endTime == null) {
+            if (startDate.isAfter(endDate)) {
+                showErrorMessage("invalid date and time");
+                return false;
+            }
+        } else if (startTime == null || endTime == null) {
+            showErrorMessage("Start and end times must be either both provided or both omitted.");
+            return false;
+        } else {
+            LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+            LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+            if (!endDateTime.isAfter(startDateTime)) {
+                showErrorMessage("invalid date and time");
+                return false;
+            }
+        }
+        // check if the title is empty
+        if (title.getText().isEmpty()) {
+            showErrorMessage("empty title");
+            return false;
+        }
+        return true;
     }
 }

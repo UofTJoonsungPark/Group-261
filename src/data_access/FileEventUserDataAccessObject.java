@@ -5,6 +5,8 @@ import entity.EventFactory;
 import use_case.event.EventDataAccessInterface;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +17,9 @@ import java.util.Map;
 public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     private final String filePath;
     private final Map<LocalDate, List<Event>> events;
-    private final Map<Event, Integer> eventReference;
+    private final Map<Event, Long> eventReference;
     private final EventFactory eventFactory;
+    private String username = null;
 
     /**
      * Initialize a new FileEventUserDataAccessObject
@@ -26,9 +29,9 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param eventFactory   A class used to create an event
      */
     public FileEventUserDataAccessObject(Map<LocalDate, List<Event>> events,
-                                         Map<Event, Integer> eventReference,
+                                         Map<Event, Long> eventReference,
                                          EventFactory eventFactory) {
-        this.filePath = "EventDirectory";
+        this.filePath = "DATA" + File.separator + "EventDirectory";
         this.events = events;
         this.eventReference = eventReference;
         this.eventFactory = eventFactory;
@@ -36,10 +39,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
     /**
      * This function makes an empty CSV file for a user in case they don't have one.
-     *
-     * @param username The username of the user.
      */
-    private void makeCsvFile(String username) {
+    private void makeCsvFile() {
         String fileName = username + ".csv";
 
         // Create a File object for the folder
@@ -58,6 +59,22 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
     }
 
     /**
+     * Gets the events
+     * @return  the events attribute.
+     */
+    public Map<LocalDate, List<Event>> getEvents(){
+        return events;
+    }
+
+    /**
+     * Gets the eventReference
+     * @return  the eventsReference attribute.
+     */
+    public Map<Event, Long> getEventReference() {
+        return eventReference;
+    }
+
+    /**
      * This method takes the given username and finds the CSV file associated with the username
      * (or calls makeCSVFile if the file does not exist). Then, it reads through the file and
      * updates the two hash maps accordingly (i.e., having "events" have its keys be the startDate
@@ -67,16 +84,17 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      *
      * @param username The username of the user.
      */
-    public void writeMaps(String username) {
+    public void writeMaps(String username) throws RuntimeException {
+        this.username = username;
         String csvFilePath = filePath + File.separator + username + ".csv";
 
-        int lineNumber = 1;
+        long lineNumber = 1;
 
         try {
             File file = new File(csvFilePath);
 
             if (!file.exists()) {
-                makeCsvFile(username);
+                makeCsvFile();
                 return;
             }
 
@@ -160,17 +178,95 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
 
     /**
-     * This function is used when a user logs out. This clears the current hash maps so it
-     * won't contain the information of that user's events anymore.
+     * This method is used when a user logs out. This clears the current hash maps so it
+     * won't contain the information of that user's events anymore. It also clears the
+     * username attribute.
      */
     public void clearMaps() {
         events.clear();
         eventReference.clear();
+
+        this.username = null;
     }
 
-
+    /**
+     * This method saves an event into the database.
+     * @param event The event to be saved.
+     */
     @Override
-    public void saveEvent(Event event, String user) {
+    public void saveEvent(Event event) throws RuntimeException {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
+        // add this event to the csv file
+        String title = event.getTitle();
+        String description = event.getDescription();
+        String location = event.getLocation();
+        String startDate = event.getStartDate().format(dateFormatter);
+        String endDate = event.getEndDate().format(dateFormatter);
+        String startTime = event.getStartTime().format(timeFormatter);
+        String endTime = event.getEndTime().format(timeFormatter);
+
+        long lineNumber = csvAppender(startDate, endDate, startTime, endTime, title, location,
+                description);
+
+        // add this event to the events attribute
+        // find the days that the event happens on
+        List<LocalDate> eventDays = getDatesBetween(event.getStartDate(), event.getEndDate());
+
+        // iterate through the days and put them in the corresponding arraylists in events
+        for (LocalDate date : eventDays) {
+
+            // check if the key (date) is in events already
+            if (events.containsKey(date)) {
+                // Get the ArrayList of events and add event to it
+                List<Event> existingList = events.get(date);
+                existingList.add(event);
+
+            } else {
+                // If the key doesn't exist, create a new ArrayList<Event>
+                List<Event> newList = new ArrayList<>();
+                newList.add(event);
+                events.put(date, newList);
+            }
+        }
+
+        // add this event to the events reference attribute
+        eventReference.put(event, lineNumber);
     }
-}
+
+    /**
+     * This is a helper method for the saveEvent method. This method saves the strings
+     * into the CSV file as a new line and returns the number of the line that the
+     * new line is written on.
+     * @param startDate     The start date of the event.
+     * @param endDate       Then end date of the event.
+     * @param startTime     The start time of the event.
+     * @param endTime       The end tim eof the event.
+     * @param title         The title of the event.
+     * @param location      The location of the event.
+     * @param description   The description of the event.
+     * @return the number of the line in the CSV file that the method prints the information on.
+     */
+    private long csvAppender(String startDate, String endDate, String startTime, String endTime,
+                             String title, String location, String description) {
+        String directoryPath = this.filePath + File.separator + this.username + ".csv";
+
+        String newLine = String.join(",", startDate, startTime, endDate, endTime,
+                title, location, description);
+
+        long lineCount;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath, true))) {
+            // append the event to the end of this file
+            writer.newLine();
+            writer.write(newLine);
+
+            // get the number of the line that the new line is printed on
+            lineCount = Files.lines(Paths.get(directoryPath)).count();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return lineCount;
+    }
+    }
