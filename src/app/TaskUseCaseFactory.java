@@ -33,11 +33,11 @@ public class TaskUseCaseFactory {
             LoggedInViewModel loggedInViewModel
     ) {
         TaskOutputBoundary taskOutputBoundary = new TaskPresenter(
-                taskViewModel, loggedInViewModel, viewManagerModel);
+                taskViewModel, viewManagerModel);
         TaskFactory taskFactory = new TaskFactory();
         TaskDataAccessInterface taskDataAccessObject = new FileTaskUserDataAccessObject(new HashMap<>(), taskFactory);
 
-        TaskInputBoundary taskInteractor = new TaskInteractor();
-        return new TaskController(taskInteractor, (TaskPresenter) taskOutputBoundary);
+        TaskInputBoundary taskInputBoundary = new TaskInteractor(taskOutputBoundary, taskFactory, taskDataAccessObject);
+        return new TaskController(taskInputBoundary, (TaskPresenter) taskOutputBoundary);
     }
 }
