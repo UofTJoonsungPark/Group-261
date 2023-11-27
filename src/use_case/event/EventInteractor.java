@@ -33,17 +33,7 @@ public class EventInteractor implements EventInputBoundary {
     @Override
     public void execute(EventInputData eventInputData) {
         if (eventInputData.getUseCase().equals("createEvent")) {
-            /* TODO: required to check all argument is valid
-            start date and time should be earlier than end date and time
-            decision should be made on which text field can be empty like below:
-                title should not be a empty string
-                description or location can be optional
 
-            if the given input is invalid,
-                eventPresenter.prepareFailView()
-            else
-                eventPresenter.prepareSuccessView() (after saving the event)
-             */
             Event event = eventFactory.create(eventInputData.getStartDate(), eventInputData.getEndDate(),
                     eventInputData.getStartTime(), eventInputData.getEndTime(), eventInputData.getTitle(),
                     eventInputData.getDescription(), eventInputData.getLocation());
@@ -51,6 +41,17 @@ public class EventInteractor implements EventInputBoundary {
                 eventDataAccessObject.saveEvent(event);
             } catch (RuntimeException e){
                 eventPresenter.prepareFailView("Failed to save data");
+            }
+        } else if (eventInputData.getUseCase().equals("deleteEvent")) {
+
+            // create an event object so we can find the equivalent event in the system to delete
+            Event event = eventFactory.create(eventInputData.getStartDate(), eventInputData.getEndDate(),
+                    eventInputData.getStartTime(), eventInputData.getEndTime(), eventInputData.getTitle(),
+                    eventInputData.getDescription(), eventInputData.getLocation());
+            try {
+                eventDataAccessObject.deleteEvent(event);
+            } catch (RuntimeException e) {
+                // TODO: Implement the fail view if the event cannot be deleted.
             }
         }
     }
