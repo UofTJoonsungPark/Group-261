@@ -262,8 +262,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         String location = event.getLocation();
         String startDate = event.getStartDate().format(dateFormatter);
         String endDate = event.getEndDate().format(dateFormatter);
-        String startTime = event.getStartTime().format(timeFormatter);
-        String endTime = event.getEndTime().format(timeFormatter);
+
+        // adding additional logic to handle the case when the given time is omitted
+        String startTime = event.getStartTime() == null ? "" : event.getStartTime().format(timeFormatter);
+        String endTime = event.getEndTime() == null ? "" : event.getEndTime().format(timeFormatter);
 
         long lineNumber = csvAppender(startDate, endDate, startTime, endTime, title, location,
                 description);
@@ -324,7 +326,6 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return lineCount;
     }
     }
