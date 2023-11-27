@@ -183,9 +183,9 @@ public class Event {
     @Override
     public int hashCode() {
         int result = startDate.hashCode();
-        result = result * 31 + startTime.hashCode();
+        result = result * 31 + (startTime == null ? 0 : startTime.hashCode());
         result = result * 31 + endDate.hashCode();
-        result = result * 31 + endTime.hashCode();
+        result = result * 31 + (endTime == null ? 0 : endTime.hashCode());
         result = result * 31 + title.hashCode();
         result = result * 31 + description.hashCode();
         result = result * 31 + location.hashCode();

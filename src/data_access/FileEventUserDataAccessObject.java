@@ -111,7 +111,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
                 String row;
                 while ((row = reader.readLine()) != null) {
-                    String[] col = row.split(",");
+                    String[] col = row.split(",", 7);
                     LocalDate startDate = LocalDate.parse(col[0], dateFormatter);
                     LocalDate endDate = LocalDate.parse(col[2], dateFormatter);
                     LocalTime startTime = col[1].isEmpty() ? null : LocalTime.parse(col[1], timeFormatter);
@@ -146,9 +146,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
                     //UPDATE EVENT REFERENCE
                     eventReference.put(event, lineNumber);
-
                     lineNumber++;
-
                 }
             }
         } catch (IOException e) {
