@@ -66,4 +66,4 @@ Jae Joon Han - [GitHub Profile](https://github.com/JJ-Han)
 JoonsungPark - [GitHub Profile](https://github.com/UofTJoonsungPark)
 Jenny Nguyen - [GitHub Profile](https://github.com/jolateral)
 
-# TODO: add instructions for how to use the program, link everyone's github to the file 
+# TODO: add instructions for how to use the program. Format the file to be visually pleasing

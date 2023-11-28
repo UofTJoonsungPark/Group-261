@@ -23,4 +23,8 @@ public class TaskState {
     public void setUseCase(String useCase) {
         this.useCase = useCase;
     }
+
+    public String setError(String error) {
+        return error;
+    }
 }

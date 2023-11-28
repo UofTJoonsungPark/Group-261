@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class EventController {
-    final EventInputBoundary eventUseCaseInteractor;
-    final EventPresenter eventPresenter;
+    private final EventInputBoundary eventUseCaseInteractor;
+    private final EventPresenter eventPresenter;
 
     /**
      * Initialize a new EventController.
