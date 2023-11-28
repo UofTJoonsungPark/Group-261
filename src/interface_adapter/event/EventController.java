@@ -43,14 +43,16 @@ public class EventController {
     public void execute(String useCase) {
         if ("back".equals(useCase)) {
             eventPresenter.changeView();
-        } else if (useCase.equals("clear")) {
-            EventInputData eventInputData = new EventInputData(useCase);
-            eventUseCaseInteractor.execute(eventInputData);
         }
+//        else if (useCase.equals("clear")) {
+//            EventInputData eventInputData = new EventInputData(useCase);
+//            eventUseCaseInteractor.execute(eventInputData);
+//        }
     }
 
     public void initialize(String username) {
         eventUseCaseInteractor.initialize(username);
+        query(LocalDate.now());
     }
 
     public void query(LocalDate date) {
@@ -59,6 +61,7 @@ public class EventController {
 
     public void delete(LocalDate date, int[] indices) {
         eventUseCaseInteractor.delete(date, indices);
+        query(date);
     }
 
     /**

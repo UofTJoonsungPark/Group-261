@@ -43,7 +43,6 @@ public class EventInteractor implements EventInputBoundary {
                     eventInputData.getDescription(), eventInputData.getLocation());
             try {
                 eventDataAccessObject.saveEvent(event);
-                System.out.println("TEST");
             } catch (RuntimeException e){
                 eventPresenter.prepareFailView("Failed to save data");
             }

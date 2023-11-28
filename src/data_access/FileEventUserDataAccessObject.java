@@ -103,12 +103,12 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
         try {
             File file = new File(csvFilePath);
-            File temp = new File(tempFilePath);
 
             if (!file.exists()) {
                 makeCsvFile();
                 return;
             }
+            File temp = new File(tempFilePath);
             temp.createNewFile();
 
             // clear empty lines
@@ -124,9 +124,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
             file.delete();
             temp.renameTo(file);
+
+            // loading date into maps
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
                 String header = reader.readLine();
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
