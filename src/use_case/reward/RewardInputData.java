@@ -1,2 +1,4 @@
-package use_case.reward;public class RewardInputData {
+package use_case.reward;
+
+public class RewardInputData {
 }

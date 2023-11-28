@@ -15,6 +15,7 @@ import view.EventView;
 
 import java.util.HashMap;
 
+
 public class EventUseCaseFactory {
     private EventUseCaseFactory() {}
 

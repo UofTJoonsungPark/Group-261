@@ -16,5 +16,7 @@ public class RewardController {
      *
      * @param useCase use case which does not interact with entities.
      */
-    public void execute(String useCase, )
+    public void execute(String useCase) {
+
+    }
 }
