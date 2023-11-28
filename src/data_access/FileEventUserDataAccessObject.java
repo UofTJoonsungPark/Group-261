@@ -68,14 +68,8 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param date the given date
      * @return a list of Event
      */
-    public List<String> getEvents(LocalDate date){
-        List<String> result = new ArrayList<>();
-        if (events.get(date) != null) {
-            for (Event e : events.get(date)) {
-                result.add(e.toString());
-            }
-        }
-        return result;
+    public List<Event> getEvents(LocalDate date){
+        return events.get(date);
     }
 
     /**
@@ -103,17 +97,36 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         clearMaps();
         this.username = username;
         String csvFilePath = filePath + File.separator + username + ".csv";
+        String tempFilePath = filePath + File.separator + username + ".tmp";
 
         long lineNumber = 1;
 
         try {
             File file = new File(csvFilePath);
+            File temp = new File(tempFilePath);
 
             if (!file.exists()) {
                 makeCsvFile();
                 return;
             }
+            temp.createNewFile();
 
+            // clear empty lines
+            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilePath))) {
+                String row;
+                while ((row = reader.readLine()) != null) {
+                    if (!row.isEmpty()) {
+                        writer.write(row);
+                        writer.newLine();
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            file.delete();
+            temp.renameTo(file);
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
                 String header = reader.readLine();
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -229,7 +242,6 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
         // delete the event from the CSVFile
         CSVRemover(referenceLine);
-
     }
 
     /**
@@ -245,7 +257,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
             lines = Files.readAllLines(path);
             if (referenceLine > 0 && referenceLine <= lines.size()) {
                 // make the specified line blank
-                lines.set((int) (referenceLine - 1), "");
+                lines.set((int) (referenceLine), "");
             } else {
                 throw new RuntimeException("Invalid reference line");
             }

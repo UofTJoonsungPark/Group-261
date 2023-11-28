@@ -16,4 +16,6 @@ public interface EventInputBoundary {
      * @param date the given date by user
      */
     void query(LocalDate date);
+
+    void delete(LocalDate date, int[] indices);
 }

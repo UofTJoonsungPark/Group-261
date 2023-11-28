@@ -57,6 +57,10 @@ public class EventController {
         eventUseCaseInteractor.query(date);
     }
 
+    public void delete(LocalDate date, int[] indices) {
+        eventUseCaseInteractor.delete(date, indices);
+    }
+
     /**
      * Creates an eventInputData from the parameters
      * @param useCase      use case which does not interact with entities.
