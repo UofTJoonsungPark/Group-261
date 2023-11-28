@@ -97,6 +97,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param username The username of the user.
      */
     public void writeMaps(String username) throws RuntimeException {
+        if (username.equals(this.username)) {
+            return;
+        }
+        clearMaps();
         this.username = username;
         String csvFilePath = filePath + File.separator + username + ".csv";
 
