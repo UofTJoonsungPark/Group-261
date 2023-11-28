@@ -7,4 +7,8 @@ public interface EventDataAccessInterface {
     void writeMaps(String username);
 
     void saveEvent(Event event);
+
+    void clearMaps();
+
+    void deleteEvent(Event event);
 }
