@@ -126,6 +126,11 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         modifyCSV(taskReference.get(task));
     }
 
+    @Override
+    public void deleteTask(Task task) {
+
+    }
+
     private void modifyCSV(long lineNumber) {
         String fileDirectory = filePath + File.separator + username + ".csv";
 
