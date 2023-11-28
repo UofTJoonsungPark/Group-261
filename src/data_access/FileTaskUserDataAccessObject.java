@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
     private final String filePath;
-    private final Map<LocalDate, List<Task>> tasks;
+    private final Map<LocalDateTime, List<Task>> tasks;
     private final Map<Task, Long> taskReference;
     private final TaskFactory taskFactory;
     private String username = null;
@@ -30,7 +30,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
      * @param taskReference  A reference to find the user's tasks
      * @param taskFactory    A class used to create a task
      */
-    public FileTaskUserDataAccessObject(Map<LocalDate, List<Task>> tasks,
+    public FileTaskUserDataAccessObject(Map<LocalDateTime, List<Task>> tasks,
                                         Map<Task, Long> taskReference,
                                         TaskFactory taskFactory) {
         this.filePath = "DATA" + File.separator + "TaskDirectory";
@@ -47,6 +47,9 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
         // Create a File object for the folder
         File folder = new File(filePath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
 
         // Create a File object for the CSV file within the folder
         File csvFile = new File(folder, fileName);
@@ -93,7 +96,6 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
     @Override
     public void saveTask(Task task) throws RuntimeException {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         // add this task to the csv file
         String title = task.getTitle();
@@ -104,31 +106,24 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         long lineNumber = csvAppender(title, notes, completed, dueDate);
 
         // add this task to the tasks attribute
-        // find the days that the task happens on (in the case of a deadline)
-        List<LocalDate> taskDays = getDatesBetween(task.getDueDate(), task.getDueDate());
 
-        // iterate through the days and put them in the corresponding arraylists in tasks
-        for (LocalDate date : taskDays) {
-
-            // check if the key (date) is in tasks already
-            if (tasks.containsKey(date)) {
-                // Get the ArrayList of tasks and add task to it
-                List<Task> existingList = tasks.get(date);
-                existingList.add(task);
+        // check if the key (date) is in tasks already
+        if (tasks.containsKey(task.getDueDate())) {
+            // Get the ArrayList of tasks and add task to it
+            List<Task> existingList = tasks.get(task.getDueDate());
+            existingList.add(task);
 
             } else {
                 // If the key doesn't exist, create a new ArrayList<Task>
                 List<Task> newList = new ArrayList<>();
                 newList.add(task);
-                tasks.put(date, newList);
-            }
+                tasks.put(task.getDueDate(), newList);
+
         }
 
         // add this task to the task reference attribute
         taskReference.put(task, lineNumber);
     }
-
-    // ... (Other methods remain unchanged)
 
     /**
      * This is a helper method for the saveTask method. This method saves the strings
