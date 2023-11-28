@@ -70,23 +70,6 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
      * @param endDate   The ending date
      * @return An array list of the date(s) between startDate and endDate.
      */
-    private List<LocalDate> getDatesBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        List<LocalDate> datesInRange = new ArrayList<>();
-
-        // find how many days are in between startDate and endDate
-        long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-
-        for (int i = 0; i <= daysBetween; i++) {
-            // add "i" days to the start day until i equals the number of days in between
-            // startDate and endDate (which would make startDate.plusDays(i) = endDate
-            LocalDate date = startDate.toLocalDate().plusDays(i);
-            datesInRange.add(date);
-        }
-
-        return datesInRange;
-    }
-
-    // ... (Other methods remain unchanged)
 
     /**
      * This method saves a task into the database.
