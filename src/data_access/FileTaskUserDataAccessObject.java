@@ -62,14 +62,6 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
             System.err.println("An error occurred when making the file.");
         }
     }
-    /**
-     * This method takes a startDate and an endDate and finds the dates from the startDate
-     * to the endDate, inclusive.
-     *
-     * @param startDate The starting date
-     * @param endDate   The ending date
-     * @return An array list of the date(s) between startDate and endDate.
-     */
 
     /**
      * This method saves a task into the database.
