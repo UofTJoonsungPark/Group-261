@@ -6,15 +6,14 @@ import use_case.task.TaskDataAccessInterface;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
     private final String filePath;
@@ -99,6 +98,67 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         // add this task to the task reference attribute
         taskReference.put(task, lineNumber);
     }
+
+    /** This method marks the given task as completed.
+     */
+    public void markCompleted(Task task) {
+        // find the task in the tasks attribute.
+        if (tasks.containsKey(task.getDueDate())) {
+            List<Task> existingList = tasks.get(task.getDueDate());
+
+            for (Task possible_task : existingList) {
+                if (possible_task.equals(task)) {
+                    possible_task.setCompleted(true);
+                }
+            }
+        }
+
+        // find the  task in the taskReference attribute.
+        List<Task> keyList = new ArrayList<>(taskReference.keySet());
+
+        for (Task task1 : keyList) {
+            if (task1.equals(task)) {
+                task1.setCompleted(true);
+            }
+        }
+
+        // find + modify in the task in the CSV file.
+        modifyCSV(taskReference.get(task));
+    }
+
+    private void modifyCSV(long lineNumber) {
+        String fileDirectory = filePath + File.separator + username + ".csv";
+
+        String completed = String.valueOf(true);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileDirectory));
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileDirectory + ".tmp")))) {
+
+            String line;
+            int currentLine = 0;
+
+            while ((line = reader.readLine()) != null) {
+                currentLine++;
+
+                if (currentLine == lineNumber) {
+                    String[] parts = line.split(",");
+
+                    parts[2] = completed;
+
+                    line = String.join(",", parts);
+                }
+                } writer.println(line);
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Files.move(Path.of(fileDirectory + ".tmp"), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        }
+
 
     /**
      * This is a helper method for the saveTask method. This method saves the strings
