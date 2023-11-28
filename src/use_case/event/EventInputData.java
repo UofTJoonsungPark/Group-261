@@ -21,8 +21,9 @@ public class EventInputData {
     /**
      * Initializes a new EventInputData.
      * @param useCase   A string that tells the interactor what to do with the input data.
-     *                  - "isBack": the user clicked the back button
+     *                  - "isBack": the user clicked the back button.
      *                  - "createEvent": the user wants to create an event.
+     *                  - "deleteEvent": the user wants to delete an event.
      */
     public EventInputData(String useCase) {
         this.useCase = useCase;
