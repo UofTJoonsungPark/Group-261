@@ -88,7 +88,12 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(save) && isInputValid()) {
-                            taskController.createTask();
+                            taskController.createTask(
+                                    title.getText(),
+                                    notes.getText(),
+                                    completed.isSelected(),
+                                    LocalDateTime.of(dateTimePicker.getDatePicker().getDate(),
+                                            dateTimePicker.getTimePicker().getTime()));
                         }
                     }
                 }
