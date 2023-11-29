@@ -15,5 +15,5 @@ public interface EventDataAccessInterface {
 
     void deleteEvent(Event event);
 
-    List<String> getEvents(LocalDate date);
+    List<Event> getEvents(LocalDate date);
 }

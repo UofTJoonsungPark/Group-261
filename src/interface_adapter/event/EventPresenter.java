@@ -33,6 +33,7 @@ public class EventPresenter implements EventOutputBoundary {
     public void prepareSuccessView(EventOutputData response) {
         EventState eventState = eventViewModel.getState();
         eventState.setEvents(response.getEvents());
+        eventViewModel.firePropertyChanged();
     }
 
     /**

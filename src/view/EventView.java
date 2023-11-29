@@ -40,8 +40,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton save;
     final JPanel gridPanel;
     final JPanel left;
-    private JList<String> right;
+    private final JList<String> right;
     final JDialog createDialog;
+    private final CalendarPanel calendarPanel;
     private final JTextField title = new JTextField(WIDTH);
     private final JTextField location = new JTextField(WIDTH);
     private final JTextArea description = new JTextArea(3, WIDTH);
@@ -66,7 +67,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
 
         DatePickerSettings settings = new DatePickerSettings();
         changeSizeCalendar(settings, 1.6);
-        CalendarPanel calendarPanel = new CalendarPanel(settings);
+        calendarPanel = new CalendarPanel(settings);
         calendarPanel.setSelectedDate(LocalDate.now());
         calendarPanel.addCalendarListener(new SimpleCalendarListener());
         calendarPanel.setBorder(new LineBorder(Color.lightGray));
@@ -106,8 +107,8 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(delete)) {
-                            // todo: implement delete usecase
+                        if (e.getSource().equals(delete) && calendarPanel.getSelectedDate() != null) {
+                            eventController.delete(calendarPanel.getSelectedDate(), right.getSelectedIndices());
                         }
                     }
                 }
@@ -136,6 +137,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                                     startDateTimePicker.getTimePicker().getTime(),
                                     endDateTimePicker.getDatePicker().getDate(),
                                     endDateTimePicker.getTimePicker().getTime());
+                            eventController.query(calendarPanel.getSelectedDate());
+                            createDialog.setVisible(false);
+                            resetField();
                         }
                     }
                 }
@@ -143,7 +147,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        System.out.println("Click " + e.getActionCommand());
     }
 
     @Override
@@ -155,14 +159,17 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
             state.setError(null);
             return;
         }
-
-        if (useCase.equals(EventViewModel.INITIALIZE_USE_CASE)) {
+        else if (useCase.equals(EventViewModel.INITIALIZE_USE_CASE)) {
+            state.setUseCase("");
             String username = eventViewModel.getState().getUsername();
             eventController.initialize(username);
-        } else if (useCase.equals(EventViewModel.CLEAR_USE_CASE)) {
-            state.setUsername("");
         }
-        state.setUseCase("");
+//        } else if (useCase.equals(EventViewModel.CLEAR_USE_CASE)) {
+//            state.setUsername("");
+//        }
+        if (calendarPanel.getSelectedDate() != null) {
+            updateList();
+        }
     }
 
     /**
@@ -174,8 +181,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
 
         public void selectedDateChanged(CalendarSelectionEvent event) {
             eventController.query(event.getNewDate());
-            java.util.List<String> result = eventViewModel.getState().getEvents();
-            right.setListData(result.toArray(new String[0]));
+            updateList();
         }
 
         public void yearMonthChanged(YearMonthChangeEvent event) {
@@ -304,5 +310,19 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
             return false;
         }
         return true;
+    }
+
+    /**
+     * This method is to reset all the text fields after saving an event
+     */
+    private void resetField() {
+        title.setText("");
+        location.setText("");
+        description.setText("");
+    }
+
+    private void updateList() {
+        java.util.List<String> result = eventViewModel.getState().getEvents();
+        right.setListData(result.toArray(new String[0]));
     }
 }
