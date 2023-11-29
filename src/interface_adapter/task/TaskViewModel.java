@@ -1,19 +1,26 @@
 package interface_adapter.task;
 
+import interface_adapter.ViewModel;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
  * The TaskViewModel class represents the ViewModel for the Task-related views.
  */
-public class TaskViewModel {
-    private final PropertyChangeSupport propertyChangeSupport;
+public class TaskViewModel extends ViewModel {
+    public final String CREATE_BUTTON_LABEL = "Create";
+    public final String BACK_BUTTON_LABEL = "Back";
+    public final String BACK_USE_CASE = "back";
+
+    private TaskState state = new TaskState();
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     /**
      * Constructor to initialize a TaskViewModel instance.
      */
     public TaskViewModel() {
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
+        super("task");
     }
 
     /**
@@ -42,7 +49,7 @@ public class TaskViewModel {
     }
 
     public TaskState getState() {
-        return getState();
+        return state;
     }
 
     // Add any additional methods or properties as needed for the TaskViewModel

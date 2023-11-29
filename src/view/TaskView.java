@@ -5,6 +5,7 @@ import interface_adapter.task.TaskController;
 import interface_adapter.task.TaskViewModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -16,13 +17,41 @@ import java.util.Scanner;
 /**
  * The TaskView class is responsible for displaying and interacting with tasks.
  */
-public class TaskView extends JPanel implements ActionListener, PropertyChangeListener  {
+public class TaskView extends JPanel implements ActionListener, PropertyChangeListener {
+    public final String viewName = "task";
     private final TaskViewModel taskViewModel;
     private final TaskController taskController;
+
+    private final JButton create;
+    private final JButton back;
+    private final JList<String> jList;
 
     public TaskView(TaskViewModel taskViewModel, TaskController taskController) {
         this.taskViewModel = taskViewModel;
         this.taskController = taskController;
+        this.taskViewModel.addPropertyChangeListener(this);
+        String[] demo = {"testTask1", "testTask2", "testTask3"};
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        jList = new JList<>(demo);
+        JScrollPane sp = new JScrollPane(jList);
+//        sp.setPreferredSize(new Dimension(100, 100));
+        JPanel buttons = new JPanel();
+        create = new JButton(taskViewModel.CREATE_BUTTON_LABEL);
+        back = new JButton(taskViewModel.BACK_BUTTON_LABEL);
+        buttons.add(create);
+        buttons.add(back);
+        this.add(sp);
+        this.add(buttons);
+
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(back)) {
+                    taskViewModel.getState().setUseCsae(taskViewModel.BACK_USE_CASE);
+                    taskController.execute(taskViewModel.BACK_USE_CASE);
+                }
+            }
+        });
     }
 
     /**

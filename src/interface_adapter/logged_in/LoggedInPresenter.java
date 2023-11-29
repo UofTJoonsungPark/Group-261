@@ -4,24 +4,29 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.event.EventViewModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.task.TaskViewModel;
 
 public class LoggedInPresenter {
     private final LoggedInViewModel loggedInViewModel;
     private final LoginViewModel loginViewModel;
+    private final TaskViewModel taskViewModel;
     private final EventViewModel eventViewModel;
     private ViewManagerModel viewManagerModel;
 
-    public LoggedInPresenter(LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel, EventViewModel eventViewModel, ViewManagerModel viewManagerModel) {
+    public LoggedInPresenter(LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel,
+                             EventViewModel eventViewModel, TaskViewModel taskViewModel,
+                             ViewManagerModel viewManagerModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
         this.eventViewModel = eventViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.taskViewModel = taskViewModel;
     }
 
     public void prepareSuccessView(boolean isEvent, boolean isTask, boolean isLogout) {
         if (isEvent) {
             // send a request to initialize data structure for Event
-            eventViewModel.getState().setUseCase(EventViewModel.INITIALIZE_USE_CASE);
+            eventViewModel.getState().setUseCase(eventViewModel.INITIALIZE_USE_CASE);
 
             // get username from the state
             String username = loggedInViewModel.getState().getUsername();
@@ -33,20 +38,24 @@ public class LoggedInPresenter {
             eventViewModel.firePropertyChanged();
 
             // change the view accordingly
-            this.viewManagerModel.setActiveView(eventViewModel.getViewName());
-            this.viewManagerModel.firePropertyChanged();
+            viewManagerModel.setActiveView(eventViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
         } else if (isTask) {
+            String username = loggedInViewModel.getState().getUsername();
+            taskViewModel.getState().setUsername(username);
 
+            viewManagerModel.setActiveView(taskViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
         } else if (isLogout) {
             // clear  all the information after logout
-            eventViewModel.getState().setUseCase(EventViewModel.CLEAR_USE_CASE);
+            eventViewModel.getState().setUseCase(eventViewModel.CLEAR_USE_CASE);
             eventViewModel.firePropertyChanged();
             loginViewModel.resetState();
             loginViewModel.firePropertyChanged();
 
             // change the view accordingly
-            this.viewManagerModel.setActiveView(loginViewModel.getViewName());
-            this.viewManagerModel.firePropertyChanged();
+            viewManagerModel.setActiveView(loginViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
         }
     }
 }

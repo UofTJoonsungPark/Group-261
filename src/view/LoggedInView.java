@@ -78,6 +78,17 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     }
                 }
         );
+
+        task.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(task)) {
+                            loggedInController.execute(false, true, false);
+                        }
+                    }
+                }
+        );
     }
 
     /**

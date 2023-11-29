@@ -12,7 +12,7 @@ public class LoggedInViewModel extends ViewModel {
 
     private LoggedInState state = new LoggedInState();
 
-    public static final String LOGOUT_BUTTON_LABEL = "Log out";
+    public final String LOGOUT_BUTTON_LABEL = "Log out";
     private String loggedInUser;
 
     public LoggedInViewModel() {

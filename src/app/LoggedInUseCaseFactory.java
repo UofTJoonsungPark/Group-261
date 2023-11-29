@@ -6,6 +6,7 @@ import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.task.TaskViewModel;
 import view.LoggedInView;
 
 public class LoggedInUseCaseFactory {
@@ -14,10 +15,10 @@ public class LoggedInUseCaseFactory {
 
     public static LoggedInView create(
             ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel,
-            EventViewModel eventViewModel) {
+            EventViewModel eventViewModel, TaskViewModel taskViewModel) {
 
         LoggedInController loggedInController = createLoggedInUseCase(viewManagerModel, loggedInViewModel,
-                loginViewModel, eventViewModel);
+                loginViewModel, eventViewModel, taskViewModel);
         return new LoggedInView(loggedInViewModel, loggedInController);
     }
 
@@ -25,10 +26,11 @@ public class LoggedInUseCaseFactory {
             ViewManagerModel viewManagerModel,
             LoggedInViewModel loggedInViewModel,
             LoginViewModel loginViewModel,
-            EventViewModel eventViewModel
+            EventViewModel eventViewModel,
+            TaskViewModel taskViewModel
     ) {
         LoggedInPresenter loggedInPresenter = new LoggedInPresenter(loggedInViewModel, loginViewModel, eventViewModel,
-                viewManagerModel);
+                taskViewModel, viewManagerModel);
 
         return new LoggedInController(loggedInPresenter);
     }
