@@ -1,5 +1,6 @@
 package view;
 
+import com.github.lgooddatepicker.components.DateTimePicker;
 import entity.Task;
 import interface_adapter.task.TaskController;
 import interface_adapter.task.TaskViewModel;
@@ -18,13 +19,26 @@ import java.util.Scanner;
  * The TaskView class is responsible for displaying and interacting with tasks.
  */
 public class TaskView extends JPanel implements ActionListener, PropertyChangeListener {
+    private final static int WIDTH = 30;
     public final String viewName = "task";
+
     private final TaskViewModel taskViewModel;
     private final TaskController taskController;
+
+
+    private final JDialog createDialog;
 
     private final JButton create;
     private final JButton back;
     private final JList<String> jList;
+
+
+    private final JTextField title = new JTextField(WIDTH);
+
+    private final JTextArea notes = new JTextArea(3, WIDTH+10);
+    private final JCheckBox completed = new JCheckBox("completed");
+
+    private final DateTimePicker dateTimePicker = new DateTimePicker();
 
     public TaskView(TaskViewModel taskViewModel, TaskController taskController) {
         this.taskViewModel = taskViewModel;
@@ -43,15 +57,29 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         this.add(sp);
         this.add(buttons);
 
+        createDialog = buildCreateDialog();
+
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(back)) {
+                    createDialog.setVisible(false);
                     taskViewModel.getState().setUseCsae(taskViewModel.BACK_USE_CASE);
                     taskController.execute(taskViewModel.BACK_USE_CASE);
                 }
             }
         });
+
+        create.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(create)) {
+                            createDialog.setVisible(true);
+                        }
+                    }
+                }
+        );
     }
 
     /**
@@ -120,6 +148,35 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
     private JDialog buildCreateDialog() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JDialog createDialog = new JDialog(topFrame, "Create a task");
+        createDialog.setMinimumSize(new Dimension(500, 300));
 
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        JPanel titleAndCheckBox = new JPanel();
+        LabelTextPanel titleInfo = new LabelTextPanel(new JLabel("Title"), title);
+        titleAndCheckBox.add(titleInfo);
+        titleAndCheckBox.add(completed);
+
+        mainPanel.add(titleAndCheckBox);
+
+        notes.setLineWrap(true);
+        notes.setWrapStyleWord(true);
+
+        JPanel notesPanel = new JPanel();
+        notesPanel.add(new JLabel("notes"));
+        JScrollPane jScrollPane = new JScrollPane(notes);
+        notesPanel.add(jScrollPane);
+        mainPanel.add(notesPanel);
+
+        JPanel pickerPanel = new JPanel();
+        pickerPanel.add(new JLabel("Due date"));
+        pickerPanel.add(dateTimePicker);
+        mainPanel.add(pickerPanel);
+
+        createDialog.add(mainPanel);
+        return createDialog;
     }
 }

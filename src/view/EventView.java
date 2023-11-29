@@ -197,7 +197,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
      */
     private JDialog buildCreateDialog()  {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        JDialog createDialog = new JDialog(topFrame, "Create a event");
+        JDialog createDialog = new JDialog(topFrame, "Create an event");
         createDialog.setMinimumSize(new Dimension(500, 400));
 
         JPanel mainPanel = new JPanel();
