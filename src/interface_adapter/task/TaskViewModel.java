@@ -11,6 +11,7 @@ import java.beans.PropertyChangeSupport;
 public class TaskViewModel extends ViewModel {
     public final String CREATE_BUTTON_LABEL = "Create";
     public final String BACK_BUTTON_LABEL = "Back";
+    public final String SAVE_BUTTON_LABEL = "Save";
     public final String BACK_USE_CASE = "back";
 
     private TaskState state = new TaskState();

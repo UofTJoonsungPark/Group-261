@@ -37,8 +37,9 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JTextArea notes = new JTextArea(3, WIDTH+10);
     private final JCheckBox completed = new JCheckBox("completed");
-
     private final DateTimePicker dateTimePicker = new DateTimePicker();
+
+    private final JButton save;
 
     public TaskView(TaskViewModel taskViewModel, TaskController taskController) {
         this.taskViewModel = taskViewModel;
@@ -52,6 +53,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         JPanel buttons = new JPanel();
         create = new JButton(taskViewModel.CREATE_BUTTON_LABEL);
         back = new JButton(taskViewModel.BACK_BUTTON_LABEL);
+        save = new JButton(taskViewModel.SAVE_BUTTON_LABEL);
         buttons.add(create);
         buttons.add(back);
         this.add(sp);
@@ -76,6 +78,17 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(create)) {
                             createDialog.setVisible(true);
+                        }
+                    }
+                }
+        );
+
+        save.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(save)) {
+
                         }
                     }
                 }
@@ -150,7 +163,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     private JDialog buildCreateDialog() {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         JDialog createDialog = new JDialog(topFrame, "Create a task");
-        createDialog.setMinimumSize(new Dimension(500, 300));
+        createDialog.setMinimumSize(new Dimension(500, 250));
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -166,15 +179,16 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         notes.setWrapStyleWord(true);
 
         JPanel notesPanel = new JPanel();
-        notesPanel.add(new JLabel("notes"));
+        notesPanel.add(new JLabel("Notes"));
         JScrollPane jScrollPane = new JScrollPane(notes);
         notesPanel.add(jScrollPane);
         mainPanel.add(notesPanel);
 
-        JPanel pickerPanel = new JPanel();
-        pickerPanel.add(new JLabel("Due date"));
-        pickerPanel.add(dateTimePicker);
-        mainPanel.add(pickerPanel);
+        JPanel pickerAndButtonPanel = new JPanel();
+        pickerAndButtonPanel.add(new JLabel("Due date"));
+        pickerAndButtonPanel.add(dateTimePicker);
+        pickerAndButtonPanel.add(save);
+        mainPanel.add(pickerAndButtonPanel);
 
         createDialog.add(mainPanel);
         return createDialog;
