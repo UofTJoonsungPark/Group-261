@@ -87,8 +87,8 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(save)) {
-
+                        if (e.getSource().equals(save) && isInputValid()) {
+                            taskController.createTask();
                         }
                     }
                 }
@@ -192,5 +192,18 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
         createDialog.add(mainPanel);
         return createDialog;
+    }
+
+    private boolean isInputValid() {
+        // check if title is empty
+        if (title.getText().isEmpty()) {
+            return false;
+        }
+        // check if the given due date is invalid
+        // if the time for due date is provided, the date should be also provided
+        if (dateTimePicker.getDatePicker().getDate() == null && dateTimePicker.timePicker.getTime() != null) {
+            return false;
+        }
+        return true;
     }
 }
