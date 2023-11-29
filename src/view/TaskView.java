@@ -118,4 +118,8 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     public void propertyChange(PropertyChangeEvent evt) {
 
     }
+
+    private JDialog buildCreateDialog() {
+
+    }
 }
