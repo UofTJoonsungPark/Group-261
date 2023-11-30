@@ -10,6 +10,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.event.EventViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.reward.RewardViewModel;
 import interface_adapter.signup.SignupViewModel;
 import view.*;
 
@@ -32,6 +33,7 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
         EventViewModel eventViewModel = new EventViewModel();
+        RewardViewModel rewardViewModel = new RewardViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
         try {
@@ -49,7 +51,7 @@ public class Main {
         views.add(signupView, signupView.viewName);
 
         LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel,
-                loginViewModel, eventViewModel);
+                loginViewModel, eventViewModel, rewardViewModel);
         views.add(loggedInView, loggedInView.viewName);
 
         EventView eventView = EventUseCaseFactory.create(viewManagerModel, eventViewModel, loggedInViewModel);

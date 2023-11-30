@@ -2,20 +2,25 @@ package interface_adapter.logged_in;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.event.EventViewModel;
-import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.reward.RewardViewModel;
+//import interface_adapter.reward.RewardViewModel;
 
 public class LoggedInPresenter {
     private final LoggedInViewModel loggedInViewModel;
     private final LoginViewModel loginViewModel;
     private final EventViewModel eventViewModel;
     private ViewManagerModel viewManagerModel;
+    private RewardViewModel rewardViewModel;
 
-    public LoggedInPresenter(LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel, EventViewModel eventViewModel, ViewManagerModel viewManagerModel) {
+    public LoggedInPresenter(LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel,
+                             EventViewModel eventViewModel, ViewManagerModel viewManagerModel,
+                             RewardViewModel rewardViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
         this.eventViewModel = eventViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.rewardViewModel = rewardViewModel;
     }
 
     public void prepareSuccessView(boolean isEvent, boolean isTask, boolean isLogout) {
