@@ -28,7 +28,13 @@ public class TaskInteractor implements TaskInputBoundary {
             // TODO: connect this use case to the presenter.
 
         } else if (taskInputData.getUseCase().equals("deleteTask")) {
-            ;
+            Task taskToDelete = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),
+                    taskInputData.getDueDate());
+            taskDataAccessObject.deleteTask(taskToDelete);
+
+            // TODO: Connect this use case to the presenter.
+            //taskPresenter.prepareSuccessView(new TaskOutputData(taskDataAccessObject.getTasks()));
+
         } else if (taskInputData.getUseCase().equals("markCompleted")) {
             Task task = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),
                     taskInputData.getDueDate());
