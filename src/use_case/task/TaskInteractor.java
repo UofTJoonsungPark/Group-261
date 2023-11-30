@@ -40,7 +40,7 @@ public class TaskInteractor implements TaskInputBoundary {
                     taskInputData.getDueDate());
             taskDataAccessObject.markCompleted(task);
 
-            // TODO: connect this use case to the presenter.
+            // TODO: Connect this use case to the presenter.
         }
 
     }
