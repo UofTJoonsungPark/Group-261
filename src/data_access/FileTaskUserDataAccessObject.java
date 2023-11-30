@@ -209,7 +209,9 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         return lineCount;
     }
 
-    // This is a helper method for updating the deleteTask method.
+    // This is a helper method for updating the deleteTask method. It is designed to update a specific line in a CSV
+    // (Comma-Separated Values) file by making that line blank. This method only removes the content of a specific line
+    // in the CSV file, leaving an empty line in its place. It does not completely remove the line.
     private void CSVRemover(long referenceLine) {
         String fileDirectory = filePath + File.separator + username + ".csv";
         List<String> lines;
