@@ -1,12 +1,16 @@
 package interface_adapter.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The EventState class is observed in EventViewModel class
  */
 public class EventState {
+    private final List<String> EMPTY_LIST = new ArrayList<>();
     private String username = "";
     private String useCase = "";
-    private String[] events;
+    private List<String> events = EMPTY_LIST;
     private String error = null;
 
     /**
@@ -58,5 +62,21 @@ public class EventState {
      */
     public void setError(String error) {
         this.error = error;
+    }
+
+    /**
+     * Set event list
+     * @param events a list of Events
+     */
+    public void setEvents(List<String> events) {
+        this.events = events;
+    }
+
+    /**
+     * Get event list
+     * @return a list of Events
+     */
+    public List<String> getEvents() {
+        return events;
     }
 }

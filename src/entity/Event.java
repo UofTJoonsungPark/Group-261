@@ -147,12 +147,25 @@ public class Event {
      */
     public String toString() {
         // Create a formatter for the start/end time of the event
+        DateTimeFormatter yearDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter hourMinute = DateTimeFormatter.ofPattern("HH:mm");
 
-        String formattedStartTime = this.startTime.format(hourMinute);
-        String formattedEndTime = this.endTime.format(hourMinute);
+        String formattedStartDate = startDate.format(yearDate);
+        String formattedEndDate = endDate.format(yearDate);
 
-        return this.title + System.lineSeparator() + this.location + System.lineSeparator() + formattedStartTime + "-" + formattedEndTime;
+        String formattedStartTime = startTime == null ? "" : startTime.format(hourMinute);
+        String formattedEndTime = endTime == null ? "" : endTime.format(hourMinute);
+
+        StringBuilder sb = new StringBuilder(formattedStartDate);
+        if (!formattedStartTime.isEmpty()) {
+            sb.append("-").append(formattedStartTime).append("~").
+                    append(formattedEndDate).append("-").append(formattedEndTime);
+        } else {
+            sb.append("~").append(formattedEndDate);
+        }
+        sb.append(",").append(title).append(",").append(location).append(",").append(description);
+
+        return sb.toString();
     }
 
     /**
@@ -183,9 +196,9 @@ public class Event {
     @Override
     public int hashCode() {
         int result = startDate.hashCode();
-        result = result * 31 + startTime.hashCode();
+        result = result * 31 + (startTime == null ? 0 : startTime.hashCode());
         result = result * 31 + endDate.hashCode();
-        result = result * 31 + endTime.hashCode();
+        result = result * 31 + (endTime == null ? 0 : endTime.hashCode());
         result = result * 31 + title.hashCode();
         result = result * 31 + description.hashCode();
         result = result * 31 + location.hashCode();
@@ -206,8 +219,10 @@ public class Event {
             return false;
         }
         Event event = (Event) obj;
-        return startDate.equals(event.startDate) && startTime.equals(startTime) &&
-                endDate.equals(event.endDate) && endTime.equals(event.endTime) &&
+        return startDate.equals(event.startDate) &&
+                ((startTime == null || event.startTime == null) ? startTime == event.startTime : startTime.equals(event.startTime)) &&
+                endDate.equals(event.endDate) &&
+                ((endTime == null || event.endTime == null) ? endTime == event.endTime : endTime.equals(event.endTime)) &&
                 title.equals(event.title) && description.equals(event.description) &&
                 location.equals(event.location);
     }

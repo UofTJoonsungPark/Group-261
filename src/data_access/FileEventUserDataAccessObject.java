@@ -62,12 +62,14 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         }
     }
 
+
     /**
-     * Gets the events
-     * @return  the events attribute.
+     * Get the list of Event on the date
+     * @param date the given date
+     * @return a list of Event
      */
-    public Map<LocalDate, List<Event>> getEvents(){
-        return events;
+    public List<Event> getEvents(LocalDate date){
+        return events.get(date);
     }
 
     /**
@@ -89,8 +91,13 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
      * @param username The username of the user.
      */
     public void writeMaps(String username) throws RuntimeException {
+        if (username.equals(this.username)) {
+            return;
+        }
+        clearMaps();
         this.username = username;
         String csvFilePath = filePath + File.separator + username + ".csv";
+        String tempFilePath = filePath + File.separator + username + ".tmp";
 
         long lineNumber = 1;
 
@@ -101,7 +108,26 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
                 makeCsvFile();
                 return;
             }
+            File temp = new File(tempFilePath);
+            temp.createNewFile();
 
+            // clear empty lines
+            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilePath))) {
+                String row;
+                while ((row = reader.readLine()) != null) {
+                    if (!row.isEmpty()) {
+                        writer.write(row);
+                        writer.newLine();
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            file.delete();
+            temp.renameTo(file);
+
+            // loading date into maps
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
                 String header = reader.readLine();
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -111,11 +137,11 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
                 String row;
                 while ((row = reader.readLine()) != null) {
-                    String[] col = row.split(",");
+                    String[] col = row.split(",", 7);
                     LocalDate startDate = LocalDate.parse(col[0], dateFormatter);
                     LocalDate endDate = LocalDate.parse(col[2], dateFormatter);
-                    LocalTime startTime = LocalTime.parse(col[1], timeFormatter);
-                    LocalTime endTime = LocalTime.parse(col[3], timeFormatter);
+                    LocalTime startTime = col[1].isEmpty() ? null : LocalTime.parse(col[1], timeFormatter);
+                    LocalTime endTime = col[3].isEmpty() ? null : LocalTime.parse(col[3], timeFormatter);
                     String title = col[4];
                     String location = col[5];
                     String description = col[6];
@@ -146,9 +172,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
                     //UPDATE EVENT REFERENCE
                     eventReference.put(event, lineNumber);
-
                     lineNumber++;
-
                 }
             }
         } catch (IOException e) {
@@ -219,7 +243,6 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
 
         // delete the event from the CSVFile
         CSVRemover(referenceLine);
-
     }
 
     /**
@@ -235,7 +258,7 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
             lines = Files.readAllLines(path);
             if (referenceLine > 0 && referenceLine <= lines.size()) {
                 // make the specified line blank
-                lines.set((int) (referenceLine - 1), "");
+                lines.set((int) (referenceLine), "");
             } else {
                 throw new RuntimeException("Invalid reference line");
             }
@@ -262,8 +285,10 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         String location = event.getLocation();
         String startDate = event.getStartDate().format(dateFormatter);
         String endDate = event.getEndDate().format(dateFormatter);
-        String startTime = event.getStartTime().format(timeFormatter);
-        String endTime = event.getEndTime().format(timeFormatter);
+
+        // adding additional logic to handle the case when the given time is omitted
+        String startTime = event.getStartTime() == null ? "" : event.getStartTime().format(timeFormatter);
+        String endTime = event.getEndTime() == null ? "" : event.getEndTime().format(timeFormatter);
 
         long lineNumber = csvAppender(startDate, endDate, startTime, endTime, title, location,
                 description);
@@ -316,15 +341,14 @@ public class FileEventUserDataAccessObject implements EventDataAccessInterface {
         long lineCount;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath, true))) {
             // append the event to the end of this file
-            writer.newLine();
             writer.write(newLine);
+            writer.newLine();
 
             // get the number of the line that the new line is printed on
             lineCount = Files.lines(Paths.get(directoryPath)).count();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return lineCount;
     }
-    }
+}
