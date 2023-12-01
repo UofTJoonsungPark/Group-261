@@ -52,4 +52,13 @@ public class TaskController {
 
         taskUseCaseInteractor.execute(taskInputData);
     }
+
+    public void initialize(String username) {
+        taskUseCaseInteractor.initialize(username);
+        query();
+    }
+
+    public void query() {
+
+    }
 }

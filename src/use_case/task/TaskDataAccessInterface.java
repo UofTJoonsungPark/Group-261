@@ -18,4 +18,6 @@ public interface TaskDataAccessInterface {
 
     void deleteTask(Task task);
 
+    void writeSet(String username);
+
 }

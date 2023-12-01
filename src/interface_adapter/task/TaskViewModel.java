@@ -13,6 +13,7 @@ public class TaskViewModel extends ViewModel {
     public final String BACK_BUTTON_LABEL = "Back";
     public final String SAVE_BUTTON_LABEL = "Save";
     public final String BACK_USE_CASE = "back";
+    public final String INITIALIZE_USE_CASE = "initialize";
 
     private TaskState state = new TaskState();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -46,7 +47,7 @@ public class TaskViewModel extends ViewModel {
      * Notify listeners that a property has changed.
      */
     public void firePropertyChanged() {
-        propertyChangeSupport.firePropertyChange("viewModelUpdate", null, this);
+        propertyChangeSupport.firePropertyChange("state", null, this.state);
     }
 
     public TaskState getState() {

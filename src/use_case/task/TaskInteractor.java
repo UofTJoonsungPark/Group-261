@@ -42,6 +42,14 @@ public class TaskInteractor implements TaskInputBoundary {
 //
 //            // TODO: Connect this use case to the presenter.
 //        }
+    }
+
+    public void initialize(String username) {
+        try {
+            taskDataAccessObject.writeSet(username);
+        } catch (RuntimeException e) {
+            taskPresenter.prepareFailView("Failed to load data");
+        }
 
     }
 }

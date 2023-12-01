@@ -3,6 +3,7 @@ package view;
 import com.github.lgooddatepicker.components.DatePicker;
 import entity.Task;
 import interface_adapter.task.TaskController;
+import interface_adapter.task.TaskState;
 import interface_adapter.task.TaskViewModel;
 
 import javax.swing.*;
@@ -125,6 +126,18 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        TaskState state = (TaskState) evt.getNewValue();
+        String useCase = state.getUseCase();
+        if (state.getError() != null) {
+            showErrorMessage(state.getError());
+            state.setError(null);
+            return;
+        }
+        else if (useCase.equals(taskViewModel.INITIALIZE_USE_CASE)) {
+            state.setUseCase("");
+            String username = taskViewModel.getState().getUsername();
+            taskController.initialize(username);
+        }
 
     }
 
@@ -168,5 +181,13 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
             return false;
         }
         return true;
+    }
+
+    /**
+     * This method is responsible to show error message.
+     * @param message error message
+     */
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 }

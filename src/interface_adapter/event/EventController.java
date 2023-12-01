@@ -58,7 +58,6 @@ public class EventController {
     public void query(LocalDate date) {
         eventUseCaseInteractor.query(date);
     }
-
     public void delete(LocalDate date, int[] indices) {
         eventUseCaseInteractor.delete(date, indices);
         query(date);

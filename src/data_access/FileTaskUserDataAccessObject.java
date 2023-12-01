@@ -39,7 +39,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
      * The method is called when the user sign in to build the DS in memory.
      * @param username logged in username
      */
-    public void writeSets(String username) {
+    public void writeSet(String username) {
         if (username.equals(this.username)) {
             return;
         }
@@ -55,26 +55,27 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
             if (!file.exists()) {
                 makeCsvFile();
-                return;
             }
-            File temp = new File(tempFilePath);
-            temp.createNewFile();
+            else {
+                File temp = new File(tempFilePath);
+                temp.createNewFile();
 
-            // clear empty lines
-            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
-                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilePath))) {
-                String row;
-                while ((row = reader.readLine()) != null) {
-                    if (!row.isEmpty()) {
-                        writer.write(row);
-                        writer.newLine();
+                // clear empty lines
+                try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+                     BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilePath))) {
+                    String row;
+                    while ((row = reader.readLine()) != null) {
+                        if (!row.isEmpty()) {
+                            writer.write(row);
+                            writer.newLine();
+                        }
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                file.delete();
+                temp.renameTo(file);
             }
-            file.delete();
-            temp.renameTo(file);
 
             // loading date into maps
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {

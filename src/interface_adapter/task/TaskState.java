@@ -4,8 +4,9 @@ package interface_adapter.task;
  * The TaskState class is observed in TaskViewModel class.
  */
 public class TaskState {
-    private String useCase = null;
+    private String useCase = "";
     private String username = "";
+    private String error = null;
 
     /**
      * Getter method for the use case.
@@ -25,7 +26,19 @@ public class TaskState {
         this.useCase = useCase;
     }
 
-    public String setError(String error) {
+    /**
+     * The method is used to set Error
+     * @param error error message
+     */
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    /**
+     * The method is used to get Error
+     * @return error message
+     */
+    public String getError() {
         return error;
     }
 
