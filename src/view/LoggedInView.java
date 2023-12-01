@@ -3,6 +3,7 @@ package view;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.reward.RewardController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     final JButton logOut;
     final JButton task;
     final JButton event;
+    final JButton badge;
 
     /**
      * A window with a title and a JButton.
@@ -43,9 +45,11 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         task = new JButton(loggedInViewModel.TASK_BUTTON_LABEL);
         event = new JButton(loggedInViewModel.EVENT_BUTTON_LABEL);
+        badge = new JButton(loggedInViewModel.BADGES_BUTTON_LABEL);
 
         buttons.add(event);
         buttons.add(task);
+        buttons.add(badge);
         buttons.add(logOut);
 
         logOut.addActionListener(this);

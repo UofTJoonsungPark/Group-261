@@ -2,9 +2,9 @@ package interface_adapter.logged_in;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.event.EventViewModel;
-import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.task.TaskViewModel;
+import interface_adapter.reward.RewardViewModel;
 
 public class LoggedInPresenter {
     private final LoggedInViewModel loggedInViewModel;
@@ -12,15 +12,17 @@ public class LoggedInPresenter {
     private final TaskViewModel taskViewModel;
     private final EventViewModel eventViewModel;
     private ViewManagerModel viewManagerModel;
+    private RewardViewModel rewardViewModel;
 
     public LoggedInPresenter(LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel,
                              EventViewModel eventViewModel, TaskViewModel taskViewModel,
-                             ViewManagerModel viewManagerModel) {
+                             RewardViewModel rewardViewModel, ViewManagerModel viewManagerModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
         this.eventViewModel = eventViewModel;
         this.viewManagerModel = viewManagerModel;
         this.taskViewModel = taskViewModel;
+        this.rewardViewModel = rewardViewModel;
     }
 
     public void prepareSuccessView(boolean isEvent, boolean isTask, boolean isLogout) {
