@@ -19,13 +19,15 @@ public class TaskInteractor implements TaskInputBoundary {
 
     @Override
     public void execute(TaskInputData taskInputData) {
-//        if (taskInputData.getUseCase().equals("saveTask")) {
-//            Task task = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),
-//                    taskInputData.getDueDate());
-//
-//            taskDataAccessObject.saveTask(task);
-//
-//            // TODO: connect this use case to the presenter.
+            Task task = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),
+                    taskInputData.isCompleted(), taskInputData.getDueDate());
+
+            try {
+                taskDataAccessObject.saveTask(task);
+            } catch (RuntimeException e) {
+                taskPresenter.prepareFailView("Failed to save data");
+            }
+
 //
 //        } else if (taskInputData.getUseCase().equals("deleteTask")) {
 //            Task taskToDelete = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),

@@ -90,7 +90,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
                     String title = col[0];
                     String notes = col[1];
                     boolean completed = Boolean.parseBoolean(col[2]);
-                    LocalDate dueDate = LocalDate.parse(col[3], dateFormatter);
+                    LocalDate dueDate = col[3].isEmpty() ? null : LocalDate.parse(col[3], dateFormatter);
 
                     Task task = taskFactory.createTask(title, notes, completed, dueDate);
 
@@ -141,7 +141,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         String title = task.getTitle();
         String notes = task.getNotes();
         boolean completed = task.isCompleted();
-        String dueDate = task.getDueDate().format(dateFormatter);
+        String dueDate = task.getDueDate() == null ? "" : task.getDueDate().format(dateFormatter);
 
         long lineNumber = csvAppender(title, notes, completed, dueDate);
 
@@ -239,8 +239,8 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         long lineCount;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath, true))) {
             // append the task to the end of this file
-            writer.newLine();
             writer.write(newLine);
+            writer.newLine();
 
             // get the number of the line that the new line is printed on
             lineCount = Files.lines(Paths.get(directoryPath)).count();

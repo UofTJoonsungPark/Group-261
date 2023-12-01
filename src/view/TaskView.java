@@ -46,11 +46,9 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         this.taskViewModel = taskViewModel;
         this.taskController = taskController;
         this.taskViewModel.addPropertyChangeListener(this);
-        String[] demo = {"testTask1", "testTask2", "testTask3"};
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        jList = new JList<>(demo);
+        jList = new JList<>();
         JScrollPane sp = new JScrollPane(jList);
-//        sp.setPreferredSize(new Dimension(100, 100));
         JPanel buttons = new JPanel();
         create = new JButton(taskViewModel.CREATE_BUTTON_LABEL);
         back = new JButton(taskViewModel.BACK_BUTTON_LABEL);
@@ -89,11 +87,13 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(save) && isInputValid()) {
-                            taskController.createTask(
+                            taskController.execute(
                                     title.getText(),
                                     notes.getText(),
                                     completed.isSelected(),
                                     datePicker.getDate());
+                            createDialog.setVisible(false);
+                            resetField();
                         }
                     }
                 }
@@ -138,7 +138,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
             String username = taskViewModel.getState().getUsername();
             taskController.initialize(username);
         }
-
+        updateList();
     }
 
     private JDialog buildCreateDialog() {
@@ -189,5 +189,19 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
      */
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
+    }
+
+    /**
+     * The method is called when to refresh the list of Task
+     */
+    private void updateList() {
+        java.util.List<String> result = taskViewModel.getState().getTasks();
+        jList.setListData(result.toArray(new String[0]));
+    }
+
+    private void resetField() {
+        title.setText("");
+        notes.setText("");
+        completed.setSelected(false);
     }
 }
