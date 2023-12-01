@@ -66,7 +66,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(back)) {
                     createDialog.setVisible(false);
-                    taskViewModel.getState().setUseCsae(taskViewModel.BACK_USE_CASE);
+                    taskViewModel.getState().setUseCase(taskViewModel.BACK_USE_CASE);
                     taskController.execute(taskViewModel.BACK_USE_CASE);
                 }
             }
