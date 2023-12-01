@@ -9,9 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -128,7 +126,22 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
     @Override
     public void deleteTask(Task task) {
+        // delete the task from tasks
+        List<Task> taskList = tasks.get(task.getDueDate());
+        if (taskList != null) {
+            taskList.removeIf(t -> t.equals(task));
 
+            if (taskList.isEmpty()) {
+                tasks.remove(task.getDueDate());
+            }
+        }
+
+        // delete the task from taskReference
+        long referenceLine = taskReference.get(task);
+        taskReference.remove(task);
+
+        // delete the task from the CSVFile
+        CSVRemover(referenceLine);
     }
 
     private void modifyCSV(long lineNumber) {
@@ -194,5 +207,29 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         }
 
         return lineCount;
+    }
+
+    // This is a helper method for updating the deleteTask method. It is designed to update a specific line in a CSV
+    // (Comma-Separated Values) file by making that line blank. This method only removes the content of a specific line
+    // in the CSV file, leaving an empty line in its place. It does not completely remove the line.
+    private void CSVRemover(long referenceLine) {
+        String fileDirectory = filePath + File.separator + username + ".csv";
+        List<String> lines;
+
+        try {
+            Path path = Paths.get(fileDirectory);
+            lines = Files.readAllLines(path);
+            if (referenceLine > 0 && referenceLine <= lines.size()) {
+                // make the specified line blank
+                lines.set((int) (referenceLine - 1), "");
+            } else {
+                throw new RuntimeException("Invalid reference line");
+            }
+
+            // Write the updated lines back to the CSV file
+            Files.write(path, lines);
+        } catch (IOException e) {
+            throw new RuntimeException("Error updating CSV file.");
+        }
     }
 }

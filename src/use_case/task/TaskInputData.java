@@ -86,4 +86,8 @@ public class TaskInputData {
     }
 
     public String getUseCase() {return useCase;}
+
+    public void setUseCase(String useCase) {
+        this.useCase = useCase;
+    }
 }
