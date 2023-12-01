@@ -38,8 +38,12 @@ public class TaskPresenter implements TaskOutputBoundary {
      * Request to change the view.
      */
     public void changeView() {
-        TaskState taskState = taskViewModel.getState();
         // Implement logic based on taskState to change the view
+        TaskState taskState = taskViewModel.getState();
+        if (taskState.getUseCase().equals(taskViewModel.BACK_USE_CASE)) {
+            viewManagerModel.setActiveView(loggedInViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        }
     }
 
     /**

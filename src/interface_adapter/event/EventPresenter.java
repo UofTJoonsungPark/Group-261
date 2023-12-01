@@ -41,7 +41,7 @@ public class EventPresenter implements EventOutputBoundary {
      */
     public void changeView() {
         EventState eventState = eventViewModel.getState();
-        if (eventState.getUseCase().equals(EventViewModel.BACK_USE_CASE)) {
+        if (eventState.getUseCase().equals(eventViewModel.BACK_USE_CASE)) {
             this.viewManagerModel.setActiveView(loggedInViewModel.getViewName());
             this.viewManagerModel.firePropertyChanged();
         }
