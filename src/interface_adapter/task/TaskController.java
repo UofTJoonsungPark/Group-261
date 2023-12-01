@@ -3,6 +3,7 @@ package interface_adapter.task;
 import use_case.task.TaskInputBoundary;
 import use_case.task.TaskInputData;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -41,7 +42,7 @@ public class TaskController {
      * @param completed The completion status of the task.
      * @param dueDate   The due date for the task.
      */
-    public void createTask(String title, String notes, boolean completed, LocalDateTime dueDate) {
+    public void createTask(String title, String notes, boolean completed, LocalDate dueDate) {
         TaskInputData taskInputData = new TaskInputData();
 
         taskInputData.setTitle(title);

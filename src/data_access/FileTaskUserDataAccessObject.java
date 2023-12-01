@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.Event;
 import entity.Task;
 import entity.TaskFactory;
 import use_case.task.TaskDataAccessInterface;
@@ -9,14 +10,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
     private final String filePath;
-    private final Map<LocalDateTime, List<Task>> tasks;
-    private final Map<Task, Long> taskReference;
+    private final Map<Task, Long> tasks;
     private final TaskFactory taskFactory;
     private String username = null;
 
@@ -24,16 +26,81 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
      * Initialize a new FileTaskUserDataAccessObject
      *
      * @param tasks          The user's tasks
-     * @param taskReference  A reference to find the user's tasks
      * @param taskFactory    A class used to create a task
      */
-    public FileTaskUserDataAccessObject(Map<LocalDateTime, List<Task>> tasks,
-                                        Map<Task, Long> taskReference,
+    public FileTaskUserDataAccessObject(Map<Task, Long> tasks,
                                         TaskFactory taskFactory) {
         this.filePath = "DATA" + File.separator + "TaskDirectory";
         this.tasks = tasks;
-        this.taskReference = taskReference;
         this.taskFactory = taskFactory;
+    }
+
+    /**
+     * The method is called when the user sign in to build the DS in memory.
+     * @param username logged in username
+     */
+    public void writeSets(String username) {
+        if (username.equals(this.username)) {
+            return;
+        }
+        clear();
+        this.username = username;
+        String csvFilePath = filePath + File.separator + username + ".csv";
+        String tempFilePath = filePath + File.separator + username + ".tmp";
+
+        long lineNumber = 1;
+
+        try {
+            File file = new File(csvFilePath);
+
+            if (!file.exists()) {
+                makeCsvFile();
+                return;
+            }
+            File temp = new File(tempFilePath);
+            temp.createNewFile();
+
+            // clear empty lines
+            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilePath))) {
+                String row;
+                while ((row = reader.readLine()) != null) {
+                    if (!row.isEmpty()) {
+                        writer.write(row);
+                        writer.newLine();
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            file.delete();
+            temp.renameTo(file);
+
+            // loading date into maps
+            try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
+                String header = reader.readLine();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                assert header.equals("title, notes, completed, dueDate");
+
+                String row;
+                while ((row = reader.readLine()) != null) {
+                    String[] col = row.split(",", 4);
+                    String title = col[0];
+                    String notes = col[1];
+                    boolean completed = Boolean.parseBoolean(col[2]);
+                    LocalDate dueDate = LocalDate.parse(col[3], dateFormatter);
+
+                    Task task = taskFactory.createTask(title, notes, completed, dueDate);
+
+                    //UPDATE TASK and REFERENCE
+                    tasks.put(task, lineNumber);
+                    lineNumber++;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -77,68 +144,42 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
         long lineNumber = csvAppender(title, notes, completed, dueDate);
 
-        // add this task to the tasks attribute
-
-        // check if the key (date) is in tasks already
-        if (tasks.containsKey(task.getDueDate())) {
-            // Get the ArrayList of tasks and add task to it
-            List<Task> existingList = tasks.get(task.getDueDate());
-            existingList.add(task);
-
-            } else {
-                // If the key doesn't exist, create a new ArrayList<Task>
-                List<Task> newList = new ArrayList<>();
-                newList.add(task);
-                tasks.put(task.getDueDate(), newList);
-
-        }
-
         // add this task to the task reference attribute
-        taskReference.put(task, lineNumber);
+        tasks.put(task, lineNumber);
     }
 
     /** This method marks the given task as completed.
      */
     public void markCompleted(Task task) {
         // find the task in the tasks attribute.
-        if (tasks.containsKey(task.getDueDate())) {
-            List<Task> existingList = tasks.get(task.getDueDate());
-
-            for (Task possible_task : existingList) {
-                if (possible_task.equals(task)) {
-                    possible_task.setCompleted(true);
-                }
-            }
-        }
-
-        // find the  task in the taskReference attribute.
-        List<Task> keyList = new ArrayList<>(taskReference.keySet());
-
-        for (Task task1 : keyList) {
-            if (task1.equals(task)) {
-                task1.setCompleted(true);
-            }
-        }
-
-        // find + modify in the task in the CSV file.
-        modifyCSV(taskReference.get(task));
+//        if (tasks.containsKey(task.getDueDate())) {
+//            List<Task> existingList = tasks.get(task.getDueDate());
+//
+//            for (Task possible_task : existingList) {
+//                if (possible_task.equals(task)) {
+//                    possible_task.setCompleted(true);
+//                }
+//            }
+//        }
+//
+//        // find the  task in the taskReference attribute.
+//        List<Task> keyList = new ArrayList<>(taskReference.keySet());
+//
+//        for (Task task1 : keyList) {
+//            if (task1.equals(task)) {
+//                task1.setCompleted(true);
+//            }
+//        }
+//
+//        // find + modify in the task in the CSV file.
+//        modifyCSV(taskReference.get(task));
     }
 
     @Override
     public void deleteTask(Task task) {
-        // delete the task from tasks
-        List<Task> taskList = tasks.get(task.getDueDate());
-        if (taskList != null) {
-            taskList.removeIf(t -> t.equals(task));
-
-            if (taskList.isEmpty()) {
-                tasks.remove(task.getDueDate());
-            }
-        }
-
         // delete the task from taskReference
-        long referenceLine = taskReference.get(task);
-        taskReference.remove(task);
+        long referenceLine = tasks.get(task);
+        tasks.remove(task);
 
         // delete the task from the CSVFile
         CSVRemover(referenceLine);
@@ -231,5 +272,10 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         } catch (IOException e) {
             throw new RuntimeException("Error updating CSV file.");
         }
+    }
+
+    public void clear() {
+        tasks.clear();
+        this.username = null;
     }
 }

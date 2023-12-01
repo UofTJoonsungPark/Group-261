@@ -45,7 +45,4 @@ public class TaskState {
         this.username = username;
     }
 
-    public void setUseCase(String useCase) {
-        this.useCase = useCase;
-    }
 }
