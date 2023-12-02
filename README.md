@@ -11,10 +11,13 @@ instructions, and usage guidelines.
 ## Project Description ##
 
 TimeForge addresses the challenge of time management by offering a robust solution for organizing tasks, setting deadlines, 
-and efficiently allocating time for personal and professional responsibilities. The primary features include:
-1) Personal to-do list and calendar
-2) Scheduling tasks, events, and collaborative plans
-3) Reward system to motivate users through encouraging messages (and eventually) prizes
+and efficiently allocating time for personal and professional responsibilities. The primary features include:  
+
+🚀 Personal to-do list and calendar  
+
+🚀 Scheduling tasks, events, and collaborative plans  
+
+🚀 Reward system to motivate users through encouraging messages (and eventually) prizes  
 
 The application's goal is to streamline users' daily routines, facilitate coordination among users, and provide a gamified 
 element to boost motivation and engagement.
@@ -23,16 +26,19 @@ element to boost motivation and engagement.
 
 ## Features ##
 
-- Task Management: Our application provides a robust task management system, allowing users to create and manage 
+🎯Task Management: Our application provides a robust task management system, allowing users to create and manage 
 personal to-do lists with ease. Users can set deadlines, track progress, and efficiently organize their tasks for 
-improved productivity.
-- Calendar: Stay organized by utilizing our integrated calendar system. Schedule tasks, events, and collaborative plans 
+improved productivity.  
+
+🎯Calendar: Stay organized by utilizing our integrated calendar system. Schedule tasks, events, and collaborative plans 
 effortlessly. The calendar feature facilitates coordination among users, making it simple to plan and manage various 
-activities.
-- Reward System: Boost your motivation and celebrate achievements with our built-in reward system! Users are applauded 
+activities.  
+
+🎯Reward System: Boost your motivation and celebrate achievements with our built-in reward system! Users are applauded 
 for completing tasks, and rewards can take the form of unlockable prizes or uplifting messages. The reward system adds a 
-positive reinforcement element to task management.
-- Game (Future Plan): In the future, we have exciting plans to introduce gamification to the application. Users will be 
+positive reinforcement element to task management.  
+
+🎯Game (Future Plan): In the future, we have exciting plans to introduce gamification to the application. Users will be 
 able to personalize characters that embark on unique adventures. As users complete tasks and achieve milestones, their 
 in-app characters will progress, adding a fun and engaging element to the productivity journey. Whether it's for work, 
 study, or leisure, the gamification feature aims to make task completion a rewarding and enjoyable experience.
