@@ -1,4 +1,4 @@
-Introduction
+## Introduction ##
 
 Welcome to TimeForge, a versatile productivity application designed to enhance personal task management and collaborative 
 planning. This README provides a comprehensive guide on the project, including its motivation, features, installation 
@@ -6,7 +6,7 @@ instructions, and usage guidelines.
 
 
 
-Project Description
+## Project Description ##
 
 TimeForge addresses the challenge of time management by offering a robust solution for organizing tasks, setting deadlines, 
 and efficiently allocating time for personal and professional responsibilities. The primary features include:
@@ -19,7 +19,7 @@ element to boost motivation and engagement.
 
 
 
-Features 
+## Features ##
 
 - Task Management: Our application provides a robust task management system, allowing users to create and manage 
 personal to-do lists with ease. Users can set deadlines, track progress, and efficiently organize their tasks for 
@@ -41,25 +41,26 @@ to your productivity experience.
 
 
 
-Instructions for add how to use program
+## Instructions for Use ##
+TODO: Complete
 
 
 
-Google Task API Integration
+## Google Task API Integration ##
 
 To efficiently implement task and event management, TimeForge integrates with the Google Task API. This integration 
 enhances the application's functionality and provides users with a seamless experience.
 
 
 
-Feedback
+## Feedback ##
 
 We welcome any feedback or suggestions that can help refine and improve TimeForge. Feel free to contact any of our team 
 members or open an issue.
 
 
 
-Contributors
+## Contributors ##
 
 Narges Movahedian Nezhad - [GitHub Profile](https://github.com/nargesmn100)
 Jae Joon Han - [GitHub Profile](https://github.com/JJ-Han)
