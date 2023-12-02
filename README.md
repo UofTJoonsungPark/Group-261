@@ -1,3 +1,5 @@
+<h1 align="center">TimeForge📋⏰</h1>
+
 ## Introduction ##
 
 Welcome to TimeForge, a versatile productivity application designed to enhance personal task management and collaborative 
@@ -42,7 +44,7 @@ to your productivity experience.
 
 
 ## Instructions for Use ##
-TODO: Complete
+TODO: Complete!!!
 
 
 
