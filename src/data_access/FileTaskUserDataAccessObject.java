@@ -1,6 +1,5 @@
 package data_access;
 
-import entity.Event;
 import entity.Task;
 import entity.TaskFactory;
 import use_case.task.TaskDataAccessInterface;
@@ -11,8 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -21,6 +18,8 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
     private final Map<Task, Long> tasks;
     private final TaskFactory taskFactory;
     private String username = null;
+
+    private final List<Task> taskList = new ArrayList<>();
 
     /**
      * Initialize a new FileTaskUserDataAccessObject
@@ -96,6 +95,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
                     //UPDATE TASK and REFERENCE
                     tasks.put(task, lineNumber);
+                    taskList.add(task);
                     lineNumber++;
                 }
             }
@@ -147,6 +147,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
         // add this task to the task reference attribute
         tasks.put(task, lineNumber);
+        taskList.add(task);
     }
 
     /** This method marks the given task as completed.
@@ -263,7 +264,7 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
             lines = Files.readAllLines(path);
             if (referenceLine > 0 && referenceLine <= lines.size()) {
                 // make the specified line blank
-                lines.set((int) (referenceLine - 1), "");
+                lines.set((int) (referenceLine), "");
             } else {
                 throw new RuntimeException("Invalid reference line");
             }
@@ -285,13 +286,15 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
     /**
      * The method is used to query the current list of Tasks
+     *
      * @return the current list of Tasks
      */
-    public List<String> query() {
-        List<String> taskList = new ArrayList<>();
-        for (Task t : tasks.keySet()) {
-            taskList.add(t.toString());
-        }
+    public List<Task> query() {
         return taskList;
+    }
+
+    public void deleteTask(int i) {
+        Task task = taskList.remove(i);
+        deleteTask(task);
     }
 }

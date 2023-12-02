@@ -17,4 +17,6 @@ public interface TaskInputBoundary {
     void initialize(String username);
 
     void query();
+
+    void delete(int[] indices);
 }

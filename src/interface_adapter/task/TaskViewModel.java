@@ -10,6 +10,7 @@ import java.beans.PropertyChangeSupport;
  */
 public class TaskViewModel extends ViewModel {
     public final String CREATE_BUTTON_LABEL = "Create";
+    public final String DELETE_BUTTON_LABEL = "Delete";
     public final String BACK_BUTTON_LABEL = "Back";
     public final String SAVE_BUTTON_LABEL = "Save";
     public final String BACK_USE_CASE = "back";

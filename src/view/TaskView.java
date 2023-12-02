@@ -30,6 +30,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     private final JDialog createDialog;
 
     private final JButton create;
+    private final JButton delete;
     private final JButton back;
     private final JList<String> jList;
 
@@ -50,11 +51,16 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         jList = new JList<>();
         JScrollPane sp = new JScrollPane(jList);
         JPanel buttons = new JPanel();
+
         create = new JButton(taskViewModel.CREATE_BUTTON_LABEL);
         back = new JButton(taskViewModel.BACK_BUTTON_LABEL);
+        delete = new JButton(taskViewModel.DELETE_BUTTON_LABEL);
         save = new JButton(taskViewModel.SAVE_BUTTON_LABEL);
+
         buttons.add(create);
+        buttons.add(delete);
         buttons.add(back);
+
         this.add(sp);
         this.add(buttons);
 
@@ -94,6 +100,17 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                                     datePicker.getDate());
                             createDialog.setVisible(false);
                             resetField();
+                        }
+                    }
+                }
+        );
+
+        delete.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(delete) && jList.getSelectedIndices().length > 0) {
+                            taskController.delete(jList.getSelectedIndices());
                         }
                     }
                 }

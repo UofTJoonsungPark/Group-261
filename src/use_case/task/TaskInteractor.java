@@ -5,7 +5,9 @@ import entity.TaskFactory;
 import use_case.task.TaskInputBoundary;
 import use_case.task.TaskInputData;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TaskInteractor implements TaskInputBoundary {
     private final TaskOutputBoundary taskPresenter;
@@ -25,29 +27,11 @@ public class TaskInteractor implements TaskInputBoundary {
                     taskInputData.isCompleted(), taskInputData.getDueDate());
 
             try {
-                System.out.println("INTERACOTr PASS");
                 taskDataAccessObject.saveTask(task);
                 query();
             } catch (RuntimeException e) {
                 taskPresenter.prepareFailView("Failed to save data");
             }
-
-//
-//        } else if (taskInputData.getUseCase().equals("deleteTask")) {
-//            Task taskToDelete = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),
-//                    taskInputData.getDueDate());
-//            taskDataAccessObject.deleteTask(taskToDelete);
-//
-//            // TODO: Connect this use case to the presenter.
-//            //taskPresenter.prepareSuccessView(new TaskOutputData(taskDataAccessObject.getTasks()));
-//
-//        } else if (taskInputData.getUseCase().equals("markCompleted")) {
-//            Task task = taskFactory.createTask(taskInputData.getTitle(), taskInputData.getNotes(),
-//                    taskInputData.getDueDate());
-//            taskDataAccessObject.markCompleted(task);
-//
-//            // TODO: Connect this use case to the presenter.
-//        }
     }
 
     public void initialize(String username) {
@@ -60,7 +44,17 @@ public class TaskInteractor implements TaskInputBoundary {
     }
 
     public void query() {
-        List<String> taskList = taskDataAccessObject.query();
-        taskPresenter.prepareSuccessView(new TaskOutputData(taskList));
+        List<Task> taskList = taskDataAccessObject.query();
+        List<String> strList = new ArrayList<>();
+        for (Task t : taskList) {
+            strList.add(t.toString());
+        }
+        taskPresenter.prepareSuccessView(new TaskOutputData(strList));
+    }
+
+    public void delete(int[] indices) {
+        for (int i = indices.length-1; i >= 0; i--) {
+            taskDataAccessObject.deleteTask(i);
+        }
     }
 }

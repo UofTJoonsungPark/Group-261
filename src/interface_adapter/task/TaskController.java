@@ -58,7 +58,19 @@ public class TaskController {
         query();
     }
 
+    /**
+     * The method is used to query data for Tasks
+     */
     public void query() {
         taskUseCaseInteractor.query();
+    }
+
+    /**
+     * The method is used to delete the selected Tasks
+     * @param indices array of the selected indices in JList
+     */
+    public void delete(int[] indices) {
+        taskUseCaseInteractor.delete(indices);
+        query();
     }
 }
