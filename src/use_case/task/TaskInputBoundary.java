@@ -15,4 +15,6 @@ public interface TaskInputBoundary {
     void execute(TaskInputData taskInputData);
 
     void initialize(String username);
+
+    void query();
 }

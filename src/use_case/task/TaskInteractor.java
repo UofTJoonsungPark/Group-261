@@ -5,6 +5,8 @@ import entity.TaskFactory;
 import use_case.task.TaskInputBoundary;
 import use_case.task.TaskInputData;
 
+import java.util.List;
+
 public class TaskInteractor implements TaskInputBoundary {
     private final TaskOutputBoundary taskPresenter;
     private final TaskFactory taskFactory;
@@ -23,7 +25,9 @@ public class TaskInteractor implements TaskInputBoundary {
                     taskInputData.isCompleted(), taskInputData.getDueDate());
 
             try {
+                System.out.println("INTERACOTr PASS");
                 taskDataAccessObject.saveTask(task);
+                query();
             } catch (RuntimeException e) {
                 taskPresenter.prepareFailView("Failed to save data");
             }
@@ -53,5 +57,10 @@ public class TaskInteractor implements TaskInputBoundary {
             taskPresenter.prepareFailView("Failed to load data");
         }
 
+    }
+
+    public void query() {
+        List<String> taskList = taskDataAccessObject.query();
+        taskPresenter.prepareSuccessView(new TaskOutputData(taskList));
     }
 }

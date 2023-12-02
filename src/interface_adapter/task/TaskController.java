@@ -59,6 +59,6 @@ public class TaskController {
     }
 
     public void query() {
-
+        taskUseCaseInteractor.query();
     }
 }

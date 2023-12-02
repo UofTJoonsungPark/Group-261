@@ -275,8 +275,23 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
         }
     }
 
+    /**
+     * When user logs out, the method is called to reset data
+     */
     public void clear() {
         tasks.clear();
         this.username = null;
+    }
+
+    /**
+     * The method is used to query the current list of Tasks
+     * @return the current list of Tasks
+     */
+    public List<String> query() {
+        List<String> taskList = new ArrayList<>();
+        for (Task t : tasks.keySet()) {
+            taskList.add(t.toString());
+        }
+        return taskList;
     }
 }

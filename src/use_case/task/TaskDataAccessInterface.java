@@ -2,6 +2,8 @@ package use_case.task;
 
 import entity.Task;
 
+import java.util.List;
+
 /**
  * The TaskDataAccessInterface represents the interface for accessing task data.
  */
@@ -20,4 +22,5 @@ public interface TaskDataAccessInterface {
 
     void writeSet(String username);
 
+    List<String> query();
 }

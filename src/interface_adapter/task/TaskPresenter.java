@@ -31,10 +31,10 @@ public class TaskPresenter implements TaskOutputBoundary {
      */
     @Override
     public void prepareSuccessView(TaskOutputData response) {
-        // todo: complete success view
-//        TaskState taskState = taskViewModel.getState();
-//        taskState,setTasks(reponse.getTask());
-//        taskViewModel.firePropertyChanged();
+        System.out.println("TEST");
+        TaskState taskState = taskViewModel.getState();
+        taskState.setTasks(response.getTask());
+        taskViewModel.firePropertyChanged();
     }
 
     /**
