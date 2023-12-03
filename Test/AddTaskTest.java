@@ -10,9 +10,8 @@ import use_case.task.TaskOutputBoundary;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static javax.management.Query.times;
 import static org.mockito.Mockito.*;
 
 public class AddTaskTest {
@@ -26,10 +25,6 @@ public class AddTaskTest {
         taskPresenter = mock(TaskOutputBoundary.class);
         taskDataAccessObject = mock(TaskDataAccessInterface.class);
         taskInteractor = new TaskInteractor(taskPresenter, new TaskFactory(), taskDataAccessObject);
-    }
-
-    private TaskOutputBoundary mock(Class<TaskOutputBoundary> taskOutputBoundaryClass) {
-        // I HAVE TO IMPLEMENT THIS. WHY ARE THE OTHER ONES NOT SHOWING UP???
     }
 
     @Test
@@ -50,8 +45,7 @@ public class AddTaskTest {
         taskInteractor.execute(taskInputData);
 
         // Assert
-        verify(taskDataAccessObject, times(1)).saveTask(any());
-        verify(taskPresenter, times(1)).prepareSuccessView(any());
-
+        verify(taskDataAccessObject, times(1)).saveTask(anyInt()); // Change any(1) to anyInt()
+        verify(taskPresenter, times(1)).prepareSuccessView(anyInt()); // Change any(1) to anyInt()
     }
 }
