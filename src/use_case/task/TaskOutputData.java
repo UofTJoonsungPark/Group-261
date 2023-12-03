@@ -1,26 +1,37 @@
 package use_case.task;
 
+import java.util.List;
+
 /**
  * The TaskOutputData class represents the output data for task-related actions.
  */
 public class TaskOutputData {
-    private boolean isSuccess;  // Represents whether the task-related action was successful
+    private List<String> tasks;
 
     /**
-     * Constructor to initialize TaskOutputData with the success status.
+     * Constructor to initialize TaskOutputData with the updated list of Tasks.
      *
-     * @param isSuccess Whether the task-related action was successful.
+     * @param tasks the current list of Task
      */
-    public TaskOutputData(boolean isSuccess) {
-        this.isSuccess = isSuccess;
+    public TaskOutputData(List<String> tasks) {
+        this.tasks = tasks;
     }
 
     /**
-     * Checks if the task-related action was successful.
+     * The getter method for the list of Tasks
      *
-     * @return True if the action was successful, false otherwise.
+     * @return the list of Tasks
      */
-    public boolean isSuccess() {
-        return isSuccess;
+    public List<String> getTask() {
+        return tasks;
     }
+
+    /**
+     * The setter method for the list of Tasks
+     * @param tasks the current list of Tasks
+     */
+    public void setTasks(List<String> tasks) {
+        this.tasks = tasks;
+    }
+
 }

@@ -13,4 +13,10 @@ public interface TaskInputBoundary {
      * @param taskInputData The input data for the task action.
      */
     void execute(TaskInputData taskInputData);
+
+    void initialize(String username);
+
+    void query();
+
+    void delete(int[] indices);
 }

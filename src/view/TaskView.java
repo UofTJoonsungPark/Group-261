@@ -1,8 +1,9 @@
 package view;
 
-import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.DatePicker;
 import entity.Task;
 import interface_adapter.task.TaskController;
+import interface_adapter.task.TaskState;
 import interface_adapter.task.TaskViewModel;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -29,6 +30,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     private final JDialog createDialog;
 
     private final JButton create;
+    private final JButton delete;
     private final JButton back;
     private final JList<String> jList;
 
@@ -37,7 +39,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JTextArea notes = new JTextArea(3, WIDTH+10);
     private final JCheckBox completed = new JCheckBox("completed");
-    private final DateTimePicker dateTimePicker = new DateTimePicker();
+    private final DatePicker datePicker = new DatePicker();
 
     private final JButton save;
 
@@ -45,17 +47,20 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         this.taskViewModel = taskViewModel;
         this.taskController = taskController;
         this.taskViewModel.addPropertyChangeListener(this);
-        String[] demo = {"testTask1", "testTask2", "testTask3"};
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        jList = new JList<>(demo);
+        jList = new JList<>();
         JScrollPane sp = new JScrollPane(jList);
-//        sp.setPreferredSize(new Dimension(100, 100));
         JPanel buttons = new JPanel();
+
         create = new JButton(taskViewModel.CREATE_BUTTON_LABEL);
         back = new JButton(taskViewModel.BACK_BUTTON_LABEL);
+        delete = new JButton(taskViewModel.DELETE_BUTTON_LABEL);
         save = new JButton(taskViewModel.SAVE_BUTTON_LABEL);
+
         buttons.add(create);
+        buttons.add(delete);
         buttons.add(back);
+
         this.add(sp);
         this.add(buttons);
 
@@ -88,12 +93,24 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(save) && isInputValid()) {
-                            taskController.createTask(
+                            taskController.execute(
                                     title.getText(),
                                     notes.getText(),
                                     completed.isSelected(),
-                                    LocalDateTime.of(dateTimePicker.getDatePicker().getDate(),
-                                            dateTimePicker.getTimePicker().getTime()));
+                                    datePicker.getDate());
+                            createDialog.setVisible(false);
+                            resetField();
+                        }
+                    }
+                }
+        );
+
+        delete.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(delete) && jList.getSelectedIndices().length > 0) {
+                            taskController.delete(jList.getSelectedIndices());
                         }
                     }
                 }
@@ -118,42 +135,6 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
      *
      * @return A new Task instance with user-provided values.
      */
-    public Task promptForTaskInput() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter Task Details:");
-
-        System.out.print("Title: ");
-        String title = scanner.nextLine();
-
-        System.out.print("Notes: ");
-        String notes = scanner.nextLine();
-
-        System.out.print("Due Date (yyyy-MM-dd HH:mm): ");
-        String dueDateString = scanner.nextLine();
-        LocalDateTime dueDate = LocalDateTime.parse(dueDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
-        // You can include additional prompts as needed
-
-        // Creating and returning a new Task instance
-        return new Task(title, notes, false, dueDate);
-    }
-
-    /**
-     * Main method for testing the TaskView class.
-     * @param args Command line arguments (not used).
-     */
-    public static void main(String[] args) {
-//        TaskView taskView = new TaskView();
-//
-//        // Testing displayTaskDetails method
-//        Task sampleTask = new Task("Sample Task", "This is a sample task", false, LocalDateTime.now().plusDays(2));
-//        taskView.displayTaskDetails(sampleTask);
-//
-//        // Testing promptForTaskInput method
-//        Task userInputTask = taskView.promptForTaskInput();
-//        System.out.println("User Input Task: " + userInputTask);
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -162,7 +143,19 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        TaskState state = (TaskState) evt.getNewValue();
+        String useCase = state.getUseCase();
+        if (state.getError() != null) {
+            showErrorMessage(state.getError());
+            state.setError(null);
+            return;
+        }
+        else if (useCase.equals(taskViewModel.INITIALIZE_USE_CASE)) {
+            state.setUseCase("");
+            String username = taskViewModel.getState().getUsername();
+            taskController.initialize(username);
+        }
+        updateList();
     }
 
     private JDialog buildCreateDialog() {
@@ -191,7 +184,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
         JPanel pickerAndButtonPanel = new JPanel();
         pickerAndButtonPanel.add(new JLabel("Due date"));
-        pickerAndButtonPanel.add(dateTimePicker);
+        pickerAndButtonPanel.add(datePicker);
         pickerAndButtonPanel.add(save);
         mainPanel.add(pickerAndButtonPanel);
 
@@ -204,11 +197,28 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
         if (title.getText().isEmpty()) {
             return false;
         }
-        // check if the given due date is invalid
-        // if the time for due date is provided, the date should be also provided
-        if (dateTimePicker.getDatePicker().getDate() == null && dateTimePicker.timePicker.getTime() != null) {
-            return false;
-        }
         return true;
+    }
+
+    /**
+     * This method is responsible to show error message.
+     * @param message error message
+     */
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    /**
+     * The method is called when to refresh the list of Task
+     */
+    private void updateList() {
+        java.util.List<String> result = taskViewModel.getState().getTasks();
+        jList.setListData(result.toArray(new String[0]));
+    }
+
+    private void resetField() {
+        title.setText("");
+        notes.setText("");
+        completed.setSelected(false);
     }
 }

@@ -43,8 +43,15 @@ public class LoggedInPresenter {
             viewManagerModel.setActiveView(eventViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
         } else if (isTask) {
+            // send a request to initialize data structure for Task
+            taskViewModel.getState().setUseCase(taskViewModel.INITIALIZE_USE_CASE);
+
+            // get and set username from the state
             String username = loggedInViewModel.getState().getUsername();
             taskViewModel.getState().setUsername(username);
+
+            // request
+            taskViewModel.firePropertyChanged();
 
             viewManagerModel.setActiveView(taskViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
