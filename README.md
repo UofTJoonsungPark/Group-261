@@ -54,10 +54,13 @@ TODO: Complete!!!
 
 
 
-## Google Task API Integration ##
+## LGoodDatePicker API ##
+TimeForge utilizes the LGoodDatePicker API to enhance its date and time management features. LGoodDatePicker provides an
+easy-to-use and customizable solution for implementing date and time pickers within the application. This integration 
+enables users to efficiently manage tasks and events by seamlessly selecting and manipulating dates and times. The 
+integration of LGoodDatePicker into TimeForge is seamless, ensuring a smooth user experience. Users can access the date
+and time pickers when creating or modifying tasks and events, making the scheduling process intuitive and efficient.
 
-To efficiently implement task and event management, TimeForge integrates with the Google Task API. This integration 
-enhances the application's functionality and provides users with a seamless experience.
 
 
 
