@@ -321,6 +321,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         description.setText("");
     }
 
+    /**
+     * The method is called when to refresh the list of Event
+     */
     private void updateList() {
         java.util.List<String> result = eventViewModel.getState().getEvents();
         right.setListData(result.toArray(new String[0]));

@@ -55,10 +55,19 @@ public class EventController {
         query(LocalDate.now());
     }
 
+    /**
+     * The method is used to query data for Events
+     * @param date the date given by user
+     */
     public void query(LocalDate date) {
         eventUseCaseInteractor.query(date);
     }
 
+    /**
+     * The method is used to delete the selected events
+     * @param date the current date in view
+     * @param indices array of the selected indices in JList
+     */
     public void delete(LocalDate date, int[] indices) {
         eventUseCaseInteractor.delete(date, indices);
         query(date);

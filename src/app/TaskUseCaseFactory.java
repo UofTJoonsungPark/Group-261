@@ -38,7 +38,7 @@ public class TaskUseCaseFactory {
         TaskOutputBoundary taskOutputBoundary = new TaskPresenter(taskViewModel, loggedInViewModel, viewManagerModel);
         TaskFactory taskFactory = new TaskFactory();
         TaskDataAccessInterface taskDataAccessObject = new FileTaskUserDataAccessObject(
-                new HashMap<>(), new HashMap<>(), taskFactory);
+                new HashMap<>(), taskFactory);
 
 
         TaskInputBoundary taskInteractor = new TaskInteractor(taskOutputBoundary, taskFactory, taskDataAccessObject);

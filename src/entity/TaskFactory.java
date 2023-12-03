@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +15,7 @@ public class TaskFactory {
      * @return A new Task instance with default values.
      */
     public Task createTask() {
-        return new Task("Untitled Task", "", false, LocalDateTime.now());
+        return new Task("Untitled Task", "", false, LocalDate.now());
     }
 
     /**
@@ -22,11 +23,12 @@ public class TaskFactory {
      *
      * @param title     The title of the task.
      * @param notes     Additional notes for the task.
+     * @param completed true iff completed
      * @param dueDate   The due date for the task.
      * @return A new Task instance with the specified values.
      */
-    public Task createTask(String title, String notes, LocalDateTime dueDate) {
-        return new Task(title, notes, false, dueDate);
+    public Task createTask(String title, String notes, boolean completed, LocalDate dueDate) {
+        return new Task(title, notes, completed, dueDate);
     }
 
     /**
@@ -37,7 +39,7 @@ public class TaskFactory {
      * @param dueDate   The due date for the task.
      * @return A new Task instance with the specified values and marked as completed.
      */
-    public Task createCompletedTask(String title, String notes, LocalDateTime dueDate) {
+    public Task createCompletedTask(String title, String notes, LocalDate dueDate) {
         Task completedTask = new Task(title, notes, true, dueDate);
         // You might want to perform additional actions for a completed task, e.g., record completion time
         return completedTask;
@@ -55,12 +57,9 @@ public class TaskFactory {
         Task defaultTask = taskFactory.createTask();
         System.out.println("Default Task: " + defaultTask);
 
-        // Creating a task with specified values
-        Task customTask = taskFactory.createTask("Custom Task", "This is a custom task", LocalDateTime.now().plusDays(3));
-        System.out.println("Custom Task: " + customTask);
-
         // Creating a completed task with specified values
-        Task completedTask = taskFactory.createCompletedTask("Completed Task", "This task is already completed", LocalDateTime.now().plusDays(7));
+        Task completedTask = taskFactory.createCompletedTask("Completed Task",
+                "This task is already completed", LocalDate.now().plusDays(7));
         System.out.println("Completed Task: " + completedTask);
     }
 }
