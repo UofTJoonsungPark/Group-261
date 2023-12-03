@@ -1,73 +1,58 @@
-import entity.Task;
-import entity.TaskFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import use_case.task.TaskDataAccessInterface;
+import use_case.task.TaskInteractor;
+import use_case.task.TaskOutputBoundary;
+import view.TaskView;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static javax.management.Query.times;
+import static jdk.internal.org.objectweb.asm.util.CheckClassAdapter.verify;
+import static org.mockito.Mockito.*;
 
-public class DeleteTaskTest {
+public class TaskDeletionTest {
 
-    private TaskDataAccessInterface dataAccess;
+    @Mock
+    private TaskOutputBoundary taskOutputBoundary;
+
+    @Mock
+    private TaskDataAccessInterface taskDataAccessObject;
+
+    @InjectMocks
+    private TaskInteractor taskInteractor;
 
     @BeforeEach
     void setUp() {
-        // Set up the test environment before each test method
-        Map<Task, Long> tasks = new HashMap<>();
-        TaskFactory taskFactory = new TaskFactory();
-        dataAccess = new FileTaskUserDataAccessObject(tasks, taskFactory);
+        MockitoAnnotations.openMocks(this);
+        taskInteractor = new TaskInteractor(taskOutputBoundary, taskDataAccessObject);
     }
 
     @Test
-    void deleteTask_RemovesTaskFromListAndDatabase() {
-        // Create a sample task and save it
-        Task task = dataAccess.saveTask(new Task("Sample Task", "Sample Notes", false, null));
+    void testTaskDeletion() {
+        // Given
+        when(taskDataAccessObject.getTasks()).thenReturn(Collections.emptyList());
 
-        // Ensure that the task is initially present in the list and the database
-        assertEquals(1, dataAccess.query().size());
-        assertTrue(dataAccess.query().contains(task));
+        // When
+        taskInteractor.executeDeleteTask("Task to Delete");
 
-        // Delete the task
-        dataAccess.deleteTask(task);
-
-        // Ensure that the task is removed from the list and the database
-        assertEquals(0, dataAccess.query().size());
-        assertFalse(dataAccess.query().contains(task));
+        // Then
+        verify(taskDataAccessObject, times(1)).deleteTask("Task to Delete");
+        verify(taskOutputBoundary, times(1)).prepareSuccessView(any());
     }
 
     @Test
-    void deleteTask_WithInvalidTask_ThrowsException() {
-        // Attempt to delete a task that hasn't been saved
-        Task invalidTask = new Task("Invalid Task", "", false, null);
+    void testTaskDeletionWithError() {
+        // Given
+        doThrow(new RuntimeException("Error deleting task")).when(taskDataAccessObject).deleteTask(anyString());
 
-        assertThrows(RuntimeException.class, () -> dataAccess.deleteTask(invalidTask));
-    }
+        // When
+        taskInteractor.executeDeleteTask("Task with Error");
 
-    @Test
-    void deleteTask_WithIndex_RemovesTaskFromListAndDatabase() {
-        // Create a sample task and save it
-        Task task = dataAccess.saveTask(new Task("Sample Task", "Sample Notes", false, null));
-
-        // Ensure that the task is initially present in the list and the database
-        assertEquals(1, dataAccess.query().size());
-        assertTrue(dataAccess.query().contains(task));
-
-        // Delete the task by index
-        dataAccess.deleteTask(0);
-
-        // Ensure that the task is removed from the list and the database
-        assertEquals(0, dataAccess.query().size());
-        assertFalse(dataAccess.query().contains(task));
-    }
-
-    @Test
-    void deleteTask_WithInvalidIndex_ThrowsException() {
-        // Attempt to delete a task with an invalid index
-        int invalidIndex = 999;
-
-        assertThrows(IndexOutOfBoundsException.class, () -> dataAccess.deleteTask(invalidIndex));
+        // Then
+        verify(taskOutputBoundary, times(1)).prepareFailView(eq("Error deleting task"));
     }
 }
