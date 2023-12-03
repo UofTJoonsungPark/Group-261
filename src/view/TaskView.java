@@ -1,6 +1,7 @@
 package view;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import entity.Task;
 import interface_adapter.task.TaskController;
 import interface_adapter.task.TaskState;
@@ -14,6 +15,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -39,7 +41,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JTextArea notes = new JTextArea(3, WIDTH+10);
     private final JCheckBox completed = new JCheckBox("completed");
-    private final DatePicker datePicker = new DatePicker();
+    private final DatePicker datePicker = new DatePicker(new DatePickerSettings(Locale.CANADA));
 
     private final JButton save;
 
@@ -195,6 +197,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     private boolean isInputValid() {
         // check if title is empty
         if (title.getText().isEmpty()) {
+            showErrorMessage("empty title");
             return false;
         }
         return true;
