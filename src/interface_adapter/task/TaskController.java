@@ -25,11 +25,11 @@ public class TaskController {
     /**
      * Executes a task-related action based on user input.
      *
-     * @param back If true, indicates a request to go back.
+     * @param useCase use case
      */
-    public void execute(boolean back) {
-        if (back) {
-            taskUseCaseInteractor.execute(new TaskInputData());
+    public void execute(String useCase) {
+        if ("back".equals(useCase)) {
+            taskPresenter.changeView();
         }
     }
 

@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -39,8 +40,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton save;
     final JPanel gridPanel;
     final JPanel left;
-    final JList<String> right;
+    private final JList<String> right;
     final JDialog createDialog;
+    private final CalendarPanel calendarPanel;
     private final JTextField title = new JTextField(WIDTH);
     private final JTextField location = new JTextField(WIDTH);
     private final JTextArea description = new JTextArea(3, WIDTH);
@@ -65,15 +67,15 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
 
         DatePickerSettings settings = new DatePickerSettings();
         changeSizeCalendar(settings, 1.6);
-        CalendarPanel calendarPanel = new CalendarPanel(settings);
+        calendarPanel = new CalendarPanel(settings);
         calendarPanel.setSelectedDate(LocalDate.now());
         calendarPanel.addCalendarListener(new SimpleCalendarListener());
         calendarPanel.setBorder(new LineBorder(Color.lightGray));
 
         JPanel buttons = new JPanel();
-        create = new JButton(EventViewModel.CREATE_BUTTON_LABEL);
-        delete = new JButton(EventViewModel.DELETE_BUTTON_LABEL);
-        back = new JButton(EventViewModel.BACK_BUTTON_LABEL);
+        create = new JButton(eventViewModel.CREATE_BUTTON_LABEL);
+        delete = new JButton(eventViewModel.DELETE_BUTTON_LABEL);
+        back = new JButton(eventViewModel.BACK_BUTTON_LABEL);
         buttons.add(create);
         buttons.add(delete);
         buttons.add(back);
@@ -86,7 +88,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         gridPanel.add(right);
         this.add(gridPanel);
 
-        save = new JButton(EventViewModel.SAVE_BUTTON_LABEL);
+        save = new JButton(eventViewModel.SAVE_BUTTON_LABEL);
         createDialog = buildCreateDialog();
 
 
@@ -105,8 +107,8 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource().equals(delete)) {
-                            // todo: implement delete usecase
+                        if (e.getSource().equals(delete) && calendarPanel.getSelectedDate() != null) {
+                            eventController.delete(calendarPanel.getSelectedDate(), right.getSelectedIndices());
                         }
                     }
                 }
@@ -117,8 +119,8 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(back)) {
                             createDialog.setVisible(false);
-                            eventViewModel.getState().setUseCase(EventViewModel.BACK_USE_CASE);
-                            eventController.execute(EventViewModel.BACK_USE_CASE);
+                            eventViewModel.getState().setUseCase(eventViewModel.BACK_USE_CASE);
+                            eventController.execute(eventViewModel.BACK_USE_CASE);
                         }
                     }
                 }
@@ -129,12 +131,15 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(save) && isInputValid()) {
-                            eventController.execute(EventViewModel.SAVE_USE_CASE, title.getText(),
+                            eventController.execute(eventViewModel.SAVE_USE_CASE, title.getText(),
                                     location.getText(), description.getText(),
                                     startDateTimePicker.getDatePicker().getDate(),
                                     startDateTimePicker.getTimePicker().getTime(),
                                     endDateTimePicker.getDatePicker().getDate(),
                                     endDateTimePicker.getTimePicker().getTime());
+                            eventController.query(calendarPanel.getSelectedDate());
+                            createDialog.setVisible(false);
+                            resetField();
                         }
                     }
                 }
@@ -142,7 +147,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        System.out.println("Click " + e.getActionCommand());
     }
 
     @Override
@@ -154,14 +159,17 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
             state.setError(null);
             return;
         }
-
-        if (useCase.equals(EventViewModel.INITIALIZE_USE_CASE)) {
+        else if (useCase.equals(eventViewModel.INITIALIZE_USE_CASE)) {
+            state.setUseCase("");
             String username = eventViewModel.getState().getUsername();
             eventController.initialize(username);
-        } else if (useCase.equals(EventViewModel.CLEAR_USE_CASE)) {
-            state.setUsername("");
         }
-        state.setUseCase("");
+//        } else if (useCase.equals(EventViewModel.CLEAR_USE_CASE)) {
+//            state.setUsername("");
+//        }
+        if (calendarPanel.getSelectedDate() != null) {
+            updateList();
+        }
     }
 
     /**
@@ -172,7 +180,8 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         }
 
         public void selectedDateChanged(CalendarSelectionEvent event) {
-
+            eventController.query(event.getNewDate());
+            updateList();
         }
 
         public void yearMonthChanged(YearMonthChangeEvent event) {
@@ -188,7 +197,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
      */
     private JDialog buildCreateDialog()  {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        JDialog createDialog = new JDialog(topFrame, "Create a event");
+        JDialog createDialog = new JDialog(topFrame, "Create an event");
         createDialog.setMinimumSize(new Dimension(500, 400));
 
         JPanel mainPanel = new JPanel();
@@ -301,5 +310,19 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
             return false;
         }
         return true;
+    }
+
+    /**
+     * This method is to reset all the text fields after saving an event
+     */
+    private void resetField() {
+        title.setText("");
+        location.setText("");
+        description.setText("");
+    }
+
+    private void updateList() {
+        java.util.List<String> result = eventViewModel.getState().getEvents();
+        right.setListData(result.toArray(new String[0]));
     }
 }

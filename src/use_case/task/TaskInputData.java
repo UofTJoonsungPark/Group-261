@@ -11,6 +11,7 @@ public class TaskInputData {
     private String notes;             // Additional notes for the task
     private boolean completed;        // Completion status of the task
     private LocalDateTime dueDate;    // Due date for the task
+    private String useCase;           // useCase for this input data
 
     /**
      * Getting the title of the task.
@@ -82,5 +83,11 @@ public class TaskInputData {
      */
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getUseCase() {return useCase;}
+
+    public void setUseCase(String useCase) {
+        this.useCase = useCase;
     }
 }

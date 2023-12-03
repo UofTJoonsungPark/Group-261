@@ -122,7 +122,7 @@ public class Task {
         int result = title.hashCode();
         result = result * 31 + notes.hashCode();
         result = result * 31 + Boolean.hashCode(completed);
-        result = result * 31 + dueDate.hashCode();
+        result = result * 31 + (dueDate == null ? 0 : dueDate.hashCode());
         return result;
     }
 
@@ -141,6 +141,7 @@ public class Task {
         }
         Task task = (Task) obj;
         return title.equals(task.title) && notes.equals(task.notes) &&
-                completed == task.completed && dueDate.equals(task.dueDate);
+                completed == task.completed &&
+                dueDate == null || task.dueDate == null ? dueDate == task.dueDate : dueDate.equals(task.dueDate);
     }
 }

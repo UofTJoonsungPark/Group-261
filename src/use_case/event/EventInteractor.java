@@ -5,6 +5,10 @@ import entity.Event;
 import entity.EventFactory;
 import entity.User;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents the interactor for events.
  */
@@ -65,6 +69,24 @@ public class EventInteractor implements EventInputBoundary {
             eventDataAccessObject.writeMaps(username);
         } catch (RuntimeException e) {
             eventPresenter.prepareFailView("Failed to load data");
+        }
+    }
+
+    public void query(LocalDate date) {
+        List<Event> events = eventDataAccessObject.getEvents(date);
+        List<String> result = new ArrayList<>();
+        if (events != null) {
+            for (Event e : events) {
+                result.add(e.toString());
+            }
+        }
+        eventPresenter.prepareSuccessView(new EventOutputData(result));
+    }
+
+    public void delete(LocalDate date, int[] indices) {
+        List<Event> events = eventDataAccessObject.getEvents(date);
+        for (int i = indices.length-1; i >= 0; i--) {
+            eventDataAccessObject.deleteEvent(events.get(indices[i]));
         }
     }
 }

@@ -1,10 +1,12 @@
 package view;
 
+import com.github.lgooddatepicker.components.DateTimePicker;
 import entity.Task;
 import interface_adapter.task.TaskController;
 import interface_adapter.task.TaskViewModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -16,13 +18,86 @@ import java.util.Scanner;
 /**
  * The TaskView class is responsible for displaying and interacting with tasks.
  */
-public class TaskView extends JPanel implements ActionListener, PropertyChangeListener  {
+public class TaskView extends JPanel implements ActionListener, PropertyChangeListener {
+    private final static int WIDTH = 30;
+    public final String viewName = "task";
+
     private final TaskViewModel taskViewModel;
     private final TaskController taskController;
+
+
+    private final JDialog createDialog;
+
+    private final JButton create;
+    private final JButton back;
+    private final JList<String> jList;
+
+
+    private final JTextField title = new JTextField(WIDTH);
+
+    private final JTextArea notes = new JTextArea(3, WIDTH+10);
+    private final JCheckBox completed = new JCheckBox("completed");
+    private final DateTimePicker dateTimePicker = new DateTimePicker();
+
+    private final JButton save;
 
     public TaskView(TaskViewModel taskViewModel, TaskController taskController) {
         this.taskViewModel = taskViewModel;
         this.taskController = taskController;
+        this.taskViewModel.addPropertyChangeListener(this);
+        String[] demo = {"testTask1", "testTask2", "testTask3"};
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        jList = new JList<>(demo);
+        JScrollPane sp = new JScrollPane(jList);
+//        sp.setPreferredSize(new Dimension(100, 100));
+        JPanel buttons = new JPanel();
+        create = new JButton(taskViewModel.CREATE_BUTTON_LABEL);
+        back = new JButton(taskViewModel.BACK_BUTTON_LABEL);
+        save = new JButton(taskViewModel.SAVE_BUTTON_LABEL);
+        buttons.add(create);
+        buttons.add(back);
+        this.add(sp);
+        this.add(buttons);
+
+        createDialog = buildCreateDialog();
+
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource().equals(back)) {
+                    createDialog.setVisible(false);
+                    taskViewModel.getState().setUseCase(taskViewModel.BACK_USE_CASE);
+                    taskController.execute(taskViewModel.BACK_USE_CASE);
+                }
+            }
+        });
+
+        create.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(create)) {
+                            createDialog.setVisible(true);
+                        }
+                    }
+                }
+        );
+
+        save.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(save) && isInputValid()) {
+                            taskController.createTask(
+                                    title.getText(),
+                                    notes.getText(),
+                                    completed.isSelected(),
+                                    LocalDateTime.of(dateTimePicker.getDatePicker().getDate(),
+                                            dateTimePicker.getTimePicker().getTime()));
+                        }
+                    }
+                }
+        );
     }
 
     /**
@@ -88,5 +163,52 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
+    }
+
+    private JDialog buildCreateDialog() {
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JDialog createDialog = new JDialog(topFrame, "Create a task");
+        createDialog.setMinimumSize(new Dimension(500, 250));
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        JPanel titleAndCheckBox = new JPanel();
+        LabelTextPanel titleInfo = new LabelTextPanel(new JLabel("Title"), title);
+        titleAndCheckBox.add(titleInfo);
+        titleAndCheckBox.add(completed);
+
+        mainPanel.add(titleAndCheckBox);
+
+        notes.setLineWrap(true);
+        notes.setWrapStyleWord(true);
+
+        JPanel notesPanel = new JPanel();
+        notesPanel.add(new JLabel("Notes"));
+        JScrollPane jScrollPane = new JScrollPane(notes);
+        notesPanel.add(jScrollPane);
+        mainPanel.add(notesPanel);
+
+        JPanel pickerAndButtonPanel = new JPanel();
+        pickerAndButtonPanel.add(new JLabel("Due date"));
+        pickerAndButtonPanel.add(dateTimePicker);
+        pickerAndButtonPanel.add(save);
+        mainPanel.add(pickerAndButtonPanel);
+
+        createDialog.add(mainPanel);
+        return createDialog;
+    }
+
+    private boolean isInputValid() {
+        // check if title is empty
+        if (title.getText().isEmpty()) {
+            return false;
+        }
+        // check if the given due date is invalid
+        // if the time for due date is provided, the date should be also provided
+        if (dateTimePicker.getDatePicker().getDate() == null && dateTimePicker.timePicker.getTime() != null) {
+            return false;
+        }
+        return true;
     }
 }

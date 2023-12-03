@@ -14,4 +14,8 @@ public interface TaskDataAccessInterface {
      */
     void saveTask(Task task);
 
+    void markCompleted(Task task);
+
+    void deleteTask(Task task);
+
 }
