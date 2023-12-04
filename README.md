@@ -50,8 +50,29 @@ to your productivity experience.
 
 
 ## Instructions for Use ##
-TODO: Complete!!!
+Upon running the Main.main() file, please follow the below steps to work with our app.
 
+📈 Click on the "Join" button to sign up for a new account.
+
+📈 After signing up, log in using your credentials. Press the "Log in" button to get access to your profile.
+
+~TASK~
+
+📈 Click on the "Task" button to access the task list.
+
+📈 To add a task, within the task view, click on the "Create Task" button. REQUIRED: Add a title for the task. Provide the necessary details for the task.
+
+📈 To delete a task, in the task view, select the task you want to delete. Click on the "delete" button to remove the task.
+
+~EVENT~
+
+📈 Click on the "Event" button to access the event calendar.
+
+📈 To create an event, within the event view, click on the "Create Event" button. Provide the necessary details for the event (choose its duration, etc.). REQUIRED: 
+
+📈 To delete an event, in the event view, select the event you want to delete. Click on the "delete" button to remove the event.
+
+Navigate back and forth in the program using the "Back" button.
 
 
 ## LGoodDatePicker API ##
