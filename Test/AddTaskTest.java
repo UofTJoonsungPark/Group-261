@@ -8,7 +8,7 @@ import use_case.task.TaskInputData;
 import use_case.task.TaskOutputBoundary;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import static javax.management.Query.times;
@@ -30,7 +30,7 @@ public class AddTaskTest {
     @Test
     void testAddTask() throws IOException {
         // Arrange
-        LocalDateTime dueDate = LocalDateTime.now().plusDays(1);
+        LocalDate dueDate = LocalDate.now().plusDays(1);
 
         TaskInputData taskInputData = new TaskInputData();
         taskInputData.setTitle("Test Task");
@@ -39,7 +39,7 @@ public class AddTaskTest {
         taskInputData.setUseCase("saveTask");
 
         // Mock the behavior of DataAccessObject
-        when(taskDataAccessObject.getTasks()).thenReturn(new HashMap<>());
+        when(taskDataAccessObject.saveTask());
 
         // Act
         taskInteractor.execute(taskInputData);
