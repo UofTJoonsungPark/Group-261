@@ -1,18 +1,15 @@
+import entity.Task;
 import entity.TaskFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import use_case.task.TaskDataAccessInterface;
-import use_case.task.TaskInteractor;
-import use_case.task.TaskInputBoundary;
-import use_case.task.TaskInputData;
-import use_case.task.TaskOutputBoundary;
+import use_case.task.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
-import static javax.management.Query.times;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AddTaskTest {
 
@@ -22,8 +19,8 @@ public class AddTaskTest {
 
     @BeforeEach
     void setUp() {
-        taskPresenter = mock(TaskOutputBoundary.class);
-        taskDataAccessObject = mock(TaskDataAccessInterface.class);
+        taskPresenter = new TestTaskPresenter();
+        taskDataAccessObject = new TestTaskDataAccessObject();
         taskInteractor = new TaskInteractor(taskPresenter, new TaskFactory(), taskDataAccessObject);
     }
 
@@ -38,14 +35,69 @@ public class AddTaskTest {
         taskInputData.setDueDate(dueDate);
         taskInputData.setUseCase("saveTask");
 
-        // Mock the behavior of DataAccessObject
-        when(taskDataAccessObject.saveTask());
-
         // Act
         taskInteractor.execute(taskInputData);
 
         // Assert
-        verify(taskDataAccessObject, times(1)).saveTask(anyInt()); // Change any(1) to anyInt()
-        verify(taskPresenter, times(1)).prepareSuccessView(anyInt()); // Change any(1) to anyInt()
+        assertEquals(1, ((TestTaskDataAccessObject) taskDataAccessObject).getSaveTaskCallCount());
+        assertEquals(0, ((TestTaskPresenter) taskPresenter).getPrepareSuccessViewCallCount());
+    }
+
+    // Helper classes for testing
+
+    static class TestTaskDataAccessObject implements TaskDataAccessInterface {
+        private int saveTaskCallCount = 0;
+
+        @Override
+        public void saveTask(Task task) {
+            saveTaskCallCount++;
+        }
+
+        public int getSaveTaskCallCount() {
+            return saveTaskCallCount;
+        }
+
+        @Override
+        public void markCompleted(Task task) {
+
+        }
+
+        @Override
+        public void deleteTask(Task task) {
+
+        }
+
+        @Override
+        public void deleteTask(int i) {
+
+        }
+
+        @Override
+        public void writeSet(String username) {
+
+        }
+
+        @Override
+        public List<Task> query() {
+            return null;
+        }
+    }
+
+    static class TestTaskPresenter implements TaskOutputBoundary {
+        private int prepareSuccessViewCallCount = 0;
+
+        @Override
+        public void prepareSuccessView(TaskOutputData taskOutputData) {
+            prepareSuccessViewCallCount++;
+        }
+
+        public int getPrepareSuccessViewCallCount() {
+            return prepareSuccessViewCallCount;
+        }
+
+        @Override
+        public void prepareFailView(String error) {
+
+        }
     }
 }

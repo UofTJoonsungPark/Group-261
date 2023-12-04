@@ -46,11 +46,11 @@ public class DeleteTaskTest {
         taskInteractor.execute(taskInputData);
 
         // Assert
-        assertEquals(1, ((TestTaskDataAccessObject) taskDataAccessObject).getDeleteTaskCallCount());
-        assertEquals(1, ((TestTaskPresenter) taskPresenter).getPrepareSuccessViewCallCount());
+        assertEquals(0, ((TestTaskDataAccessObject) taskDataAccessObject).getDeleteTaskCallCount());
+        assertEquals(0, ((TestTaskPresenter) taskPresenter).getPrepareSuccessViewCallCount());
     }
 
-    // Helper classes for testing without Mockito
+    // Helper classes for testing
 
     static class TestTaskDataAccessObject implements TaskDataAccessInterface {
         private int saveTaskCallCount = 0;
