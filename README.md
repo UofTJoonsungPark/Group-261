@@ -56,7 +56,7 @@ Upon running the Main.main() file, please follow the below steps to work with ou
 
 📈 After signing up, log in using your credentials. Press the "Log in" button to get access to your profile.
 
-~TASK~
+TASK
 
 📈 Click on the "Task" button to access the task list.
 
@@ -64,7 +64,7 @@ Upon running the Main.main() file, please follow the below steps to work with ou
 
 📈 To delete a task, in the task view, select the task you want to delete. Click on the "delete" button to remove the task.
 
-~EVENT~
+EVENT
 
 📈 Click on the "Event" button to access the event calendar.
 
