@@ -2,6 +2,7 @@ package view;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.ysandbox.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Locale;
 
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -47,8 +49,10 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
     private final JTextField location = new JTextField(WIDTH);
     private final JTextArea description = new JTextArea(3, WIDTH);
 
-    private final DateTimePicker startDateTimePicker = new DateTimePicker();
-    private final DateTimePicker endDateTimePicker = new DateTimePicker();
+    private final DateTimePicker startDateTimePicker = new DateTimePicker(
+            new DatePickerSettings(Locale.CANADA), new TimePickerSettings(Locale.CANADA));
+    private final DateTimePicker endDateTimePicker = new DateTimePicker(
+            new DatePickerSettings(Locale.CANADA), new TimePickerSettings(Locale.CANADA));
 
     /**
      * Constructor to initialize EventView instance
@@ -65,7 +69,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         right = new JList<>();
 
-        DatePickerSettings settings = new DatePickerSettings();
+        DatePickerSettings settings = new DatePickerSettings(Locale.CANADA);
         changeSizeCalendar(settings, 1.6);
         calendarPanel = new CalendarPanel(settings);
         calendarPanel.setSelectedDate(LocalDate.now());
@@ -259,7 +263,7 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
      * The method is used to initialize both the start and end DatePicker for creating an Event.
      */
     private void initializeDatePicker() {
-        DatePickerSettings startDateSettings = new DatePickerSettings();
+        DatePickerSettings startDateSettings = new DatePickerSettings(Locale.CANADA);
         changeSizeCalendar(startDateSettings, 1.4);
         startDateSettings.setAllowEmptyDates(false);
         startDateTimePicker.getDatePicker().setSettings(startDateSettings);
@@ -321,6 +325,9 @@ public class EventView extends JPanel implements ActionListener, PropertyChangeL
         description.setText("");
     }
 
+    /**
+     * The method is called when to refresh the list of Event
+     */
     private void updateList() {
         java.util.List<String> result = eventViewModel.getState().getEvents();
         right.setListData(result.toArray(new String[0]));

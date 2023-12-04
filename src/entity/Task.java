@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -9,7 +10,7 @@ public class Task {
     private String title;             // Title of the task
     private String notes;             // Additional notes for the task
     private boolean completed;        // Completion status of the task
-    private LocalDateTime dueDate;    // Due date for the task
+    private LocalDate dueDate;    // Due date for the task
 
     /**
      * Constructor to initialize a Task object with the given parameters.
@@ -19,7 +20,7 @@ public class Task {
      * @param completed The completion status of the task.
      * @param dueDate   The due date for the task.
      */
-    public Task(String title, String notes, boolean completed, LocalDateTime dueDate) {
+    public Task(String title, String notes, boolean completed, LocalDate dueDate) {
         this.title = title;
         this.notes = notes;
         this.completed = completed;
@@ -85,7 +86,7 @@ public class Task {
      *
      * @return The due date for the task.
      */
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
@@ -94,7 +95,7 @@ public class Task {
      *
      * @param dueDate The new due date for the task.
      */
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

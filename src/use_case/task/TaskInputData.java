@@ -1,6 +1,7 @@
 
 package use_case.task;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,7 @@ public class TaskInputData {
     private String title;             // Title of the task
     private String notes;             // Additional notes for the task
     private boolean completed;        // Completion status of the task
-    private LocalDateTime dueDate;    // Due date for the task
+    private LocalDate dueDate;    // Due date for the task
     private String useCase;           // useCase for this input data
 
     /**
@@ -72,7 +73,7 @@ public class TaskInputData {
      *
      * @return The due date for the task.
      */
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
@@ -81,7 +82,7 @@ public class TaskInputData {
      *
      * @param dueDate The new due date for the task.
      */
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

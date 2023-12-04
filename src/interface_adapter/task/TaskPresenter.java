@@ -31,7 +31,9 @@ public class TaskPresenter implements TaskOutputBoundary {
      */
     @Override
     public void prepareSuccessView(TaskOutputData response) {
-        // Implement how to handle success data and update the taskViewModel
+        TaskState taskState = taskViewModel.getState();
+        taskState.setTasks(response.getTask());
+        taskViewModel.firePropertyChanged();
     }
 
     /**

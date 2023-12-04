@@ -19,7 +19,7 @@ public class LoggedInUseCaseFactory {
             EventViewModel eventViewModel, TaskViewModel taskViewModel, RewardViewModel rewardViewModel) {
 
         LoggedInController loggedInController = createLoggedInUseCase(viewManagerModel, loggedInViewModel,
-                loginViewModel, eventViewModel, rewardViewModel, taskViewModel);
+                loginViewModel, eventViewModel, taskViewModel, rewardViewModel);
 
         return new LoggedInView(loggedInViewModel, loggedInController);
     }
@@ -29,8 +29,8 @@ public class LoggedInUseCaseFactory {
             LoggedInViewModel loggedInViewModel,
             LoginViewModel loginViewModel,
             EventViewModel eventViewModel,
-            RewardViewModel rewardViewModel,
-            TaskViewModel taskViewModel
+            TaskViewModel taskViewModel,
+            RewardViewModel rewardViewModel
     ) {
         LoggedInPresenter loggedInPresenter = new LoggedInPresenter(loggedInViewModel, loginViewModel, eventViewModel,
                 taskViewModel, rewardViewModel, viewManagerModel);
