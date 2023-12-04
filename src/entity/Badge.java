@@ -1,14 +1,13 @@
 package entity;
 
 public class Badge {
-    private final String name;
-    private final int point;
+    private String image;
 
-    private final String image;
-
-    public Badge(String name, int point, String image) {
-        this.name = name;
-        this.point = point;
+    public Badge(String image) {
         this.image = image;
     }
+
+    public String getImage() {return this.image;}
+
+    public void setImage(String image) {this.image = image;}
 }

@@ -63,6 +63,9 @@ public class Main {
         TaskView taskView = TaskUseCaseFactory.create(viewManagerModel, taskViewModel, loggedInViewModel);
         views.add(taskView, taskView.viewName);
 
+        RewardView rewardView = RewardUseCaseFactory.create(viewManagerModel, rewardViewModel, loggedInViewModel);
+        views.add(rewardView, rewardView.viewName);
+
         application.pack();
         application.setVisible(true);
     }
