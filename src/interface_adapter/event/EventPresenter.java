@@ -26,6 +26,12 @@ public class EventPresenter implements EventOutputBoundary {
         this.viewManagerModel = viewManagerModel;
     }
 
+    public EventPresenter() {
+        this.eventViewModel = null;
+        this.loggedInViewModel = null;
+        this.viewManagerModel = null;
+    }
+
     /**
      * Request to present success view
      */
