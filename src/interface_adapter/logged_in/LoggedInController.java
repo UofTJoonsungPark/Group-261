@@ -8,7 +8,7 @@ public class LoggedInController {
         this.loggedInPresenter = loggedInPresenter;
     }
 
-    public void execute(boolean isEvent, boolean isTask, boolean isLogout) {
-        loggedInPresenter.prepareSuccessView(isEvent, isTask, isLogout);
+    public void execute(boolean isEvent, boolean isTask, boolean isLogout, boolean isReward) {
+        loggedInPresenter.prepareSuccessView(isEvent, isTask, isLogout, isReward);
     }
 }

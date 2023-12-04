@@ -12,7 +12,7 @@ public class LoggedInPresenter {
     private final TaskViewModel taskViewModel;
     private final EventViewModel eventViewModel;
     private ViewManagerModel viewManagerModel;
-    private RewardViewModel rewardViewModel;
+    private final RewardViewModel rewardViewModel;
 
     public LoggedInPresenter(LoggedInViewModel loggedInViewModel, LoginViewModel loginViewModel,
                              EventViewModel eventViewModel, TaskViewModel taskViewModel,
@@ -25,7 +25,7 @@ public class LoggedInPresenter {
         this.rewardViewModel = rewardViewModel;
     }
 
-    public void prepareSuccessView(boolean isEvent, boolean isTask, boolean isLogout) {
+    public void prepareSuccessView(boolean isEvent, boolean isTask, boolean isLogout, boolean isReward) {
         if (isEvent) {
             // send a request to initialize data structure for Event
             eventViewModel.getState().setUseCase(eventViewModel.INITIALIZE_USE_CASE);
@@ -64,6 +64,11 @@ public class LoggedInPresenter {
 
             // change the view accordingly
             viewManagerModel.setActiveView(loginViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        } else if (isReward) {
+            String username = loggedInViewModel.getState().getUsername();
+            rewardViewModel.getState().setUsername(username);
+            viewManagerModel.setActiveView(rewardViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
         }
     }

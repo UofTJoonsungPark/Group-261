@@ -66,7 +66,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     @Override
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(event)) {
-                            loggedInController.execute(true, false, false);
+                            loggedInController.execute(true, false, false, false);
                         }
                     }
                 }
@@ -77,7 +77,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(logOut)) {
-                            loggedInController.execute(false, false, true);
+                            loggedInController.execute(false, false, true, false);
                         }
                     }
                 }
@@ -88,7 +88,18 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(task)) {
-                            loggedInController.execute(false, true, false);
+                            loggedInController.execute(false, true, false, false);
+                        }
+                    }
+                }
+        );
+
+        badge.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource().equals(badge)) {
+                            loggedInController.execute(false, false, false, true);
                         }
                     }
                 }
