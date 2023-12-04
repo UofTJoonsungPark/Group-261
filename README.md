@@ -15,7 +15,7 @@ and efficiently allocating time for personal and professional responsibilities. 
 
 🚀 Personal to-do list and calendar  
 
-🚀 Scheduling tasks, events, and collaborative plans  
+🚀 Scheduling tasks and events. 
 
 🚀 Reward system to motivate users through encouraging messages (and eventually) prizes  
 
@@ -50,14 +50,37 @@ to your productivity experience.
 
 
 ## Instructions for Use ##
-TODO: Complete!!!
+Upon running the Main.main() file, please follow the below steps to work with our app.
+
+📈 Click on the "Join" button to sign up for a new account.
+
+📈 After signing up, log in using your credentials. Press the "Log in" button to get access to your profile.
+
+~TASK~
+
+📈 Click on the "Task" button to access the task list.
+
+📈 To add a task, within the task view, click on the "Create Task" button. REQUIRED: Add a title for the task. Provide the necessary details for the task.
+
+📈 To delete a task, in the task view, select the task you want to delete. Click on the "delete" button to remove the task.
+
+~EVENT~
+
+📈 Click on the "Event" button to access the event calendar.
+
+📈 To create an event, within the event view, click on the "Create Event" button. Provide the necessary details for the event (choose its duration, etc.). IMPORTANT: Note that the title should not be empty.
+
+📈 To delete an event, in the event view, select the event you want to delete. Click on the "delete" button to remove the event.
+
+Navigate back and forth in the program using the "Back" button.
 
 
-
-## Google Task API Integration ##
-
-To efficiently implement task and event management, TimeForge integrates with the Google Task API. This integration 
-enhances the application's functionality and provides users with a seamless experience.
+## LGoodDatePicker API ##
+TimeForge utilizes the LGoodDatePicker API to enhance its date and time management features. LGoodDatePicker provides an
+easy-to-use and customizable solution for implementing date and time pickers within the application. This integration 
+enables users to efficiently manage tasks and events by seamlessly selecting and manipulating dates and times. The 
+integration of LGoodDatePicker into TimeForge is seamless, ensuring a smooth user experience. Users can access the date
+and time pickers when creating or modifying tasks and events, making the scheduling process intuitive and efficient.
 
 
 
@@ -77,5 +100,3 @@ Jae Joon Han - [GitHub Profile](https://github.com/JJ-Han)
 JoonsungPark - [GitHub Profile](https://github.com/UofTJoonsungPark)
 
 Jenny Nguyen - [GitHub Profile](https://github.com/jolateral)
-
-# TODO: add instructions for how to use the program. 
