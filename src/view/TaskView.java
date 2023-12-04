@@ -3,9 +3,11 @@ package view;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import entity.Task;
+import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.task.TaskController;
 import interface_adapter.task.TaskState;
 import interface_adapter.task.TaskViewModel;
+import use_case.login.LoginUserDataAccessInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +29,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final TaskViewModel taskViewModel;
     private final TaskController taskController;
+    private String username = null;
 
 
     private final JDialog createDialog;
@@ -45,10 +48,12 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JButton save;
 
-    public TaskView(TaskViewModel taskViewModel, TaskController taskController) {
+    public TaskView(TaskViewModel taskViewModel, TaskController taskController,
+                    LoginUserDataAccessInterface userDataAccessObject, LoggedInState loggedInState) {
         this.taskViewModel = taskViewModel;
         this.taskController = taskController;
         this.taskViewModel.addPropertyChangeListener(this);
+        this.username = loggedInState.getUsername();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         jList = new JList<>();
         JScrollPane sp = new JScrollPane(jList);
@@ -113,6 +118,7 @@ public class TaskView extends JPanel implements ActionListener, PropertyChangeLi
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource().equals(delete) && jList.getSelectedIndices().length > 0) {
                             taskController.delete(jList.getSelectedIndices());
+                            userDataAccessObject.get(username).setPoint(5);
                         }
                     }
                 }

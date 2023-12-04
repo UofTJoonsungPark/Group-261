@@ -3,20 +3,17 @@ import data_access.FileRewardUserDataAccessObject;
 import entity.Badge;
 import entity.BadgeFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.reward.*;
-import interface_adapter.signup.SignupController;
+import use_case.login.LoginUserDataAccessInterface;
 import use_case.reward.RewardDataAccessInterface;
 import use_case.reward.RewardInputBoundary;
 import use_case.reward.RewardInteractor;
 import use_case.reward.RewardOutputBoundary;
 import view.RewardView;
-import view.SignupView;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class RewardUseCaseFactory {
@@ -24,10 +21,12 @@ public class RewardUseCaseFactory {
     public static RewardView create(
             ViewManagerModel viewManagerModel,
             RewardViewModel rewardViewModel,
-            LoggedInViewModel loggedInViewModel
-    ) {
+            LoggedInViewModel loggedInViewModel,
+            LoginUserDataAccessInterface userDataAccessObject,
+            LoggedInState loggedInState
+    ) throws IOException {
         RewardController rewardController = createRewardUseCase(viewManagerModel, rewardViewModel, loggedInViewModel);
-        return new RewardView(rewardViewModel, rewardController);
+        return new RewardView(rewardViewModel, rewardController, userDataAccessObject, loggedInState);
     }
 
     private static RewardController createRewardUseCase(
@@ -37,7 +36,7 @@ public class RewardUseCaseFactory {
     ) {
         RewardOutputBoundary rewardOutputBoundary = new RewardPresenter(rewardViewModel, loggedInViewModel, viewManagerModel);
         BadgeFactory badgeFactory = new BadgeFactory();
-        RewardDataAccessInterface rewardDataAccessObject = new FileRewardUserDataAccessObject(new HashMap<>(), badgeFactory);
+        RewardDataAccessInterface rewardDataAccessObject = new FileRewardUserDataAccessObject(badgeFactory);
 
         RewardInputBoundary rewardInteractor = new RewardInteractor(rewardOutputBoundary, badgeFactory, rewardDataAccessObject);
         return new RewardController(rewardInteractor, (RewardPresenter) rewardOutputBoundary);

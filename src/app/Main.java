@@ -6,18 +6,21 @@ import java.io.IOException;
 
 import data_access.FileUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.User;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.event.EventViewModel;
+import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.reward.RewardViewModel;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.task.TaskViewModel;
+import use_case.login.LoginUserDataAccessInterface;
 import view.*;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         JFrame application = new JFrame("261");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -36,6 +39,23 @@ public class Main {
         EventViewModel eventViewModel = new EventViewModel();
         TaskViewModel taskViewModel = new TaskViewModel();
         RewardViewModel rewardViewModel = new RewardViewModel();
+        LoginUserDataAccessInterface loginUserDataAccessObject = new LoginUserDataAccessInterface() {
+            @Override
+            public boolean existsByName(String identifier) {
+                return false;
+            }
+
+            @Override
+            public void save(User user) {
+
+            }
+
+            @Override
+            public User get(String username) {
+                return null;
+            }
+        };
+        LoggedInState loggedInState = new LoggedInState();
 
         FileUserDataAccessObject userDataAccessObject;
         try {
@@ -60,10 +80,12 @@ public class Main {
         EventView eventView = EventUseCaseFactory.create(viewManagerModel, eventViewModel, loggedInViewModel);
         views.add(eventView, eventView.viewName);
 
-        TaskView taskView = TaskUseCaseFactory.create(viewManagerModel, taskViewModel, loggedInViewModel);
+        TaskView taskView = TaskUseCaseFactory.create(viewManagerModel, taskViewModel, loggedInViewModel,
+                loginUserDataAccessObject, loggedInState);
         views.add(taskView, taskView.viewName);
 
-        RewardView rewardView = RewardUseCaseFactory.create(viewManagerModel, rewardViewModel, loggedInViewModel);
+        RewardView rewardView = RewardUseCaseFactory.create(viewManagerModel, rewardViewModel, loggedInViewModel,
+                loginUserDataAccessObject, loggedInState);
         views.add(rewardView, rewardView.viewName);
 
         application.pack();

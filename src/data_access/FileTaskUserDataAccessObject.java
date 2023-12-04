@@ -179,13 +179,9 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
 
     @Override
     public void deleteTask(Task task) {
-        // delete the task from taskReference
-        long referenceLine = tasks.get(task);
-        tasks.remove(task);
 
-        // delete the task from the CSVFile
-        CSVRemover(referenceLine);
     }
+
 
     private void modifyCSV(long lineNumber) {
         String fileDirectory = filePath + File.separator + username + ".csv";
@@ -296,5 +292,6 @@ public class FileTaskUserDataAccessObject implements TaskDataAccessInterface {
     public void deleteTask(int i) {
         Task task = taskList.remove(i);
         deleteTask(task);
+
     }
 }

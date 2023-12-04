@@ -2,16 +2,9 @@ package use_case.reward;
 
 import entity.Badge;
 
-import java.util.List;
+import java.util.ArrayList;
+
 
 public interface RewardDataAccessInterface {
-    void writeMaps(String username);
-
-    void saveBadge(Badge badge);
-
-    void clearMaps();
-
-    void deleteBadge(Badge badge);
-
-    List<Badge> getBadges(Badge date);
+    ArrayList<Badge> getBadges(int point);
 }
